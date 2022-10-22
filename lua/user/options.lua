@@ -54,7 +54,9 @@ option.splitbelow = true
 
 -- Folding configuration
 option.viewoptions:remove("options")
-option.foldmethod = "marker"
+option.foldmethod = "expr"
+option.foldexpr = "nvim_treesitter#foldexpr()"
+option.foldlevel = 99
 
 -- Display eol characters
 option.list = true
@@ -157,7 +159,7 @@ option.wildignore = {
 }
 
 -- Undo dir (persistent undo's)
-local undo_dir = HOME_PATH .. [[\.cache\vim\undo]]
+local undo_dir = HOME_PATH .. [[/.cache/nvim/undo]]
 if not vim.fn.isdirectory(undo_dir) then
     vim.fn.mkdir(undo_dir)
 end
