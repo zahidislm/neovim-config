@@ -124,20 +124,10 @@
             config = 'require("user.plugins.config.others").refactoring()',
         })
         use({
-            "sbdchd/neoformat",
-            cmd = "Neoformat",
-            setup = function()
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    command = [[silent! undojoin | Neoformat]],
-                    desc = "Format using neoformat on save.",
-                    group = vim.api.nvim_create_augroup("neoformat_format_onsave", { clear = true }),
-                    pattern = "*",
-                })
-            end,
-            config = 'require("user.plugins.config.neoformat")',
-            disable = true,
+            "jose-elias-alvarez/null-ls.nvim",
+            requires = { "nvim-lua/plenary.nvim" },
+            config = 'require("user.plugins.config.null_ls")',
         })
-
         -- ----------------------------- Completion ----------------------------- --
         use({
             "hrsh7th/nvim-cmp",
@@ -231,6 +221,11 @@
             },
             config = 'require("user.plugins.config.lualine")'
         })
+        use({
+            "akinsho/bufferline.nvim",
+            requires = "kyazdani42/nvim-web-devicons",
+            config = 'require("user.plugins.config.bufferline")'
+        })
         -- --------------------------------- QOL -------------------------------- --
         use({
             "tpope/vim-repeat",
@@ -244,10 +239,6 @@
         use({
             "Konfekt/FastFold",
             config = 'require("user.plugins.config.others").fastfold()',
-        })
-        use({
-            "anuvyklack/pretty-fold.nvim",
-            config = 'require("user.plugins.config.pretty_fold")',
         })
 
         -- Automatic initial plugin installation
