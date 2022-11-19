@@ -85,7 +85,7 @@ option.spelllang = "en_us"
 option.laststatus = 3
 
 -- Fold column
-option.foldcolumn = "auto:9"
+option.foldcolumn = "auto:3"
 option.signcolumn = "yes"
 
 -- No redraw during macro, regex execution
@@ -109,15 +109,15 @@ option.shortmess = "ilmxoOsTIcF"
 -- Disable secondary mode bar
 option.showmode = false
 
+-- Highlight matching
+option.showmatch = true
+option.matchtime = 3
+
 -- No swap file
 option.swapfile = false
 
 -- Real-time substitute
 option.inccommand = "split"
-
--- Enable title
-option.title = true
-option.startofline = false
 
 -- Cmdline height
 option.ch = 0
@@ -128,35 +128,6 @@ option.redrawtime = 10000
 
 -- Max columns for syntax search
 option.synmaxcol = 180
-
-
--- Ignore LaTeX aux files
-option.wildignore = {
-    "*.aux",
-    "*.lof",
-    "*.lot",
-    "*.fls",
-    "*.out",
-    "*.toc",
-    "*.fmt",
-    "*.fot",
-    "*.cb",
-    "*.cb2",
-    ".*.lb",
-    "__latex*",
-    "*.fdb_latexmk",
-    "*.synctex",
-    "*.synctex(busy)",
-    "*.synctex.gz",
-    "*.synctex.gz(busy)",
-    "*.pdfsync",
-    "*.bbl",
-    "*.bcf",
-    "*.blg",
-    "*.run.xml",
-    "indent.log",
-    "*.pdf",
-}
 
 -- Undo dir (persistent undo's)
 local undo_dir = HOME_PATH .. [[/.cache/nvim/undo]]
@@ -188,6 +159,11 @@ local disabled_built_ins = {
     "logipat",
     "rrhelper",
     "matchit",
+    "matchparen",
+    "man",
+    "shada",
+    "spellfile",
+    "remote",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
@@ -208,12 +184,12 @@ option.clipboard = "unnamedplus"
 vim.g.clipboard = {
     name = "win32yank-wsl",
     copy = {
-      ["+"] = "win32yank.exe -i --crlf",
-      ["*"] = "win32yank.exe -i --crlf"
+        ["+"] = "win32yank.exe -i --crlf",
+        ["*"] = "win32yank.exe -i --crlf"
     },
     paste = {
-      ["+"] = "win32yank.exe -o --crlf",
-      ["*"] = "win32yank.exe -o --crlf"
+        ["+"] = "win32yank.exe -o --crlf",
+        ["*"] = "win32yank.exe -o --crlf"
     },
     cache_enable = 0,
-  }
+}
