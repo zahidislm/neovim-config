@@ -81,8 +81,9 @@
             run = ":TSUpdate",
             requires = {
                 { "p00f/nvim-ts-rainbow" },
-                { "windwp/nvim-ts-autotag" },
                 { "nvim-treesitter/nvim-treesitter-textobjects" },
+                { "nvim-treesitter/nvim-treesitter-refactor" },
+                { "nvim-treesitter/nvim-treesitter-context" },
             },
             config = 'require("user.plugins.config.treesitter")',
         })
@@ -118,15 +119,20 @@
             config = 'require("user.plugins.config.others").lsp_signature()',
         })
         use({
-            "ThePrimeagen/refactoring.nvim",
-            event = "BufReadPost",
-            requires = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" },
-            config = 'require("user.plugins.config.others").refactoring()',
-        })
-        use({
             "jose-elias-alvarez/null-ls.nvim",
             requires = { "nvim-lua/plenary.nvim" },
             config = 'require("user.plugins.config.null_ls")',
+        })
+        use({
+            "glepnir/lspsaga.nvim",
+            config = 'require("user.plugins.config.lspconfig.lspsaga")',
+        })
+        use({
+            "folke/trouble.nvim",
+            requires = "kyazdani42/nvim-web-devicons",
+            config = function()
+                require("trouble").setup({})
+            end,
         })
         -- ----------------------------- Completion ----------------------------- --
         use({
@@ -135,7 +141,7 @@
             requires = {
                 { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", requires = "neovim/nvim-lspconfig" },
                 { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-                { "hrsh7th/cmp-omni", after = "nvim-cmp", ft = "tex" },
+                { "hrsh7th/cmp-omni", after = "nvim-cmp" },
                 { "hrsh7th/cmp-path", after = "nvim-cmp" },
                 { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
                 { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
@@ -161,13 +167,6 @@
             config = 'require("user.plugins.config.others").autopairs()',
         })
         use({
-            "iamcco/markdown-preview.nvim",
-            cmd = "MarkdownPreview",
-            ft = "markdown",
-            run = "cd app && yarn install",
-            config = 'require("user.plugins.config.others").markdown_preview()',
-        })
-        use({
             "nvim-neo-tree/neo-tree.nvim",
             keys = "<C-b>",
             branch = "v2.x",
@@ -175,10 +174,7 @@
             config = 'require("user.plugins.config.neotree")',
         })
         use({
-            "phaazon/hop.nvim",
-            tag = "v2.*",
-            keys = { { "n", "f" }, { "n", "S" }, { "o", "f" } },
-            config = 'require("user.plugins.config.others").hop()',
+            "ggandor/lightspeed.nvim"
         })
         use({
             "kylechui/nvim-surround",
@@ -204,7 +200,6 @@
             requires = {
                 { "nvim-lua/plenary.nvim" },
                 { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-                { "nvim-telescope/telescope-frecency.nvim" }
             },
             config = 'require("user.plugins.config.telescope")'
         })
@@ -229,12 +224,6 @@
         -- --------------------------------- QOL -------------------------------- --
         use({
             "tpope/vim-repeat",
-        })
-        use({
-            "https://gitlab.com/yorickpeterse/nvim-pqf",
-            as = "nvim-pqf",
-            event = "BufReadPost",
-            config = 'require("pqf").setup()',
         })
         use({
             "Konfekt/FastFold",
