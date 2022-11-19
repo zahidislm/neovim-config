@@ -88,7 +88,7 @@ telescope.setup({
 })
 
 -- Load extensions
-local extensions = { "fzf", "frecency", "refactoring" }
+local extensions = { "fzf" }
 pcall(function()
     for _, ext in ipairs(extensions) do
         telescope.load_extension(ext)
@@ -97,9 +97,6 @@ end)
 local map = vim.keymap.set
 local opts = { silent = true }
 
-map("n", "tr", function()
-    require("user.plugins.config.telescope.sources").frecency()
-end, opts)
 map("n", "tf", function()
     require("user.plugins.config.telescope.sources").git_or_find()
 end, opts)
@@ -120,7 +117,4 @@ map("n", "<F5>", function()
 end, opts)
 map("n", "<F6>", function()
     require("user.plugins.config.telescope.sources").dir_plugins()
-end, opts)
-map("v", "rr", function()
-    require('telescope').extensions.refactoring.refactors()
 end, opts)
