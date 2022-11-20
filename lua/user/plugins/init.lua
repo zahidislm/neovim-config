@@ -167,11 +167,11 @@
             config = 'require("user.plugins.config.others").autopairs()',
         })
         use({
-            "nvim-neo-tree/neo-tree.nvim",
-            keys = "<C-b>",
-            branch = "v2.x",
-            requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
-            config = 'require("user.plugins.config.neotree")',
+            "nvim-tree/nvim-tree.lua",
+            requires = {
+                "nvim-tree/nvim-web-devicons",
+            },
+            config = 'require("user.plugins.config.nvimtree")',
         })
         use({
             "ggandor/lightspeed.nvim"
