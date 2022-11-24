@@ -159,7 +159,6 @@ local disabled_built_ins = {
     "logipat",
     "rrhelper",
     "matchit",
-    "matchparen",
     "man",
     "shada",
     "spellfile",
