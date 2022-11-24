@@ -5,10 +5,10 @@ SCHEME = os.getenv("SysTheme"):lower() or "dark"
 SERVERS = { "pyright", "rust_analyzer" }
 
 -- Treesitter parsers
-PARSERS = { "comment", "python", "lua", "c", "cpp", "rust", "julia", "yaml", "json", "toml" }
+PARSERS = { "python", "lua", "c", "cpp", "rust", "julia", "yaml", "json", "toml" }
 
--- Plugin filetypes
-PLUGINS = { "packer", "neo-tree" }
+-- Plugin Manager
+PLUGINS = { "packer" }
 
 -- Paths
 HOME_PATH = vim.fn.expand("$HOME")

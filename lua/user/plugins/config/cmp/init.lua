@@ -3,6 +3,7 @@ local feedkey = function(key, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 local cmp = require("cmp")
 
 cmp.setup({
@@ -101,3 +102,9 @@ cmp.setup.cmdline(":", {
         { name = "path" },
     }),
 })
+
+-- Add nvim-autopairs support
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)

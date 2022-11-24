@@ -116,7 +116,7 @@
         use({
             "ray-x/lsp_signature.nvim",
             after = "nvim-lspconfig",
-            config = 'require("user.plugins.config.others").lsp_signature()',
+            config = 'require("user.plugins.config.signature")',
         })
         use({
             "jose-elias-alvarez/null-ls.nvim",
@@ -135,6 +135,10 @@
             end,
         })
         -- ----------------------------- Completion ----------------------------- --
+        use({
+            "windwp/nvim-autopairs",
+            config = 'require("user.plugins.config.autopair")',
+        })
         use({
             "hrsh7th/nvim-cmp",
             event = "InsertEnter",
@@ -157,14 +161,8 @@
             cmd = { "AsyncRun", "AsyncStop" },
         })
         use({
-            "terrortylor/nvim-comment",
-            cmd = "CommentToggle",
-            keys = { { "n", "<C-/>" }, { "v", "<C-/>" }, { "i", "<C-/>" }, { "n", "gc" }, { "v", "gc" } },
-            config = 'require("user.plugins.config.others").nvim_comment()',
-        })
-        use({
-            "jiangmiao/auto-pairs",
-            config = 'require("user.plugins.config.others").autopairs()',
+            "numToStr/Comment.nvim",
+            config = 'require("user.plugins.config.comment")',
         })
         use({
             "nvim-tree/nvim-tree.lua",
@@ -224,10 +222,6 @@
         -- --------------------------------- QOL -------------------------------- --
         use({
             "tpope/vim-repeat",
-        })
-        use({
-            "Konfekt/FastFold",
-            config = 'require("user.plugins.config.others").fastfold()',
         })
 
         -- Automatic initial plugin installation
