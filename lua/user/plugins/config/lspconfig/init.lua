@@ -23,12 +23,20 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.h
 local lspconfig = require('lspconfig')
 local utils = require("user.plugins.config.lspconfig.utils")
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
+
 require('lspconfig')['pyright'].setup{
+    capabilities = capabilities,
     on_attach = on_attach,
     flags = lsp_flags,
 }
 
 require('lspconfig')['rust_analyzer'].setup{
+    capabilities = capabilities,
     on_attach = on_attach,
     flags = lsp_flags,
     -- Server-specific settings...

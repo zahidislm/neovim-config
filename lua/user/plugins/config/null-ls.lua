@@ -5,14 +5,6 @@ if not null_present then
 end
 
 local utils = require("user.plugins.config.lspconfig.utils")
--- local null_ls_sources = require("user.plugins.config.null_ls.sources")
-
-local sources = {
-    -- Formatters
-    null_ls.builtins.formatting.yapf,
-    null_ls.builtins.formatting.rustfmt,
-    -- Diagnostics
-}
 
 null_ls.setup({
     debounce = 500,

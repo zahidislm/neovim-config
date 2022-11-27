@@ -1,9 +1,6 @@
 -- Colorscheme
 SCHEME = os.getenv("SysTheme"):lower() or "dark"
 
--- Language servers
-SERVERS = { "pyright", "rust_analyzer" }
-
 -- Treesitter parsers
 PARSERS = { "python", "lua", "c", "cpp", "rust", "julia", "yaml", "json", "toml" }
 
