@@ -1,3 +1,3 @@
 require("github-theme").setup({
-    theme_style = SCHEME,
+    theme_style = SCHEME .. "_default",
 })
