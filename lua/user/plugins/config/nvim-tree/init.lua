@@ -1,3 +1,8 @@
+-- Call wrapper for utils
+local function custom_callback(callback_name)
+    return string.format(":lua require('user.plugins.config.nvim-tree.utils').%s()<CR>", callback_name)
+end
+
 require("nvim-tree").setup({
     actions = {
         change_dir = {
@@ -27,6 +32,12 @@ require("nvim-tree").setup({
     sort_by = "case_sensitive",
     view = {
         adaptive_size = true,
+        mappings = {
+            list = {
+                { key = "<c-f>", cb = custom_callback "launch_find_files" },
+                { key = "<c-g>", cb = custom_callback "launch_live_grep" },
+            },
+        },
     },
 
     filters = {
@@ -36,3 +47,6 @@ require("nvim-tree").setup({
         },
     },
 })
+
+-- Mappings
+require("user.plugins.mapping.nvim-tree")
