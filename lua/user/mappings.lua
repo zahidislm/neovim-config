@@ -1,7 +1,7 @@
-local map = vim.keymap.set
-local e_opts = { expr = true }
-local s_opts = { silent = true }
-local se_opts = { silent = true, expr = true }
+map = vim.keymap.set
+e_opts = { expr = true }
+s_opts = { silent = true }
+se_opts = { silent = true, expr = true }
 
 -- Open windows terminal terminal at cwd or git root
 -- map("n", "<Leader><Leader>t", function()
