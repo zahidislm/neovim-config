@@ -41,8 +41,6 @@ option.number = true
 -- Enable relative line numbers
 option.relativenumber = true
 
--- Enable completion for vim-compe
-option.completeopt = { "menu", "menuone", "noselect" }
 -- Show max. 10 completions
 option.pumheight = 10
 -- Max history of commands
@@ -53,10 +51,15 @@ option.splitright = true
 option.splitbelow = true
 
 -- Folding configuration
-option.viewoptions:remove("options")
+option.foldlevel = 99
+option.foldlevelstart = 99
+option.foldcolumn = "0"
+option.foldenable = true
 option.foldmethod = "expr"
 option.foldexpr = "nvim_treesitter#foldexpr()"
-option.foldlevel = 99
+option.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend))]]
+option.foldnestmax = 3
+option.foldminlines = 1
 
 -- Display eol characters
 option.list = true
@@ -84,18 +87,11 @@ option.spelllang = "en_us"
 -- Global statusline
 option.laststatus = 3
 
--- Fold column
-option.foldcolumn = "auto:3"
-option.signcolumn = "yes"
-
 -- No redraw during macro, regex execution
 option.lazyredraw = true
 
 -- Enable mouse for normal and visual modes
 option.mouse = "nv"
-
--- Toggle paste mode
-option.pastetoggle = "<F12>"
 
 -- Lines to scroll off screen
 option.scrolljump = 5
