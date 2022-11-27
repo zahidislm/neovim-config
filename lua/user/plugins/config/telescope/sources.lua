@@ -15,15 +15,6 @@ M.dir_nvim = function()
     require("telescope.builtin").find_files(opts)
 end
 
-
--- M.dir_python = function()
---     local opts = {
---         cwd = "D:\\My Folder\\Dev\\Python",
---         prompt_title = "Python",
---     }
---     require("telescope.builtin").find_files(opts)
--- end
-
 M.dir_plugins = function()
     local opts = {
         cwd = PACKER_PATH,
@@ -77,12 +68,6 @@ M.reload_modules = function()
     }
 
     require("telescope.builtin").find_files(opts)
-end
-
--- Use dropdown theme with Frecency
-M.frecency = function()
-    local frecency_opts = dropdown({ prompt_title = "Recent Files", path_display = { "absolute" } })
-    require("telescope").extensions.frecency.frecency(frecency_opts)
 end
 
 -- Fall back to find_files if not a git directory

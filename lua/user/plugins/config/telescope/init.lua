@@ -73,11 +73,6 @@ telescope.setup({
         git_files = utils.dropdown(),
     },
     extensions = {
-        frecency = {
-            show_scores = false,
-            show_unindexed = false,
-            ignore_patterns = { "*.git/*" },
-        },
         fzf = {
             fuzzy = true,
             override_generic_sorter = true,
@@ -94,27 +89,6 @@ pcall(function()
         telescope.load_extension(ext)
     end
 end)
-local map = vim.keymap.set
-local opts = { silent = true }
 
-map("n", "tf", function()
-    require("user.plugins.config.telescope.sources").git_or_find()
-end, opts)
-map("n", "tp", function()
-    require("user.plugins.config.telescope.sources").dir_python()
-end, opts)
-map("n", "tn", function()
-    require("user.plugins.config.telescope.sources").dir_nvim()
-end, opts)
-map("n", "tl", function()
-    require("user.plugins.config.telescope.sources").dir_latex()
-end, opts)
-map("n", "ts", function()
-    require("user.plugins.config.telescope.sources").sessions()
-end, opts)
-map("n", "<F5>", function()
-    require("user.plugins.config.telescope.sources").reload_modules()
-end, opts)
-map("n", "<F6>", function()
-    require("user.plugins.config.telescope.sources").dir_plugins()
-end, opts)
+-- Mappings
+require("user.plugins.mapping.telescope")
