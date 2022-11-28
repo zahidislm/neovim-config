@@ -18,4 +18,4 @@ require("bufferline").setup{
 }
 
 -- Mappings
-require("user.plugins.mapping.bufferline")
+require(P_MAPPINGS .. "buffer.bufferline")

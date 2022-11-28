@@ -11,6 +11,9 @@ PLUGINS = { "packer" }
 HOME_PATH = vim.fn.expand("$HOME")
 CONFIG_PATH = vim.fn.stdpath("config")
 PACKER_PATH = vim.fn.stdpath("data") .. "\\site\\pack\\packer"
+P_CONFIGS = "user.plugins.configs."
+P_MAPPINGS = "user.plugins.mappings."
+P_MODULES = "user.plugins.modules."
 
 -- Linting icons
 ICON_ERROR = "E"
@@ -19,11 +22,11 @@ ICON_INFO = "I"
 ICON_HINT = "H"
 
 -- Improve startuptime using impatient
-require("user.plugins.config.impatient")
+require(P_CONFIGS .. "core.impatient")
 
 -- Configuration files
 require("user.autocmds")
 require("user.options")
 require("user.utils")
-require("user.mappings")
+require("user.keymaps")
 require("user.plugins")

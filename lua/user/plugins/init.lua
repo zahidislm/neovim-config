@@ -1,4 +1,6 @@
--- Compile on change autocmd{{{
+-- -------------------------------- Packer Initialization ------------------------------- --
+
+-- Compile on change autocmd {{{
 local group = vim.api.nvim_create_augroup("packer_compile_onchange", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePost", {
     command = [[source <afile> | PackerCompile]],
@@ -55,187 +57,30 @@ packer.init({
     autoremove = true,
 }) --}}}
 
--- Plugin list
-local use = packer.use
+
+-- -------------------------------- Plugins ------------------------------- --
+
+-- Enable global syntax sugar for packer's use
+use = packer.use
+
 return packer.startup(function()
-    -- ------------------------------- Packer ------------------------------- --
-    use({
-        "wbthomason/packer.nvim",
-    })
-    -- ------------------------------ Impatient ----------------------------- --
-    use({
-        "lewis6991/impatient.nvim",
-    })
-    -- ------------------------------- Themes ------------------------------- --
-    use({
-        "projekt0n/github-nvim-theme",
-        config = 'require("user.plugins.config.theme")',
-    })
-    -- -------------------------------- Looks ------------------------------- --
-    use({
-        "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
-        requires = {
-            { "p00f/nvim-ts-rainbow" },
-            { "nvim-treesitter/nvim-treesitter-textobjects" },
-            { "nvim-treesitter/nvim-treesitter-refactor" },
-            { "nvim-treesitter/nvim-treesitter-context" },
-        },
-        config = 'require("user.plugins.config.treesitter")',
-    })
+    -- Load CORE module
+    require(P_MODULES .. "core")
 
-    use({
-        "kyazdani42/nvim-web-devicons"
-    })
+    -- Load BUFFER module
+    require(P_MODULES .. "buffer")
 
-    use({
-        "lukas-reineke/indent-blankline.nvim",
-        config = 'require("user.plugins.config.indentline")',
-    })
-    -- --------------------------------- LSP -------------------------------- --
-    use({
-        "williamboman/mason.nvim",
-        config = 'require("mason").setup()'
-    })
+    -- Load SYNTAX module
+    require(P_MODULES .. "syntax")
 
-    use({
-        "williamboman/mason-lspconfig.nvim",
-        config = 'require("mason-lspconfig").setup()',
-    })
+    -- Load LSP module
+    require(P_MODULES .. "lsp")
 
-    use({
-        "neovim/nvim-lspconfig",
-        requires = { "hrsh7th/cmp-nvim-lsp" },
-        config = 'require("user.plugins.config.lspconfig")',
-    })
+    -- Load COMPLETION module
+    require(P_MODULES .. "completion")
 
-    use({
-        "jose-elias-alvarez/null-ls.nvim",
-        requires = { "nvim-lua/plenary.nvim" },
-        config = 'require("user.plugins.config.null-ls")'
-    })
-
-    use({
-        "jayp0521/mason-null-ls.nvim",
-        config = 'require("mason-null-ls").setup()',
-    })
-
-    use({
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        config = 'require("user.plugins.config.mason")',
-    })
-
-    use({
-        "ray-x/lsp_signature.nvim",
-        config = 'require("user.plugins.config.signature")',
-    })
-
-    use({
-        "glepnir/lspsaga.nvim",
-        config = 'require("user.plugins.config.lspconfig.lspsaga")',
-    })
-
-    use({
-        "folke/trouble.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
-        config = 'require("trouble").setup({})',
-    })
-    -- ----------------------------- Completion ----------------------------- --
-    use({
-        "hrsh7th/nvim-cmp",
-        wants = { "LuaSnip" },
-        requires = {
-            { "hrsh7th/cmp-nvim-lsp", requires = "neovim/nvim-lspconfig"},
-            { "hrsh7th/cmp-buffer" },
-            { "hrsh7th/cmp-omni" },
-            { "hrsh7th/cmp-path" },
-            { "hrsh7th/cmp-cmdline" },
-            {
-                "L3MON4D3/LuaSnip",
-                wants = "friendly-snippets",
-                requires = {
-                    "rafamadriz/friendly-snippets",
-                },
-                config = 'require("user.plugins.config.luasnip")',
-            },
-            { "saadparwaiz1/cmp_luasnip" },
-            {
-                "windwp/nvim-autopairs",
-                config = 'require("user.plugins.config.autopair")',
-            }
-        },
-        config = 'require("user.plugins.config.cmp")',
-    })
-    -- ------------------------------ Telescope ----------------------------- --
-    use({
-        "nvim-telescope/telescope.nvim",
-        branch = "0.1.x",
-        requires = {
-            { "nvim-lua/plenary.nvim" },
-            { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-        },
-        config = 'require("user.plugins.config.telescope")'
-    })
-    -- ------------------------- Buffer, Statusline ------------------------- --
-    use({
-        "nvim-lualine/lualine.nvim",
-        requires = {
-            {"kyazdani42/nvim-web-devicons"},
-            {
-                "lewis6991/gitsigns.nvim",
-                config = 'require("user.plugins.config.gitsigns")'
-            }
-        },
-        config = 'require("user.plugins.config.lualine")'
-    })
-
-    use({
-        "akinsho/bufferline.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
-        config = 'require("user.plugins.config.bufferline")'
-    })
-    -- ------------------------------ Features ------------------------------ --
-    use({
-        "skywind3000/asyncrun.vim",
-        cmd = { "AsyncRun", "AsyncStop" },
-    })
-
-    use({
-        "numToStr/Comment.nvim",
-        config = 'require("user.plugins.config.comment")',
-    })
-
-    use({
-        "nvim-tree/nvim-tree.lua",
-        requires = {
-            "nvim-tree/nvim-web-devicons",
-        },
-        config = 'require("user.plugins.config.nvim-tree")',
-    })
-
-    use({
-        "ggandor/leap.nvim",
-        config = 'require("leap").add_default_mappings()'
-    })
-
-    use({
-        "kylechui/nvim-surround",
-        config = function()
-            require("nvim-surround").setup({
-                highlight = { duration = 500 },
-                move_cursor = false,
-            })
-        end,
-    })
-    -- --------------------------------- QOL -------------------------------- --
-    use({
-        "tpope/vim-repeat",
-    })
-
-    use({
-        "Darazaki/indent-o-matic",
-        config = 'require("indent-o-matic").setup {}'
-    })
+    -- Load PRODUCTIVITY module
+    require(P_MODULES .. "productivity")
 
     -- Automatic initial plugin installation
     if packer_bootstrap then

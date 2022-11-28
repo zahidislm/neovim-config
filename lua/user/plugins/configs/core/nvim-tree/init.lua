@@ -1,6 +1,6 @@
 -- Call wrapper for utils
 local function custom_callback(callback_name)
-    return string.format(":lua require('user.plugins.config.nvim-tree.utils').%s()<CR>", callback_name)
+    return string.format(":lua require(P_CONFIGS .. 'core.nvim-tree.utils').%s()<CR>", callback_name)
 end
 
 require("nvim-tree").setup({
@@ -49,4 +49,4 @@ require("nvim-tree").setup({
 })
 
 -- Mappings
-require("user.plugins.mapping.nvim-tree")
+require(P_MAPPINGS .. "core.nvim-tree")

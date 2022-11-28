@@ -4,7 +4,7 @@ if not null_present then
     return
 end
 
-local utils = require("user.plugins.config.lspconfig.utils")
+local utils = require(P_CONFIGS .. "lsp.lspconfig.utils")
 
 null_ls.setup({
     debounce = 500,

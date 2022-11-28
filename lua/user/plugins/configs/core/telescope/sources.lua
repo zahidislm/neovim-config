@@ -1,4 +1,4 @@
-local utils = require("user.plugins.config.telescope.utils")
+local utils = require(P_CONFIGS .. "core.telescope.utils")
 local file_sorter = utils.file_sorter
 local dropdown = utils.dropdown
 

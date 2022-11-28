@@ -1,6 +1,6 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
-local utils = require("user.plugins.config.telescope.utils")
+local utils = require(P_CONFIGS .. "core.telescope.utils")
 
 telescope.setup({
     defaults = {
@@ -91,4 +91,4 @@ pcall(function()
 end)
 
 -- Mappings
-require("user.plugins.mapping.telescope")
+require(P_MAPPINGS .. "core.telescope")

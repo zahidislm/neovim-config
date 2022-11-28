@@ -21,7 +21,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { 
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
 
 local lspconfig = require('lspconfig')
-local utils = require("user.plugins.config.lspconfig.utils")
+local utils = require(P_CONFIGS .. "lsp.lspconfig.utils")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.foldingRange = {
