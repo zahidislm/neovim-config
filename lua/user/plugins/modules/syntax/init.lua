@@ -12,10 +12,14 @@ use({
 })
 
 use({
-    "kyazdani42/nvim-web-devicons"
-})
-
-use({
     "lukas-reineke/indent-blankline.nvim",
     config = 'require(P_CONFIGS .. "syntax.indentline")',
+})
+
+use({ "andymass/vim-matchup" })
+
+use({
+    "kevinhwang91/nvim-ufo",
+    requires = "kevinhwang91/promise-async",
+    config = 'require("ufo").setup({open_fold_hl_timeout=0})'
 })

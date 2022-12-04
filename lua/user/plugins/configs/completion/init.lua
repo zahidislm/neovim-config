@@ -1,21 +1,42 @@
-local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 
-cmp.setup {
+local function border(hl_name)
+    return {
+        { "╭", hl_name },
+        { "─", hl_name },
+        { "╮", hl_name },
+        { "│", hl_name },
+        { "╯", hl_name },
+        { "─", hl_name },
+        { "╰", hl_name },
+        { "│", hl_name },
+    }
+end
+
+cmp.setup({
     experimental = {
         ghost_text = true,
     },
+
     window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
+        completion = {
+            border = border("CmpBorder"),
+            winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
+        },
+
+        documentation = {
+            border = border("CmpDocBorder"),
+        },
     },
+
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
         end,
     },
-    mapping = cmp.mapping.preset.insert {
+
+    mapping = cmp.mapping.preset.insert({
         ["<C-p>"] = cmp.mapping.select_prev_item(),
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -35,8 +56,8 @@ cmp.setup {
             else
                 fallback()
             end
-        end, { 'i', 's' }),
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
             elseif luasnip.jumpable(-1) then
@@ -44,8 +65,9 @@ cmp.setup {
             else
                 fallback()
             end
-        end, { 'i', 's' }),
-    },
+        end, { "i", "s" }),
+    }),
+
     sources = {
         { name = "nvim_lua" },
         { name = "nvim_lsp" },
@@ -53,33 +75,31 @@ cmp.setup {
         { name = "path" },
         { name = "buffer" },
     },
-}
+})
 
--- `/` cmdline setup.
-cmp.setup.cmdline('/', {
+-- Setup "/" commands
+cmp.setup.cmdline("/", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-        { name = 'buffer' }
-    }
+        { name = "buffer" },
+    },
 })
 
--- `:` cmdline setup.
-cmp.setup.cmdline(':', {
+-- Setup ":" commands
+cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = 'path' }
-    }, {
-        {
-            name = 'cmdline',
-            option = {
-                ignore_cmds = { 'Man', '!' }
-            }
-        }
-    })
+        { name = "path" },
+        { name = "cmdline", option = { ignore_cmds = { "Man", "!" } } },
+    }),
 })
 
--- Add nvim-autopairs support
-cmp.event:on(
-    'confirm_done',
-    cmp_autopairs.on_confirm_done()
-)
+-- Setup vim.input commands
+cmp.setup.cmdline("@", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = "path" },
+        { name = "cmdline" },
+    }),
+})
+

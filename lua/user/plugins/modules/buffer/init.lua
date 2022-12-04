@@ -1,18 +1,20 @@
 -- ------------------------- Buffer, Statusline ------------------------- --
 use({
-    "nvim-lualine/lualine.nvim",
+    "feline-nvim/feline.nvim",
     requires = {
-        {"kyazdani42/nvim-web-devicons"},
+        {"nvim-tree/nvim-web-devicons"},
         {
             "lewis6991/gitsigns.nvim",
             config = 'require(P_CONFIGS .. "buffer.gitsigns")'
         }
     },
-    config = 'require(P_CONFIGS .. "buffer.lualine")'
+    config = 'require(P_CONFIGS .. "buffer.feline")'
 })
 
 use({
-    "akinsho/bufferline.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
-    config = 'require(P_CONFIGS .. "buffer.bufferline")'
+  "ghillb/cybu.nvim",
+  branch = "main",
+  requires = { "nvim-tree/nvim-web-devicons", "nvim-lua/plenary.nvim" },
+  setup = 'require(P_MAPPINGS .. "buffer.cybu")',
+  config = 'require(P_CONFIGS .. "buffer.cybu")',
 })

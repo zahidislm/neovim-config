@@ -7,8 +7,6 @@ option.fileencoding = "utf-8"
 option.fileformat = "unix"
 option.fileformats = "unix"
 
--- Enable dark background colorschemes
-option.background = "dark"
 -- Enable 24bit colors in terminal
 option.termguicolors = true
 
@@ -55,9 +53,6 @@ option.foldlevel = 99
 option.foldlevelstart = 99
 option.foldcolumn = "0"
 option.foldenable = true
-option.foldmethod = "expr"
-option.foldexpr = "nvim_treesitter#foldexpr()"
-option.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend))]]
 option.foldnestmax = 3
 option.foldminlines = 1
 
@@ -87,11 +82,23 @@ option.spelllang = "en_us"
 -- Global statusline
 option.laststatus = 3
 
--- No redraw during macro, regex execution
-option.lazyredraw = true
-
 -- Enable mouse for normal and visual modes
 option.mouse = "nv"
+
+-- Clipboard
+option.clipboard = "unnamedplus"
+vim.g.clipboard = {
+    name = "win32yank-wsl",
+    copy = {
+        ["+"] = "win32yank.exe -i --crlf",
+        ["*"] = "win32yank.exe -i --crlf"
+    },
+    paste = {
+        ["+"] = "win32yank.exe -o --crlf",
+        ["*"] = "win32yank.exe -o --crlf"
+    },
+    cache_enable = 0,
+}
 
 -- Lines to scroll off screen
 option.scrolljump = 5
@@ -114,6 +121,9 @@ option.swapfile = false
 
 -- Real-time substitute
 option.inccommand = "split"
+
+-- Completion options
+option.completeopt = {'menu', 'menuone', 'noselect'}
 
 -- Cmdline height
 option.ch = 0
@@ -138,53 +148,44 @@ vim.g.python3_host_prog = vim.fn.split(vim.fn.trim(vim.fn.system("where python")
 
 -- Disable builtin vim plugins
 local disabled_built_ins = {
+    "2html_plugin",
+    "getscript",
+    "getscriptPlugin",
+    "gzip",
+    "logipat",
     "netrw",
     "netrwPlugin",
     "netrwSettings",
     "netrwFileHandlers",
-    "gzip",
-    "zip",
-    "zipPlugin",
+    "matchit",
     "tar",
     "tarPlugin",
-    "getscript",
-    "getscriptPlugin",
+    "rrhelper",
+    "spellfile_plugin",
     "vimball",
     "vimballPlugin",
-    "2html_plugin",
-    "logipat",
-    "rrhelper",
-    "matchit",
-    "man",
-    "shada",
-    "spellfile",
-    "remote",
+    "zip",
+    "zipPlugin",
+    "tutor",
+    "rplugin",
+    "syntax",
+    "synmenu",
+    "optwin",
+    "compiler",
+    "bugreport",
+    "ftplugin",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
     vim.g["loaded_" .. plugin] = 1
 end
 
--- Disable perl provider
-vim.g.loaded_perl_provider = 0
-
--- Disable ruby provider
-vim.g.loaded_ruby_provider = 0
-
--- Disable node provider
-vim.g.loaded_node_provider = 0
-
--- Clipboard
-option.clipboard = "unnamedplus"
-vim.g.clipboard = {
-    name = "win32yank-wsl",
-    copy = {
-        ["+"] = "win32yank.exe -i --crlf",
-        ["*"] = "win32yank.exe -i --crlf"
-    },
-    paste = {
-        ["+"] = "win32yank.exe -o --crlf",
-        ["*"] = "win32yank.exe -o --crlf"
-    },
-    cache_enable = 0,
+local default_providers = {
+  "node",
+  "perl",
+  "ruby",
 }
+
+for _, provider in ipairs(default_providers) do
+  vim.g["loaded_" .. provider .. "_provider"] = 0
+end

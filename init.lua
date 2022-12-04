@@ -1,8 +1,16 @@
--- Colorscheme
-SCHEME = os.getenv("SysTheme"):lower() or "dark"
-
 -- Treesitter parsers
-PARSERS = { "python", "lua", "c", "cpp", "rust", "julia", "yaml", "json", "toml" }
+PARSERS = {
+    "c", "cpp", "json", "lua", "python", "rust",
+    "toml", "yaml",
+}
+
+-- LSP
+SERVERS = {
+    "pyright", "lua-language-server", "clangd",
+    "typescript-language-server",
+}
+
+FORMATTERS = { "black", "rustfmt", "stylua", "clang-format" }
 
 -- Plugin Manager
 PLUGINS = { "packer" }
@@ -22,11 +30,13 @@ ICON_INFO = "I"
 ICON_HINT = "H"
 
 -- Improve startuptime using impatient
-require(P_CONFIGS .. "core.impatient")
+require(P_CONFIGS .. "startup.impatient")
 
 -- Configuration files
-require("user.autocmds")
-require("user.options")
-require("user.utils")
-require("user.keymaps")
+require("user.core.autocmds")
+require("user.core.options")
+require("user.core.utils")
+require("user.core.keymaps")
+require("user.plugins")
+require("user.core.keymaps")
 require("user.plugins")

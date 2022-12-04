@@ -1,26 +1,55 @@
 -- ----------------------------- Completion ----------------------------- --
 use({
+    "rafamadriz/friendly-snippets",
+    module = { "cmp", "cmp_nvim_lsp" },
+    event = "InsertEnter",
+})
+
+use({
     "hrsh7th/nvim-cmp",
-    wants = { "LuaSnip" },
-    requires = {
-        { "hrsh7th/cmp-nvim-lsp", requires = "neovim/nvim-lspconfig"},
-        { "hrsh7th/cmp-buffer" },
-        { "hrsh7th/cmp-omni" },
-        { "hrsh7th/cmp-path" },
-        { "hrsh7th/cmp-cmdline" },
-        {
-            "L3MON4D3/LuaSnip",
-            wants = "friendly-snippets",
-            requires = {
-                "rafamadriz/friendly-snippets",
-            },
-            config = 'require(P_CONFIGS .. "completion.luasnip")',
-        },
-        { "saadparwaiz1/cmp_luasnip" },
-        {
-            "windwp/nvim-autopairs",
-            config = 'require(P_CONFIGS .. "completion.autopair")',
-        }
-    },
-    config = 'require(P_CONFIGS .. "completion.cmp")',
+    after = "friendly-snippets",
+    config = 'require(P_CONFIGS .. "completion")',
+})
+
+use({
+    "L3MON4D3/LuaSnip",
+    wants = "friendly-snippets",
+    after = "nvim-cmp",
+    config = 'require("luasnip.loaders.from_vscode").lazy_load()',
+})
+
+use({
+    "saadparwaiz1/cmp_luasnip",
+    after = "LuaSnip",
+})
+
+use({
+    "hrsh7th/cmp-nvim-lua",
+    after = "cmp_luasnip",
+})
+
+use({
+    "hrsh7th/cmp-nvim-lsp",
+    after = "cmp-nvim-lua",
+})
+
+use({
+    "hrsh7th/cmp-buffer",
+    after = "cmp-nvim-lsp",
+})
+
+use({
+    "hrsh7th/cmp-path",
+    after = "cmp-buffer",
+})
+
+use({
+    "hrsh7th/cmp-cmdline",
+    after = "cmp-path",
+})
+
+use({
+    "windwp/nvim-autopairs",
+    after = "nvim-cmp",
+    config = 'require(P_CONFIGS .. "completion.autopair")',
 })

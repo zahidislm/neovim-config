@@ -8,8 +8,8 @@ use({
 })
 -- ------------------------------- Themes ------------------------------- --
 use({
-    "projekt0n/github-nvim-theme",
-    config = 'require(P_CONFIGS .. "core.theme")',
+    "EdenEast/nightfox.nvim",
+    config = 'require(P_CONFIGS .. "startup.theme")',
 })
 -- ------------------------------ Telescope ----------------------------- --
 use({
@@ -18,14 +18,9 @@ use({
     requires = {
         { "nvim-lua/plenary.nvim" },
         { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+        { "nvim-telescope/telescope-file-browser.nvim" },
+        { "stevearc/dressing.nvim" }
     },
-    config = 'require(P_CONFIGS .. "core.telescope")'
-})
--- ------------------------------ Nvim-Tree ----------------------------- --
-use({
-    "nvim-tree/nvim-tree.lua",
-    requires = {
-        "nvim-tree/nvim-web-devicons",
-    },
-    config = 'require(P_CONFIGS .. "core.nvim-tree")',
+    setup = 'require(P_MAPPINGS .. "startup.telescope")',
+    config = 'require(P_CONFIGS .. "startup.telescope")'
 })

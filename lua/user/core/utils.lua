@@ -106,3 +106,16 @@ function _G.exists_and_not_nil(t)
     end
     return false
 end
+
+-- keymap helper
+function _G.kmap(t)
+    setmetatable(t,{__index={mode="n", opts={ silent = true }}})
+
+    local mode, key, cmd, opts =
+        t[1] or t.mode,
+        t[2] or t.key,
+        t[3] or t.cmd,
+        t[4] or t.opts
+
+    vim.keymap.set(mode, key, cmd, opts)
+end
