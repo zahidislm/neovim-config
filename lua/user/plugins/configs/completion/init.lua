@@ -14,6 +14,10 @@ local function border(hl_name)
     }
 end
 
+local function replace_termcodes(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 cmp.setup({
     experimental = {
         ghost_text = true,
@@ -102,4 +106,3 @@ cmp.setup.cmdline("@", {
         { name = "cmdline" },
     }),
 })
-
