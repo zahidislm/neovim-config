@@ -34,8 +34,13 @@ use({
 })
 
 use({
+    "hrsh7th/cmp-nvim-lsp-signature-help",
+    after = "cmp-nvim-lsp"
+})
+
+use({
     "hrsh7th/cmp-buffer",
-    after = "cmp-nvim-lsp",
+    after = "cmp-nvim-lsp-signature-help",
 })
 
 use({

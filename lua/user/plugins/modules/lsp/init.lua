@@ -11,6 +11,7 @@ use({
 
 use({
     "neovim/nvim-lspconfig",
+    setup = 'require(P_MAPPINGS .. "lsp.lspconfig")',
     config = 'require(P_CONFIGS .. "lsp.lspconfig")',
 })
 -- --------------------------------- NULL-LS -------------------------------- --
@@ -30,18 +31,13 @@ use({
 })
 -- --------------------------------- LSP HINTS -------------------------------- --
 use({
-    "ray-x/lsp_signature.nvim",
-    config = 'require(P_CONFIGS .. "lsp.signature")',
-})
-
-use({
-    "glepnir/lspsaga.nvim",
-    setup = 'require(P_MAPPINGS .. "lsp.lspsaga")',
-    config = 'require("lspsaga").init_lsp_saga()',
+    "kosayoda/nvim-lightbulb",
+    config = 'require("nvim-lightbulb").setup({autocmd = {enabled = true}})'
 })
 -- --------------------------------- LSP LINT VIEWER -------------------------------- --
 use({
     "folke/trouble.nvim",
     requires = "nvim-tree/nvim-web-devicons",
-    setup = 'require(P_MAPPINGS .. "lsp.trouble")'
+    setup = 'kmap{key="gt", cmd="<cmd>TroubleToggle<CR>"}',
+    event = "BufReadPre",
 })
