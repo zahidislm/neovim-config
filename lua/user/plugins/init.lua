@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     command = [[source <afile> | PackerCompile]],
     desc = "Run ':PackerCompile' when this file changes.",
     group = group,
-    pattern = "*/plugins/init.lua",
+    pattern = "*/plugins/modules/**/init.lua",
 }) --}}}
 
 -- Install packer.nvim in "start" folder i.e., not lazy loaded {{{
