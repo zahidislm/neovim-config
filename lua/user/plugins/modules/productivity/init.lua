@@ -19,7 +19,6 @@ use({
 })
 -- --------------------------------- QOL -------------------------------- --
 use({
-    "Darazaki/indent-o-matic",
-    event = "BufReadPre",
-    config = 'require("indent-o-matic").setup {}'
+    "NMAC427/guess-indent.nvim",
+    config = 'require("guess-indent").setup {}'
 })
