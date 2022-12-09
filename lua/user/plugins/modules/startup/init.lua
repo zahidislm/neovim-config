@@ -13,6 +13,11 @@ use({
 })
 -- ------------------------------ Telescope ----------------------------- --
 use({
+    "mrjones2014/legendary.nvim",
+    config = 'require("legendary").setup({keymaps={{"<leader>m",":Legendary keymaps<CR>"}}})'
+})
+
+use({
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
     requires = {
@@ -20,7 +25,11 @@ use({
         { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
         { "nvim-telescope/telescope-file-browser.nvim" },
         { "desdic/telescope-rooter.nvim" },
-        { "stevearc/dressing.nvim" }
+        {
+            "stevearc/dressing.nvim",
+            event = "VimEnter",
+            config = 'require(P_CONFIGS .. "startup.dressing")'
+        }
     },
 
     setup = 'require(P_MAPPINGS .. "startup.telescope")',

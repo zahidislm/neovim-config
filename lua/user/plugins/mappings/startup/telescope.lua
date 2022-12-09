@@ -1,47 +1,38 @@
+local mapgrp = require("legendary").itemgroups
+
 -- ------------------------------ CORE Telescope ----------------------------- --
-
--- Open main Telescope window
-kmap { key = "to", cmd = "<cmd>Telescope<CR>" }
-
--- Opens file browser
-kmap { key = "fb", cmd = "<cmd>Telescope file_browser<CR>" }
-
--- Lists buffers
-kmap { key = "tt", cmd = "<cmd>Telescope buffers<CR>" }
-
--- Greps within current working dir
-kmap { key = "tg", cmd = "<cmd>Telescope live_grep<CR>" }
-
--- Gets git status for all files in scope
-kmap { key = "ts", cmd = "<cmd>Telescope git_status<CR>" }
-
--- ------------------------------ LSP & Telescope ----------------------------- --
-
--- Goto the definition of the word under the cursor
-kmap { key = "gd", cmd = "<cmd>Telescope lsp_definitions<CR>" }
-
--- Lists LSP references for word under the cursor
-kmap { key = "gr", cmd = "<cmd>Telescope lsp_references<CR>" }
-
--- Goto the implementation of the word under the cursor
-kmap { key = "gi", cmd = "<cmd>Telescope lsp_implementations<CR>" }
-
--- Lists LSP document symbols in the current buffering
-kmap { key = "gs", cmd = "<cmd>Telescope lsp_document_symbols<CR>" }
+local builtin_ts_mappings = {
+	{ "to", ":Telescope<CR>", description = "Opens Telescope picker window" },
+	{ "fb", ":Telescope file_browser<CR>", description = "Opens file browser" },
+	{ "tt", ":Telescope buffers<CR>", description = "Lists open buffers" },
+	{ "<S-Tab>", ":bp<CR>", description = "Quickly jumps to prev buffer." },
+	{ "tg", ":Telescope live_grep<CR>", description = "Greps within current working dir" },
+	{ "ts", ":Telescope git_status<CR>", description = "Gets git status for all files in scope" }
+}
 
 -- ------------------------------ Telescope Utilities ----------------------------- --
-kmap { key = "tf", cmd = function()
-    require(P_CONFIGS .. "startup.telescope.sources").git_or_find()
-end }
+local utility_ts_mappings = {
+	{
+		"tf", function() require(P_CONFIGS .. "startup.telescope.sources").git_or_find() end,
+		description = "Fall back to find_files if not a git directory"
+	},
+	{
+		"tn", function() require(P_CONFIGS .. "startup.telescope.sources").dir_nvim() end,
+		description = "List NVIM CONFIG directories"
+	},
+}
 
-kmap { key = "tn", cmd = function()
-    require(P_CONFIGS .. "startup.telescope.sources").dir_nvim()
-end }
-
-kmap { key = "<F5>", cmd = function()
-    require(P_CONFIGS .. "startup.telescope.sources").reload_modules()
-end }
-
-kmap { key = "<F6>", cmd = function()
-    require(P_CONFIGS .. "startup.telescope.sources").dir_plugins()
-end }
+mapgrp({
+	{
+		itemgroup = "TELESCOPE BUILTINS",
+		keymaps = builtin_ts_mappings,
+		description = "Mappings to activate Telescope pickers",
+		icon = ""
+	},
+	{
+		itemgroup = "TELESCOPE UTILITIES",
+		keymaps = utility_ts_mappings,
+		description = "Mappings to activate Telescope utility functions",
+		icon = ""
+	},
+})
