@@ -2,12 +2,13 @@
 use({
     "rafamadriz/friendly-snippets",
     module = { "cmp", "cmp_nvim_lsp" },
-    event = "InsertEnter",
+    event = { "InsertEnter" },
 })
 
 use({
     "hrsh7th/nvim-cmp",
     after = "friendly-snippets",
+    event = { "InsertEnter" },
     config = 'require(P_CONFIGS .. "completion")',
 })
 
@@ -56,5 +57,6 @@ use({
 use({
     "windwp/nvim-autopairs",
     after = "nvim-cmp",
+    event = "InsertEnter",
     config = 'require(P_CONFIGS .. "completion.autopair")',
 })

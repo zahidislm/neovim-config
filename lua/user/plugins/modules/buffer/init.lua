@@ -6,7 +6,7 @@ use({
         {
             "lewis6991/gitsigns.nvim",
             config = 'require(P_CONFIGS .. "buffer.gitsigns")',
-            event = "BufReadPre",
+            event = "BufRead",
         },
     },
     config = 'require(P_CONFIGS .. "buffer.feline")',
