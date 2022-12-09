@@ -33,8 +33,8 @@ ICON_HINT = "H"
 require(P_CONFIGS .. "startup.impatient")
 
 -- Configuration files
-require("user.core.autocmds")
-require("user.core.options")
 require("user.core.utils")
-require("user.core.keymaps")
+require("user.core.options")
 require("user.plugins")
+require("user.core.autocmds")
+require("user.core.keymaps")
