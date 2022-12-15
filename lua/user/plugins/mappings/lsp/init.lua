@@ -1,5 +1,6 @@
 local M = {}
 local mapgrp = require("legendary").itemgroups
+local toolbox = require("legendary.toolbox")
 
 M.init = function(b_opts)
 	-- Native LSP mappings
@@ -18,7 +19,13 @@ M.init = function(b_opts)
 		},
 		{
 			"K",
-			":lua vim.lsp.buf.hover()<CR>",
+			-- ":lua vim.lsp.buf.hover()<CR>",
+			function()
+				local winid = require("ufo").peekFoldedLinesUnderCursor()
+				if not winid then
+					vim.lsp.buf.hover()
+				end
+			end,
 			description = "Shows LSP signature on hover",
 			opts = b_opts,
 		},
@@ -65,6 +72,18 @@ M.init = function(b_opts)
 			"gs",
 			":Telescope lsp_document_symbols<CR>",
 			description = "Toggles LSP Symbol View in the current buffer",
+			opts = b_opts,
+		},
+		{
+			"gt",
+			":Telescope diagnostics<CR>",
+			description = "Lists LSP diagnostic & lint errors for workspace",
+			opts = b_opts,
+		},
+		{
+			"glt",
+			toolbox.lazy_required_fn("telescope.builtin", "diagnostics", { bufnr = 0 }),
+			description = "Lists LSP diagnostic & lint errors for workspace",
 			opts = b_opts,
 		},
 	}

@@ -31,12 +31,6 @@ use({
 -- --------------------------------- LSP HINTS -------------------------------- --
 use({
 	"kosayoda/nvim-lightbulb",
+	event = { "InsertEnter", "CursorMoved" },
 	config = 'require("nvim-lightbulb").setup({autocmd = {enabled = true}})',
-})
--- --------------------------------- LSP LINT VIEWER -------------------------------- --
-use({
-	"folke/trouble.nvim",
-	requires = "nvim-tree/nvim-web-devicons",
-	setup = 'require("legendary").keymap({"gt", ":TroubleToggle<CR>"})',
-	event = "BufReadPre",
 })
