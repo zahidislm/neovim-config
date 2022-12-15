@@ -8,7 +8,7 @@ use({
 use({
     "hrsh7th/nvim-cmp",
     after = "friendly-snippets",
-    event = { "InsertEnter" },
+    event = "InsertEnter *",
     config = 'require(P_CONFIGS .. "completion")',
 })
 
@@ -52,6 +52,11 @@ use({
 use({
     "hrsh7th/cmp-cmdline",
     after = "cmp-path",
+})
+
+use({
+    "onsails/lspkind.nvim",
+    after = "cmp-cmdline",
 })
 
 use({
