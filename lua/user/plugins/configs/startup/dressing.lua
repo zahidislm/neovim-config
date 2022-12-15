@@ -1,4 +1,4 @@
-require('dressing').setup({
+require("dressing").setup({
 	select = {
 		get_config = function(opts)
 			opts = opts or {}
@@ -11,8 +11,8 @@ require('dressing').setup({
 				},
 			}
 
-			if opts.kind == 'legendary.nvim' then
-				cfg.telescope.sorter = require('telescope.sorters').fuzzy_with_index_bias({})
+			if opts.kind == "legendary.nvim" then
+				cfg.telescope.sorter = require("telescope.sorters").fuzzy_with_index_bias({})
 			end
 
 			return cfg
