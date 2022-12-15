@@ -22,3 +22,9 @@ use({
     "NMAC427/guess-indent.nvim",
     config = 'require("guess-indent").setup {}'
 })
+
+use({
+    "max397574/better-escape.nvim",
+    config = 'require("better_escape").setup()',
+    event = "InsertEnter"
+})
