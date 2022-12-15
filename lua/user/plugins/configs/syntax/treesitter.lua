@@ -15,60 +15,20 @@ require("nvim-treesitter.configs").setup({
         sync_install = false,
     },
 
+    textsubjects = {
+        enable = true,
+        prev_selection = ',', -- (Optional) keymap to select the previous selection
+        keymaps = {
+            ['.'] = 'textsubjects-smart',
+            [';'] = 'textsubjects-container-outer',
+            ['i;'] = 'textsubjects-container-inner',
+        },
+    },
+
     rainbow = {
         enable = true,
         extended_mode = true, -- Highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
         max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
-    },
-
-    textobjects = {
-        select = {
-            enable = true,
-            -- Automatically jump forward to textobj, similar to targets.vim
-            lookahead = true,
-            keymaps = {
-                ["af"] = "@function.outer",
-                ["if"] = "@function.inner",
-                ["ac"] = "@class.outer",
-                ["ic"] = "@class.inner",
-            },
-            include_surrounding_whitespace = true,
-        },
-
-        swap = {
-            enable = true,
-            swap_next = {
-                ["<leader>a"] = "@parameter.inner",
-            },
-
-            swap_previous = {
-                ["<leader>A"] = "@parameter.inner",
-            },
-        },
-
-        move = {
-            enable = true,
-            set_jumps = true, -- whether to set jumps in the jumplist
-            goto_next_start = {
-                ["]m"] = "@function.outer",
-                ["]]"] = { query = "@class.outer", desc = "Next class start" },
-            },
-
-            goto_next_end = {
-                ["]M"] = "@function.outer",
-                ["]["] = "@class.outer",
-            },
-
-            goto_previous_start = {
-                ["[m"] = "@function.outer",
-                ["[["] = "@class.outer",
-            },
-
-            goto_previous_end = {
-                ["[M"] = "@function.outer",
-                ["[]"] = "@class.outer",
-            },
-        },
     },
 
     refactor = {
