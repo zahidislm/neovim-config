@@ -4,7 +4,7 @@ local kmaps = require("legendary").keymaps
 
 local core = {
 	{ ";", ":", description = "Faster command mode", mode = { "n", "v" } },
-	{ "x", "_x", description = "No yank w/ deletion", mode = { "n", "v" } },
+	{ "x", '"_x', description = "No yank w/ deletion", mode = { "n", "v" } },
 	{
 		"<leader>rp",
 		{
@@ -22,12 +22,6 @@ local core = {
 		"<leader>h",
 		"<cmd>nohl<CR>",
 		description = "Remove highlights",
-	},
-	{
-		"<C-a>",
-		"<Esc>g_a",
-		description = "Move to the end of line.",
-		mode = "i",
 	},
 	{
 		"<C-BS>",
@@ -92,11 +86,20 @@ local clipboard = {
 		description = "paste ignoring yank",
 		modes = { "n", "v" },
 	},
+	{
+		"cc",
+		{
+			n = '"_diwP',
+			v = '"_d"0P',
+		},
+		description = "Stamps a yanked text; replacing current text",
+	},
 }
 
 local window = {
 	{ "<leader>sv", "<C-w>v", description = "Split window vertically" },
 	{ "<leader>sh", "<C-w>s", description = "Split window horizontally" },
+	{ "<leader>sm", "<C-w>| <bar> <C-w>_", description = "Maximize current window" },
 	{ "<leader>se", "<C-w>=", description = "Make windows even spilts" },
 	{ "<leader>sx", ":close<CR>", description = "Close current window" },
 	{ "<C-h>", "<C-w>h", description = "Move to window on left" },
@@ -135,6 +138,18 @@ local movement = {
 			v = ":m '<-2<CR>gv-gv",
 		},
 		description = "Move line/block up",
+	},
+	{
+		"<C-a>",
+		"<Esc>_i",
+		description = "Move to the start of line.",
+		mode = "i",
+	},
+	{
+		"<C-e>",
+		"<Esc>g_a",
+		description = "Move to the end of line.",
+		mode = "i",
 	},
 }
 
