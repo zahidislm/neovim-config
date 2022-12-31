@@ -1,40 +1,35 @@
 -- Treesitter parsers
 PARSERS = {
-    "c", "cpp", "json", "lua", "python", "rust",
-    "toml", "yaml",
+	"bash",
+	"c",
+	"cpp",
+	"git_rebase",
+	"gitcommit",
+	"html",
+	"json",
+	"lua",
+	"python",
+	"regex",
+	"rust",
+	"toml",
+	"typescript",
+	"vim",
 }
 
 -- LSP
 SERVERS = {
-    "pyright", "lua-language-server", "clangd",
-    "typescript-language-server",
+	"pyright",
+	"rust_analyzer",
+	"sumneko_lua",
+	"taplo",
 }
 
-FORMATTERS = { "black", "rustfmt", "stylua", "clang-format" }
-
--- Plugin Manager
-PLUGINS = { "packer" }
+FORMATTERS = { "black", "rustfmt", "stylua", "taplo" }
 
 -- Paths
 HOME_PATH = vim.fn.expand("$HOME")
-CONFIG_PATH = vim.fn.stdpath("config")
-PACKER_PATH = vim.fn.stdpath("data") .. "\\site\\pack\\packer"
-P_CONFIGS = "user.plugins.configs."
-P_MAPPINGS = "user.plugins.mappings."
-P_MODULES = "user.plugins.modules."
-
--- Linting icons
-ICON_ERROR = "E"
-ICON_WARN = "W"
-ICON_INFO = "I"
-ICON_HINT = "H"
-
--- Improve startuptime using impatient
-require(P_CONFIGS .. "startup.impatient")
+DATA_PATH = vim.fn.stdpath("data")
 
 -- Configuration files
-require("user.core.utils")
-require("user.core.options")
-require("user.plugins")
-require("user.core.autocmds")
-require("user.core.keymaps")
+require("core")
+require("lazy-manager")
