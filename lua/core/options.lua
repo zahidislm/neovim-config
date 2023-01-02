@@ -95,19 +95,23 @@ option.laststatus = 3
 -- Enable mouse for normal and visual modes
 option.mouse = "nv"
 
--- Clipboard
-vim.g.clipboard = {
-	name = "win32yank-wsl",
-	copy = {
-		["+"] = "win32yank.exe -i --crlf",
-		["*"] = "win32yank.exe -i --crlf",
-	},
-	paste = {
-		["+"] = "win32yank.exe -o --lf",
-		["*"] = "win32yank.exe -o --lf",
-	},
-	cache_enable = 0,
-}
+-- Clipboard for WSL
+local is_wsl = (function()
+	local output = vim.fn.systemlist("uname -r")
+	return not not string.find(output[1] or "", "microsoft")
+end)()
+
+if is_wsl then
+	vim.g.clipboard = {
+		name = "wsl-clipboard",
+		copy = { ["+"] = { "clip.exe" }, ["*"] = { "clip.exe" } },
+		paste = {
+			["+"] = { "powershell.exe Get-Clipboard | tr -d '\r' | sed -z '$ s/\n$//'" },
+			["*"] = { "powershell.exe Get-Clipboard | tr -d '\r' | sed -z '$ s/\n$//'" },
+		},
+		cache_enabled = true,
+	}
+end
 
 -- Lines to scroll off screen
 option.scrolljump = 5
