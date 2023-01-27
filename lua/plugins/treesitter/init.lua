@@ -1,19 +1,30 @@
-local M = {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdate",
-	event = "BufReadPost",
+return {
+	{
+		"nvim-treesitter/nvim-treesitter",
+		name = "treesitter",
+		module = false,
+		build = ":TSUpdate",
+		event = "BufReadPost",
+		keys = {
+			{ "<C-Space>", desc = "Increment selection" },
+			{ "<BS>", desc = "Shrink selection", mode = "x" },
+		},
 
-	dependencies = {
-		"p00f/nvim-ts-rainbow",
-		"RRethy/nvim-treesitter-textsubjects",
-		"nvim-treesitter/nvim-treesitter-refactor",
-		"nvim-treesitter/nvim-treesitter-context",
+		opts = function()
+			return require("plugins.treesitter.config")
+		end,
+
+		config = function(_, opts)
+			return require("nvim-treesitter.configs").setup(opts)
+		end,
+	},
+
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		name = "treesitter-textobjects",
+		init = function()
+			-- no need to load the plugin, since we only need its queries
+			require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+		end,
 	},
 }
-
-function M.config()
-	local tsConfig = require("plugins.treesitter.config")
-	require("nvim-treesitter.configs").setup(tsConfig)
-end
-
-return M

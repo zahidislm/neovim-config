@@ -1,6 +1,5 @@
 return {
 	ensure_installed = PARSERS,
-	sync_install = false,
 
 	highlight = {
 		enable = true,
@@ -13,33 +12,15 @@ return {
 		end,
 	},
 
-	textsubjects = {
+	indent = { enable = true },
+
+	incremental_selection = {
 		enable = true,
-		prev_selection = ",", -- (Optional) keymap to select the previous selection
 		keymaps = {
-			["."] = "textsubjects-smart",
-			[";"] = "textsubjects-container-outer",
-			["i;"] = "textsubjects-container-inner",
-		},
-	},
-
-	rainbow = {
-		enable = true,
-		extended_mode = true, -- Highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-		max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
-	},
-
-	refactor = {
-		highlight_definitions = {
-			enable = true,
-			clear_on_cursor_move = true,
-		},
-
-		smart_rename = {
-			enable = true,
-			client = {
-				smart_rename = "<leader>sr",
-			},
+			init_selection = "<C-Space>",
+			node_incremental = "<C-Space>",
+			scope_incremental = "<NOP>",
+			node_decremental = "<BS>",
 		},
 	},
 }
