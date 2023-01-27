@@ -5,23 +5,23 @@ local keymaps = {
 		name = "+git",
 		["h"] = {
 			name = "+hunk",
-			s = { "<cmd>Gitsigns stage_hunk<cr>", "Stage the hunk at the cursor position" },
-			r = { "<cmd>Gitsigns reset_hunk<cr>", "Reset the lines of the hunk at the cursor position" },
-			S = { "<cmd>Gitsigns stage_buffer<cr>", "Stage all hunks in current buffer" },
-			u = { "<cmd>Gitsigns undo_stage_hunk<cr>", "Undo the last call of stage_hunk" },
-			R = { "<cmd>Gitsigns reset_buffer<cr>", "Reset the lines of all hunks in the buffer" },
-			p = { "<cmd>Gitsigns preview_hunk<cr>", "Preview the hunk at the cursor position inline in the buffer" },
+			s = { "<Cmd>Gitsigns stage_hunk<CR>", "Stage the hunk at the cursor position" },
+			r = { "<Cmd>Gitsigns reset_hunk<CR>", "Reset the lines of the hunk at the cursor position" },
+			S = { "<Cmd>Gitsigns stage_buffer<CR>", "Stage all hunks in current buffer" },
+			u = { "<Cmd>Gitsigns undo_stage_hunk<CR>", "Undo the last call of stage_hunk" },
+			R = { "<Cmd>Gitsigns reset_buffer<CR>", "Reset the lines of all hunks in the buffer" },
+			p = { "<Cmd>Gitsigns preview_hunk<CR>", "Preview the hunk at the cursor position inline in the buffer" },
 		},
 
 		["t"] = {
 			name = "+toggle",
 			b = {
-				"<cmd>Gitsigns toggle_current_line_blame<cr>",
+				"<Cmd>Gitsigns toggle_current_line_blame<CR>",
 				"Toggles a blame annotation at the end of the current line",
 			},
-			d = { "<cmd>Gitsigns toggle_deleted<cr>", "Toggle showing the old version of hunks inline in the buffer" },
+			d = { "<Cmd>Gitsigns toggle_deleted<CR>", "Toggle showing the old version of hunks inline in the buffer" },
 		},
-		d = { "<cmd>Gitsigns diffthis<cr>", "Perform a |vimdiff| on the given file" },
+		d = { "<Cmd>Gitsigns diffthis<CR>", "Perform a |vimdiff| on the given file" },
 	},
 }
 
