@@ -85,16 +85,8 @@ return {
 	},
 
 	extensions = {
-		fzf = {
-			fuzzy = true,
-			override_generic_sorter = true,
-			override_file_sorter = true,
-			case_mode = "ignore_case",
-		},
-
 		file_browser = {
 			grouped = true,
-			-- hijack_netrw = true,
 		},
 	},
 }

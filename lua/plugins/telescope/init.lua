@@ -1,34 +1,34 @@
-local M = {
+return {
 	"nvim-telescope/telescope.nvim",
 	branch = "0.1.x",
 	cmd = { "Telescope" },
-	keys = { "<leader>fb", "<leader>sb", "<leader>sg", "<leader>xd" },
+	keys = function()
+		return require("plugins.telescope.keys")
+	end,
+
 	dependencies = {
 		"nvim-lua/plenary.nvim",
+		"nvim-telescope/telescope-file-browser.nvim",
 		{
 			"nvim-telescope/telescope-fzf-native.nvim",
 			build = "make",
 		},
-		"nvim-telescope/telescope-file-browser.nvim",
 	},
+
+	opts = function()
+		return require("plugins.telescope.config")
+	end,
+
+	config = function(_, opts)
+		local telescope = require("telescope")
+		telescope.setup(opts)
+
+		-- Load extensions
+		local extensions = { "fzf", "file_browser" }
+		pcall(function()
+			for _, ext in ipairs(extensions) do
+				telescope.load_extension(ext)
+			end
+		end)
+	end,
 }
-
-function M.config()
-	-- Config telescope
-	local telescope = require("telescope")
-	local telescopeConfig = require("plugins.telescope.config")
-	telescope.setup(telescopeConfig)
-
-	-- Load extensions
-	local extensions = { "fzf", "file_browser" }
-	pcall(function()
-		for _, ext in ipairs(extensions) do
-			telescope.load_extension(ext)
-		end
-	end)
-
-	-- Setup telescope mappings
-	require("plugins.telescope.keys").setup()
-end
-
-return M
