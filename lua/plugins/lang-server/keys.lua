@@ -2,55 +2,69 @@ local wk = require("which-key")
 
 local M = {}
 
+function M.rename()
+	if pcall(require, "inc_rename") then
+		return ":IncRename " .. vim.fn.expand("<cword>")
+	else
+		vim.lsp.buf.rename()
+	end
+end
+
 function M.setup(client, buffer)
 	local cap = client.server_capabilities
 
 	local keymap = {
 		buffer = buffer,
-		["<leader>"] = {
+		["<Leader>"] = {
 			c = {
 				name = "+code",
 				a = {
 					{ vim.lsp.buf.code_action, "Code Action" },
-					{ "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action", mode = "v" },
+					{ "<Cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action", mode = "v" },
 				},
 				f = {
 					{
-						require("plugins.lang-server.formatting").format,
+						require("plugins.lang-server.utils.formatting").format,
 						"Format Document",
-						cond = cap.documentFormatting,
+						cond = cap.documentFormattingProvider,
 					},
 					{
-						require("plugins.lang-server.formatting").format,
+						require("plugins.lang-server.utils.formatting").format,
 						"Format Range",
-						cond = cap.documentRangeFormatting,
+						cond = cap.documentRangeFormattingProvider,
 						mode = "v",
 					},
+				},
+				r = {
+					M.rename,
+					"Rename object under cursor",
+					cond = cap.renameProvider,
+					expr = true,
 				},
 				d = { vim.diagnostic.open_float, "Line Diagnostics" },
 				l = {
 					name = "+lsp",
-					i = { "<cmd>LspInfo<cr>", "Lsp Info" },
-					a = { "<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>", "Add Folder" },
-					r = { "<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>", "Remove Folder" },
-					l = { "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>", "List Folders" },
+					i = { "<Cmd>LspInfo<CR>", "Lsp Info" },
+					a = { "<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add Folder" },
+					r = { "<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove Folder" },
+					l = { "<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List Folders" },
 				},
 			},
 			x = {
 				name = "+telescope-lsp",
-				d = { "<cmd>Telescope diagnostics<cr>", "Search Diagnostics" },
-				o = { "<cmd>Telescope lsp_document_symbols<cr>", "Toggles LSP Symbol View" },
+				d = { "<Cmd>Telescope diagnostics<CR>", "Search Diagnostics" },
+				o = { "<Cmd>Telescope lsp_document_symbols<CR>", "Toggles LSP Symbol View" },
 			},
 		},
 		g = {
 			name = "+goto",
-			d = { "<cmd>Telescope lsp_definitions<cr>", "Goto Definition" },
-			r = { "<cmd>Telescope lsp_references<cr>", "References" },
-			D = { "<cmd>Telescope lsp_declarations<cr>", "Goto Declaration" },
-			I = { "<cmd>Telescope lsp_implementations<cr>", "Goto Implementation" },
-			t = { "<cmd>Telescope lsp_type_definitions<cr>", "Goto Type Definition" },
+			d = { "<Cmd>Telescope lsp_definitions<CR>", "Goto Definition" },
+			r = { "<Cmd>Telescope lsp_references<CR>", "References" },
+			D = { "<Cmd>Telescope lsp_declarations<CR>", "Goto Declaration" },
+			I = { "<Cmd>Telescope lsp_implementations<CR>", "Goto Implementation" },
+			t = { "<Cmd>Telescope lsp_type_definitions<CR>", "Goto Type Definition" },
 		},
-		["<C-k>"] = { "<cmd>lua vim.lsp.buf.signature_help()<cr>", "Signature Help", mode = { "n", "i" } },
+		["<C-k>"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help", mode = { "n", "i" } },
 		["K"] = {
 			function()
 				local winid = require("ufo").peekFoldedLinesUnderCursor()
@@ -60,16 +74,16 @@ function M.setup(client, buffer)
 			end,
 			"LSP Hover",
 		},
-		["[d"] = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "Next Diagnostic" },
-		["]d"] = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Prev Diagnostic" },
-		["[e"] = { "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<cr>", "Next Error" },
-		["]e"] = { "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<cr>", "Prev Error" },
+		["[d"] = { "<Cmd>lua vim.diagnostic.goto_prev()<CR>", "Next Diagnostic" },
+		["]d"] = { "<Cmd>lua vim.diagnostic.goto_next()<CR>", "Prev Diagnostic" },
+		["[e"] = { "<Cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", "Next Error" },
+		["]e"] = { "<Cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", "Prev Error" },
 		["[w"] = {
-			"<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.WARNING})<cr>",
+			"<Cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.WARNING})<CR>",
 			"Next Warning",
 		},
 		["]w"] = {
-			"<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.WARNING})<cr>",
+			"<Cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.WARNING})<CR>",
 			"Prev Warning",
 		},
 	}

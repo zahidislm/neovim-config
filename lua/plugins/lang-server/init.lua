@@ -1,58 +1,49 @@
-local M = {
-	"neovim/nvim-lspconfig",
-	name = "lsp",
-	event = "BufReadPre",
-	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
-		{
+return {
+	{
+		"neovim/nvim-lspconfig",
+		name = "lsp",
+		ft = LSP_FILETYPES,
+		dependencies = { "mason-lsp" },
+		opts = function()
+			return require("plugins.lang-server.config.opts")
+		end,
+
+		config = function(_, opts)
+			require("plugins.lang-server.config").setup(opts)
+		end,
+	},
+
+	{
+		"williamboman/mason-lspconfig.nvim",
+		name = "mason-lsp",
+		dependencies = {
 			"williamboman/mason.nvim",
-			cmd = {
-				"Mason",
-				"MasonInstall",
-				"MasonUninstall",
-				"MasonLog",
-			},
-			dependencies = {
-				"williamboman/mason-lspconfig.nvim",
-				config = function()
-					require("mason-lspconfig").setup({
-						ensure_installed = SERVERS,
-						automatic_installation = true,
-					})
-				end,
-			},
-			config = function()
-				require("mason").setup()
-			end,
+			name = "mason",
+			config = true,
 		},
-		{
-			"kosayoda/nvim-lightbulb",
-			config = function()
-				require("nvim-lightbulb").setup({ autocmd = { enabled = true } })
-			end,
+
+		opts = {
+			ensure_installed = SERVERS,
+			automatic_installation = true,
 		},
 	},
+
+	{
+		"simrat39/rust-tools.nvim",
+		config = true,
+	},
+
+	{
+		"utilyre/barbecue.nvim",
+		event = "BufReadPost",
+		dependencies = { "SmiteshP/nvim-navic" },
+		opts = { show_modified = true },
+	},
+
+	{
+		"smjonas/inc-rename.nvim",
+		dependencies = { "lsp" },
+		cmd = "IncRename",
+		opts = { input_buffer_type = "dressing" },
+	},
 }
-
-function M.config()
-	-- Setup LSP UI
-	require("plugins.lang-server.config.diagnostics").setup()
-
-	-- Setup LSP ervers
-	local lspconfig = require("lspconfig")
-	local lsp_defaults = lspconfig.util.default_config
-
-	-- Code-folding w/ LSP
-	lsp_defaults.capabilities.textDocument.foldingRange = {
-		dynamicRegistration = false,
-		lineFoldingOnly = true,
-	}
-
-	-- Combine LSP capabilities w/ cmp_nvim_lsp capabilities
-	lsp_defaults.capabilities =
-		vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
-
-	require("plugins.lang-server.config.servers").setup()
-end
-
-return M
