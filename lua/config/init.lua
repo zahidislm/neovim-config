@@ -1,10 +1,9 @@
 -- Load core modules
-require("core.options")
+require("config.options")
 
 vim.api.nvim_create_autocmd("User", {
 	pattern = "VeryLazy",
 	callback = function()
-		require("core.commands")
-		require("core.keymaps")
+		require("config.commands")
 	end,
 })

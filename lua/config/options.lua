@@ -2,16 +2,7 @@ local option = vim.opt
 
 -- Leader Key
 vim.g.mapleader = " "
-
--- File encoding
-option.fileencoding = "utf-8"
-
--- LINUX fileformat
-option.fileformat = "unix"
-option.fileformats = "unix"
-
--- Enable 24bit colors in terminal
-option.termguicolors = true
+vim.g.maplocalleader = " "
 
 -- Auto-indent new lines
 option.autoindent = true
@@ -30,9 +21,6 @@ option.tabstop = 4
 -- Code wrapping
 option.linebreak = true
 option.breakindent = true
-
--- Auto CD to cwd
-option.autochdir = true
 
 -- Show cursorline
 option.cursorline = true
@@ -68,50 +56,22 @@ option.foldminlines = 1
 
 -- Display eol characters
 option.list = true
-
--- Display chars
-option.fillchars = {
-	eob = "–",
-	fold = " ",
-	foldsep = " ",
-	foldclose = "",
-	foldopen = "",
-	horiz = "━",
-	horizup = "┻",
-	horizdown = "┳",
-	vert = "┃",
-	vertleft = "┫",
-	vertright = "┣",
-	verthoriz = "╋",
-}
-option.listchars:append({ tab = " ", lead = "·", trail = "·", eol = "﬋" })
+option.listchars:append({ tab = " ", lead = "·", trail = "·" })
 
 -- Use en_us to spellcheck
-option.spelllang = "en_us"
+option.spelllang = "en"
 
 -- Global statusline
 option.laststatus = 3
 
+-- Command-line completion mode
+option.wildmode = "longest:full,full"
+
 -- Enable mouse for normal and visual modes
 option.mouse = "nv"
 
--- Clipboard for WSL
-local is_wsl = (function()
-	local output = vim.fn.systemlist("uname -r")
-	return not not string.find(output[1] or "", "microsoft")
-end)()
-
-if is_wsl then
-	vim.g.clipboard = {
-		name = "wsl-clipboard",
-		copy = { ["+"] = { "clip.exe" }, ["*"] = { "clip.exe" } },
-		paste = {
-			["+"] = { "powershell.exe Get-Clipboard | tr -d '\r' | sed -z '$ s/\n$//'" },
-			["*"] = { "powershell.exe Get-Clipboard | tr -d '\r' | sed -z '$ s/\n$//'" },
-		},
-		cache_enabled = true,
-	}
-end
+-- sync with system clipboard register
+option.clipboard = "unnamedplus"
 
 -- Lines to scroll off screen
 option.scrolljump = 5
@@ -149,15 +109,12 @@ option.redrawtime = 10000
 option.synmaxcol = 180
 
 -- Undo dir (persistent undo's)
-local undo_dir = HOME_PATH .. [[/.cache/nvim/undo]]
+local undo_dir = vim.fn.expand("$HOME") .. [[/.cache/nvim/undo]]
 if not vim.fn.isdirectory(undo_dir) then
 	vim.fn.mkdir(undo_dir)
 end
 option.undodir = undo_dir
 option.undofile = true
-
--- Python3 path
-vim.g.python3_host_prog = vim.fn.split(vim.fn.trim(vim.fn.system("where python")), "\n")[1]
 
 -- Disable builtin vim plugins
 local disabled_built_ins = {
@@ -191,14 +148,4 @@ local disabled_built_ins = {
 
 for _, plugin in pairs(disabled_built_ins) do
 	vim.g["loaded_" .. plugin] = 1
-end
-
-local default_providers = {
-	"node",
-	"perl",
-	"ruby",
-}
-
-for _, provider in ipairs(default_providers) do
-	vim.g["loaded_" .. provider .. "_provider"] = 1
 end

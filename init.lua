@@ -40,5 +40,5 @@ FORMATTERS = {
 }
 
 -- Configuration files
-require("core")
+require("config")
 require("lazy-manager")
