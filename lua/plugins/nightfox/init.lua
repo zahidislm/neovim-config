@@ -1,23 +1,31 @@
-local M = {
+return {
 	"EdenEast/nightfox.nvim",
 	lazy = false,
-}
-
--- NightFox Highlight Config
-function M.config()
-	local groups = require("plugins.nightfox.colors").highlights
-
-	require("nightfox").setup({
+	priority = 1000,
+	opts = {
 		options = {
 			dim_inactive = true,
-			transparent = false,
+			module_default = false,
+			inverse = { match_paren = true },
+
+			modules = {
+				cmp = true,
+				diagnostic = { enable = true, background = true },
+				gitsigns = true,
+				mini = true,
+				native_lsp = { enable = true, background = true },
+				treesitter = true,
+				whichkey = true,
+			},
 		},
 
-		groups = { all = groups },
-	})
+		groups = { all = require("plugins.nightfox.spec").highlights },
+	},
 
-	-- Load CarbonFox Palette
-	vim.cmd("colorscheme carbonfox")
-end
+	config = function(_, opts)
+		local scheme = "carbon"
 
-return M
+		require("nightfox").setup(opts)
+		vim.cmd("colorscheme " .. scheme .. "fox")
+	end,
+}
