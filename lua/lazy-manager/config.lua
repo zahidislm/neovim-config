@@ -1,5 +1,5 @@
 return {
-	defaults = { lazy = true },
-	install = { colorscheme = { "nightfox" } },
+	defaults = { lazy = true, version = "*" },
+	install = { colorscheme = { "carbonfox" } },
 	performance = { cache = { enabled = true } },
 }
