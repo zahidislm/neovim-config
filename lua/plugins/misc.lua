@@ -1,42 +1,45 @@
-local M = {
-	"folke/which-key.nvim",
+return {
 	{
 		"max397574/better-escape.nvim",
 		event = "InsertEnter",
-		config = function()
-			require("better_escape").setup()
-		end,
+		config = true,
 	},
+
 	{
-		"EtiamNullam/deferred-clipboard.nvim",
+		"zahidislm/chadline.nvim",
 		event = "VeryLazy",
-		config = function()
-			require("deferred-clipboard").setup()
-		end,
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = { separator_style = "default" },
 	},
-	{
-		"zahidislm/statusline.nvim",
-		event = "VeryLazy",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-		},
-		config = function()
-			require("statusline_nvim").setup()
-		end,
-	},
+
 	{
 		"ggandor/leap.nvim",
-		keys = { "s", "S" },
+		keys = {
+			{ "s", mode = { "n", "x", "o" } },
+			{ "S", mode = { "n", "x", "o" } },
+			{ "x", mode = { "x", "o" } },
+			{ "X", mode = { "x", "o" } },
+		},
+
 		dependencies = {
 			"ggandor/leap-spooky.nvim",
-			config = function()
-				require("leap-spooky").setup()
-			end,
+			config = true,
 		},
+
 		config = function()
 			require("leap").add_default_mappings()
 		end,
 	},
-}
 
-return M
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		event = "BufReadPost",
+		opts = {
+			char = "│",
+			buftype_exlude = { "terminal", "nofile" },
+			filetype_exclude = { "help", "checkhealth", "Mason", "lazy" },
+			show_trailing_blankline_indent = false,
+			show_current_context = false,
+		},
+	},
+}
