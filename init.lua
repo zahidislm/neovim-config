@@ -17,18 +17,27 @@ PARSERS = {
 }
 
 -- LSP
+LSP_FILETYPES = {
+	"lua",
+	"python",
+	"rust",
+	"toml",
+}
+
 SERVERS = {
-	"pyright",
+	"jedi_language_server",
+	"ruff_lsp",
 	"rust_analyzer",
 	"sumneko_lua",
 	"taplo",
 }
 
-FORMATTERS = { "black", "rustfmt", "stylua", "taplo" }
-
--- Paths
-HOME_PATH = vim.fn.expand("$HOME")
-DATA_PATH = vim.fn.stdpath("data")
+FORMATTERS = {
+	"black",
+	"rustfmt",
+	"stylua",
+	"taplo",
+}
 
 -- Configuration files
 require("core")
