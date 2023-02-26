@@ -1,6 +1,6 @@
 local wk = require("which-key")
 
-local keymaps = {
+local leader_keymaps = {
 	["g"] = {
 		name = "+git",
 		["h"] = {
@@ -25,10 +25,16 @@ local keymaps = {
 	},
 }
 
+local bracket_keymaps = {
+	["["] = { h = { "<Cmd>Gitsigns prev_hunk<CR>", "Hunk backward" } },
+	["]"] = { h = { "<Cmd>Gitsigns next_hunk<CR>", "Hunk forward" } },
+}
+
 local M = {}
 
 function M.setup(bufopts)
-	wk.register(keymaps, bufopts)
+	wk.register(leader_keymaps, bufopts)
+	wk.register(bracket_keymaps, { buffer = bufopts.buffer })
 end
 
 return M
