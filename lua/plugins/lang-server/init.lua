@@ -3,6 +3,7 @@ return {
 		"neovim/nvim-lspconfig",
 		name = "lsp",
 		ft = LSP_FILETYPES,
+		version = false,
 		dependencies = { "mason-lsp" },
 		opts = function()
 			return require("plugins.lang-server.config.opts")

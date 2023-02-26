@@ -7,7 +7,7 @@ return {
 	},
 
 	servers = {
-		sumneko_lua = {
+		lua_ls = {
 			settings = {
 				Lua = {
 					workspace = { checkThirdParty = false },
@@ -22,18 +22,21 @@ return {
 			},
 		},
 
-		["jedi_language_server"] = {
+		jedi_language_server = {
 			init_options = {
 				completion = { resolveEagerly = true },
 				diagnostics = { enable = false },
 			},
 		},
 
-		["rust_analyzer"] = {
+		rust_analyzer = {
 			settings = {
 				["rust-analyzer"] = {
-					cargo = { features = "all" },
-					checkOnSave = { command = "clippy" },
+					cargo = { allFeatures = true },
+					checkOnSave = {
+						command = "clippy",
+						extraArgs = { "--no-deps" },
+					},
 				},
 			},
 		},

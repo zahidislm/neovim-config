@@ -28,7 +28,7 @@ SERVERS = {
 	"jedi_language_server",
 	"ruff_lsp",
 	"rust_analyzer",
-	"sumneko_lua",
+	"lua_ls",
 	"taplo",
 }
 
