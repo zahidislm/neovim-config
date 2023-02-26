@@ -9,7 +9,13 @@ return {
 		"zahidislm/chadline.nvim",
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = { separator_style = "default" },
+		opts = {
+			overriden_modules = {
+				fileInfo = function()
+					return ""
+				end,
+			},
+		},
 	},
 
 	{
@@ -37,7 +43,7 @@ return {
 		opts = {
 			char = "│",
 			buftype_exlude = { "terminal", "nofile" },
-			filetype_exclude = { "help", "checkhealth", "Mason", "lazy" },
+			filetype_exclude = { "help", "checkhealth", "mason", "lazy" },
 			show_trailing_blankline_indent = false,
 			show_current_context = false,
 		},
