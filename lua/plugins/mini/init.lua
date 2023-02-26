@@ -1,6 +1,7 @@
 local modules = {
 	"ai",
 	"basics",
+	"bracketed",
 	"comment",
 	"cursorword",
 	"indentscope",

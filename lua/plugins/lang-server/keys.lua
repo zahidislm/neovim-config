@@ -74,18 +74,6 @@ function M.setup(client, buffer)
 			end,
 			"LSP Hover",
 		},
-		["[d"] = { "<Cmd>lua vim.diagnostic.goto_prev()<CR>", "Next Diagnostic" },
-		["]d"] = { "<Cmd>lua vim.diagnostic.goto_next()<CR>", "Prev Diagnostic" },
-		["[e"] = { "<Cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", "Next Error" },
-		["]e"] = { "<Cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", "Prev Error" },
-		["[w"] = {
-			"<Cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.WARNING})<CR>",
-			"Next Warning",
-		},
-		["]w"] = {
-			"<Cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.WARNING})<CR>",
-			"Prev Warning",
-		},
 	}
 
 	wk.register(keymap)
