@@ -18,7 +18,6 @@ return {
 	},
 
 	indentscope = {
-		version = false,
 		event = "BufReadPre",
 		opts = {
 			symbol = "│",
@@ -26,7 +25,6 @@ return {
 		},
 	},
 
-	move = { version = false },
 	pairs = { event = "InsertEnter" },
 	sessions = { event = "VeryLazy" },
 	surround = {
