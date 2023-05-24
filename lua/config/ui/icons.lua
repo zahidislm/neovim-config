@@ -57,3 +57,5 @@ _G.ICONS = {
 		next_line = "󰌑 ",
 	},
 }
+
+vim.opt.listchars:append(ICONS.listchars)
