@@ -9,7 +9,7 @@ return {
 				local cfg = {
 					telescope = {
 						layout_config = {
-							width = 80,
+							width = 95,
 							height = 15,
 						},
 					},
@@ -21,14 +21,6 @@ return {
 				end
 
 				return cfg
-			end,
-		},
-
-		input = {
-			override = function(conf)
-				conf.col = 0
-				conf.row = -2
-				return conf
 			end,
 		},
 	},
