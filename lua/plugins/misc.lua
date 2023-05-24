@@ -1,11 +1,5 @@
 return {
 	{
-		"max397574/better-escape.nvim",
-		event = "InsertEnter",
-		config = true,
-	},
-
-	{
 		"zahidislm/chadline.nvim",
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
