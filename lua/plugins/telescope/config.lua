@@ -18,20 +18,29 @@ return {
 			height = 0.80,
 			preview_cutoff = 120,
 		},
+
+		-- Global options
+		wrap_results = true,
+		results_title = false,
+
 		-- Border & Icons
 		winblend = 0,
 		border = {},
 		borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-		color_devicons = true,
 		entry_prefix = "  ",
-		prompt_prefix = "  ",
-		selection_caret = "  ",
+		prompt_prefix = ICONS.misc.prompt,
+		selection_caret = ICONS.misc.select,
 		-- Strategies
 		sorting_strategy = "ascending",
 		set_env = { COLORTERM = "truecolor" },
 		file_ignore_patterns = utils.ignore_patterns,
-		shorten_path = true,
 		preview = { treesitter = false },
+		path_display = {
+			shorten = {
+				len = 1,
+				exclude = { 1, -1, -2 },
+			},
+		},
 
 		mappings = {
 			i = {
@@ -40,6 +49,9 @@ return {
 				["<C-j>"] = actions.move_selection_next,
 				["<C-k>"] = actions.move_selection_previous,
 				["<Esc>"] = actions.close,
+				["<C-s>"] = require("telescope.actions.layout").toggle_preview,
+				["<M-x>"] = actions.select_horizontal,
+				["<M-v>"] = actions.select_vertical,
 			},
 
 			n = {
@@ -47,12 +59,14 @@ return {
 				["<C-p>"] = false,
 				["<C-j>"] = actions.move_selection_next,
 				["<C-k>"] = actions.move_selection_previous,
+				["<C-s>"] = require("telescope.actions.layout").toggle_preview,
 			},
 		},
 	},
 
 	pickers = {
 		find_files = utils.dropdown(),
+		live_grep = utils.dropdown(),
 		oldfiles = utils.dropdown({ prompt_title = "Recent Files" }),
 		git_files = utils.dropdown(),
 		buffers = {
@@ -73,11 +87,16 @@ return {
 		},
 
 		lsp_references = {
-			theme = "cursor",
+			theme = "ivy",
+			preview_title = false,
+			layout_config = {
+				height = 0.45,
+			},
 		},
 
 		diagnostics = {
 			theme = "ivy",
+			preview_title = false,
 			layout_config = {
 				height = 0.45,
 			},
@@ -87,6 +106,9 @@ return {
 	extensions = {
 		file_browser = {
 			grouped = true,
+			wrap_results = false,
+			prompt_title = false,
+			preview_title = false,
 		},
 	},
 }
