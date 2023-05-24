@@ -36,8 +36,8 @@ option.scrolljump = 5
 -- Lead scroll by 8 lines
 option.scrolloff = 8
 
--- No completion messages in secondary mode bar
-option.shortmess = "ilmxoOsTIcF"
+-- Remove intro screen
+option.shortmess:append({ I = true })
 
 -- Highlight matching
 option.showmatch = true
