@@ -49,13 +49,6 @@ local function setup_lsp_servers(opts)
 
 			require("lspconfig")[server].setup(server_opts)
 		end,
-
-		["rust_analyzer"] = function()
-			require("rust-tools").setup({
-				tools = { hover_actions = { auto_focus = true } },
-				server = servers["rust_analyzer"] or {},
-			})
-		end,
 	})
 end
 

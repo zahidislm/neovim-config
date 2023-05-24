@@ -2,13 +2,12 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		name = "lsp",
-		ft = LSP_FILETYPES,
+		event = "BufReadPre",
 		version = false,
 		dependencies = { "mason-lsp" },
 		opts = function()
 			return require("plugins.lang-server.config.opts")
 		end,
-
 		config = function(_, opts)
 			require("plugins.lang-server.config").setup(opts)
 		end,
@@ -22,16 +21,10 @@ return {
 			name = "mason",
 			config = true,
 		},
-
 		opts = {
 			ensure_installed = SERVERS,
 			automatic_installation = true,
 		},
-	},
-
-	{
-		"simrat39/rust-tools.nvim",
-		config = true,
 	},
 
 	{
