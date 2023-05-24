@@ -1,5 +1,10 @@
 -- UI ICONS
 require("config.ui.icons")
 
--- custom status column w/ gitsigns & LSP diagnostics
-require("config.ui.statuscolumn")
+vim.api.nvim_create_autocmd("User", {
+	pattern = "VeryLazy",
+	callback = function()
+		-- custom status column w/ gitsigns & LSP diagnostics
+		require("config.ui.statuscolumn")
+	end,
+})
