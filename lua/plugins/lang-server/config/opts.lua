@@ -11,21 +11,22 @@ return {
 			settings = {
 				Lua = {
 					workspace = { checkThirdParty = false },
-
 					completion = {
 						workspaceWord = true,
 						callSnippet = "Both",
 					},
-
 					diagnostics = { globals = { "vim" } },
+					format = { enable = false },
 				},
 			},
 		},
 
 		jedi_language_server = {
 			init_options = {
-				completion = { resolveEagerly = true },
 				diagnostics = { enable = false },
+			},
+			jediSettings = {
+				autoImportModules = { "numpy", "torch" },
 			},
 		},
 
@@ -38,6 +39,12 @@ return {
 						extraArgs = { "--no-deps" },
 					},
 				},
+			},
+		},
+
+		tsserver = {
+			settings = {
+				completions = { completeFunctionCalls = true },
 			},
 		},
 	},
