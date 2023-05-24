@@ -28,13 +28,6 @@ return {
 	},
 
 	{
-		"utilyre/barbecue.nvim",
-		event = "BufReadPost",
-		dependencies = { "SmiteshP/nvim-navic" },
-		opts = { show_modified = true },
-	},
-
-	{
 		"smjonas/inc-rename.nvim",
 		dependencies = { "lsp" },
 		cmd = "IncRename",
