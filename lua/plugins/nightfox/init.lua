@@ -2,6 +2,7 @@ return {
 	"EdenEast/nightfox.nvim",
 	lazy = false,
 	priority = 1000,
+	name = "default-colorscheme",
 	opts = {
 		options = {
 			dim_inactive = true,
@@ -23,9 +24,6 @@ return {
 	},
 
 	config = function(_, opts)
-		local scheme = "carbon"
-
 		require("nightfox").setup(opts)
-		vim.cmd("colorscheme " .. scheme .. "fox")
 	end,
 }

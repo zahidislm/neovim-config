@@ -42,4 +42,22 @@ return {
 			show_current_context = false,
 		},
 	},
+
+	{
+		"JManch/sunset.nvim",
+		dependencies = { "default-colorscheme" },
+		lazy = false,
+		priority = 1000,
+		opts = {
+			latitude = 43.7001,
+			longitude = -79.4163,
+			day_callback = function()
+				vim.cmd("colorscheme dayfox")
+			end,
+
+			night_callback = function()
+				vim.cmd("colorscheme carbonfox")
+			end,
+		},
+	},
 }
