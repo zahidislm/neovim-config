@@ -21,9 +21,6 @@ option.foldenable = true
 option.foldnestmax = 3
 option.foldminlines = 1
 
--- Display eol characters
-option.listchars:append({ tab = " ", lead = "·", trail = "·" })
-
 -- pop-up menu transparency
 option.pumblend = 0
 
