@@ -56,6 +56,9 @@ option.cmdheight = 0
 option.lazyredraw = true
 option.redrawtime = 5000
 
+-- Autocmd update delay
+option.updatetime = 200
+
 -- Max columns for syntax search
 option.synmaxcol = 200
 
