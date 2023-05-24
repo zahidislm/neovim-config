@@ -1,5 +1,4 @@
 local lspconfig = require("lspconfig")
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 local M = {}
 
 local function setup_lsp_diagnostics(opts)
@@ -11,7 +10,7 @@ local function setup_lsp_diagnostics(opts)
 		return true
 	end
 
-	for type, icon in pairs(signs) do
+	for type, icon in pairs(ICONS.diagnostics) do
 		local hl = "DiagnosticSign" .. type
 		vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 	end
