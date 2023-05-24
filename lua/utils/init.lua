@@ -64,15 +64,24 @@ function M.telescope(builtin, opts)
 	return function()
 		builtin = params.builtin
 		opts = params.opts
-		opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
-		if builtin == "files" then
-			if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. "/.git") then
-				opts.show_untracked = true
-				builtin = "git_files"
-			else
-				builtin = "find_files"
+		local cwd = M.get_root()
+
+		if builtin == "find_files" then
+			local function is_git_repo()
+				return vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
+			end
+
+			local function get_git_root()
+				local dot_git_path = vim.fn.finddir(".git", ".;")
+				return vim.fn.fnamemodify(dot_git_path, ":h")
+			end
+
+			if is_git_repo() then
+				cwd = get_git_root()
 			end
 		end
+
+		opts = vim.tbl_deep_extend("force", { cwd = cwd }, opts or {})
 		require("telescope.builtin")[builtin](opts)
 	end
 end
