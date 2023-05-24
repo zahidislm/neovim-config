@@ -2,7 +2,6 @@ local wk = require("which-key")
 
 local leader_keymaps = {
 	["g"] = {
-		name = "+git",
 		["h"] = {
 			name = "+hunk",
 			s = { "<Cmd>Gitsigns stage_hunk<CR>", "Stage the hunk at the cursor position" },
