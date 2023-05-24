@@ -4,7 +4,6 @@ return {
 		name = "treesitter",
 		module = false,
 		build = ":TSUpdate",
-		event = "BufReadPost",
 		keys = {
 			{ "<C-Space>", desc = "Increment selection" },
 			{ "<BS>", desc = "Shrink selection", mode = "x" },
