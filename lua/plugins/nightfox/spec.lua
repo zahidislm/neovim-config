@@ -11,6 +11,7 @@ M.highlights = {
 
 	-- core
 	NormalFloat = { fg = "fg1", bg = "bg1" },
+	StatusColumnBorder = { fg = "bg1" },
 
 	-- statusline
 	St_gitIcons = { fg = "syntax.string", bg = status.bg, style = "bold" },

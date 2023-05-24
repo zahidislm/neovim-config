@@ -63,8 +63,7 @@ end
 
 local highlights_cache = {}
 
-local function border_highlight() -- TODO: make invisible if no changes
-	local sign = git_sign()
+local function border_highlight(sign)
 	if sign then
 		if not highlights_cache[sign.name] then
 			highlights_cache[sign.name] = vim.fn.sign_getdefined(sign.name)[1].texthl
@@ -77,14 +76,15 @@ local function border_highlight() -- TODO: make invisible if no changes
 end
 
 local border = function()
-	return { "%#", border_highlight(), "#", ICONS.misc.v_border, "%*" }
+	local sign = git_sign()
+	return { sign and ("%#" .. border_highlight(sign) .. "#" .. ICONS.misc.v_border .. "%*") }
 end
 
 local diagnostic = function() -- TODO: rank by severity
 	local sign
 
 	-- debug
-	SIGNS = get_signs()
+	-- SIGNS = get_signs()
 
 	for _, s in ipairs(get_signs()) do
 		if not s.name:find("GitSign") then
