@@ -7,5 +7,7 @@ vim.api.nvim_create_autocmd("User", {
 	callback = function()
 		require("config.autocmds")
 		require("config.keymaps")
+		require("config.ui")
+		vim.opt.listchars:append(ICONS.listchars)
 	end,
 })
