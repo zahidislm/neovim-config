@@ -14,4 +14,8 @@ return {
 	-- paste w/ re-indent
 	{ "=p", "<Plug>(YankyPutAfterFilter)" },
 	{ "=P", "<Plug>(YankyPutBeforeFilter)" },
+
+	-- Yank Ring
+	{ "<C-n>", "<Plug>(YankyCycleForward)", desc = "Cycle clipboard foward" },
+	{ "<C-p>", "<Plug>(YankyCycleBackward)", desc = "Cycle clipboard backward" },
 }
