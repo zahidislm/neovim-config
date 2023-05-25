@@ -19,13 +19,6 @@ local function fold_opened(line)
 	return vim.fn.foldclosed(line or vim.v.lnum) == -1
 end
 
-local function git_sign() -- TODO: collapse into get_signs()
-	return vim.fn.sign_getplaced(vim.api.nvim_get_current_buf(), {
-		group = "gitsigns_vimfn_signs_",
-		lnum = vim.v.lnum,
-	})[1].signs[1]
-end
-
 local function get_signs()
 	local buf = vim.api.nvim_win_get_buf(vim.g.statusline_winid or 0)
 	return vim.tbl_map(function(sign)
@@ -76,23 +69,27 @@ local function border_highlight(sign)
 end
 
 local border = function()
-	local sign = git_sign()
-	return { sign and ("%#" .. border_highlight(sign) .. "#" .. ICONS.misc.v_border .. "%*") }
+	local signs = get_signs()
+	local git_sign
+	if next(signs) then
+		local last_sign = signs[#signs]
+		if last_sign.name:find("GitSign") then
+			git_sign = last_sign
+		end
+	end
+
+	return { git_sign and ("%#" .. border_highlight(git_sign) .. "#" .. ICONS.misc.v_border .. "%*") }
 end
 
 local diagnostic = function() -- TODO: rank by severity
 	local sign
-
-	-- debug
-	-- SIGNS = get_signs()
-
 	for _, s in ipairs(get_signs()) do
 		if not s.name:find("GitSign") then
 			sign = s
 		end
 	end
 
-	return { sign and (" %#" .. sign.texthl .. "#" .. sign.text .. "%*") }
+	return { sign and ("%#" .. sign.texthl .. "#" .. sign.text .. "%*") }
 end
 
 local number = function()
