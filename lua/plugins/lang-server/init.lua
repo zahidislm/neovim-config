@@ -2,15 +2,15 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		name = "lsp",
-		event = "BufReadPre",
-		version = false,
-		dependencies = { "mason-lsp" },
+		dependencies = { "UI", "mason-lsp" },
 		opts = function()
 			return require("plugins.lang-server.config.opts")
 		end,
 		config = function(_, opts)
 			require("plugins.lang-server.config").setup(opts)
 		end,
+		version = false,
+		event = "BufReadPre",
 	},
 
 	{
@@ -30,7 +30,14 @@ return {
 	{
 		"smjonas/inc-rename.nvim",
 		dependencies = { "lsp" },
+		config = true,
 		cmd = "IncRename",
-		opts = { input_buffer_type = "dressing" },
+	},
+
+	{
+		"dnlhc/glance.nvim",
+		dependencies = { "lsp" },
+		opts = { height = 15 },
+		cmd = "Glance",
 	},
 }
