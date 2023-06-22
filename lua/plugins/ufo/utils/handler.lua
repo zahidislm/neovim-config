@@ -1,18 +1,20 @@
+local suffix_icon = "⇞ "
+
 return function(virtText, lnum, endLnum, width, truncate)
 	local newVirtText = {}
-	local suffix = (" " .. ICONS.misc.condense .. "%d "):format(endLnum - lnum)
+	local suffix = (" " .. suffix_icon .. "%d "):format(endLnum - lnum)
 	local sufWidth = vim.fn.strdisplaywidth(suffix)
 	local targetWidth = width - sufWidth
 	local curWidth = 0
-	for _, chunk in ipairs(virtText) do
-		local chunkText = chunk[1]
+	for chunk = 1, #virtText do
+		local chunkText = virtText[chunk][1]
 		local chunkWidth = vim.fn.strdisplaywidth(chunkText)
 		if targetWidth > curWidth + chunkWidth then
-			table.insert(newVirtText, chunk)
+			newVirtText[#newVirtText + 1] = virtText[chunk]
 		else
 			chunkText = truncate(chunkText, targetWidth - curWidth)
-			local hlGroup = chunk[2]
-			table.insert(newVirtText, { chunkText, hlGroup })
+			local hlGroup = virtText[chunk][2]
+			newVirtText[#newVirtText + 1] = { chunkText, hlGroup }
 			chunkWidth = vim.fn.strdisplaywidth(chunkText)
 			-- str width returned from truncate() may less than 2nd argument, need padding
 			if curWidth + chunkWidth < targetWidth then
@@ -22,6 +24,6 @@ return function(virtText, lnum, endLnum, width, truncate)
 		end
 		curWidth = curWidth + chunkWidth
 	end
-	table.insert(newVirtText, { suffix, "MoreMsg" })
+	newVirtText[#newVirtText + 1] = { suffix, "MoreMsg" }
 	return newVirtText
 end

@@ -33,8 +33,8 @@ function M.get_root()
 					end, workspace)
 				or client.config.root_dir and { client.config.root_dir }
 				or {}
-			for _, p in ipairs(paths) do
-				local r = vim.loop.fs_realpath(p)
+			for p = 1, #paths do
+				local r = vim.loop.fs_realpath(paths[p])
 				if path:find(r, 1, true) then
 					roots[#roots + 1] = r
 				end
