@@ -18,29 +18,40 @@ return {
 	},
 
 	basics = {
-		event = "VeryLazy",
 		opts = {
 			options = { extra_ui = true },
 			mappings = {
 				windows = true,
 				move_with_alt = true,
 			},
-
 			autocommands = { relnum_in_visual_mode = true },
 		},
+		event = "User",
 	},
 
 	indentscope = {
-		event = "BufReadPre",
 		opts = {
 			symbol = "│",
 			options = { try_as_border = true },
 		},
+		event = "BufReadPost",
 	},
 
 	pairs = { event = "InsertEnter" },
-	sessions = { event = "VeryLazy" },
+
 	surround = {
+		opts = {
+			mappings = {
+				add = "ba", -- Add surrounding in Normal and Visual modes
+				delete = "bd", -- Delete surrounding
+				find = "bf", -- Find surrounding (to the right)
+				find_left = "bF", -- Find surrounding (to the left)
+				highlight = "bh", -- Highlight surrounding
+				update_n_lines = "bn", -- Update `n_lines`
+				replace = "br", -- Replace surrounding
+			},
+		},
+
 		keys = function(plugin, keys)
 			local opts = require("lazy.core.plugin").values(plugin, "opts", false)
 			local mappings = {
@@ -54,17 +65,5 @@ return {
 			}
 			return vim.list_extend(mappings, keys)
 		end,
-
-		opts = {
-			mappings = {
-				add = "ba", -- Add surrounding in Normal and Visual modes
-				delete = "bd", -- Delete surrounding
-				find = "bf", -- Find surrounding (to the right)
-				find_left = "bF", -- Find surrounding (to the left)
-				highlight = "bh", -- Highlight surrounding
-				update_n_lines = "bn", -- Update `n_lines`
-				replace = "br", -- Replace surrounding
-			},
-		},
 	},
 }

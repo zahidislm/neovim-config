@@ -9,12 +9,12 @@ return {
 
 	{
 		"jay-babu/mason-null-ls.nvim",
-		event = "BufReadPre",
 		dependencies = { "lsp", "mason" },
 		opts = {
 			ensure_installed = FORMATTERS,
 			automatic_installation = false,
 			handlers = {},
 		},
+		event = "BufReadPost",
 	},
 }

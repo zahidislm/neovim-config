@@ -1,7 +1,8 @@
 return {
 	"lewis6991/gitsigns.nvim",
-	event = "BufReadPre",
+	name = "GitSigns",
 	opts = function()
 		return require("plugins.gitsigns.config")
 	end,
+	event = "BufReadPre",
 }

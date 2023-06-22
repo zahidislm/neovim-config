@@ -4,12 +4,10 @@ return {
 		dependencies = {
 			"rafamadriz/friendly-snippets",
 		},
-
 		opts = {
 			history = true,
 			delete_check_events = "TextChanged",
 		},
-
 		config = function(_, opts)
 			require("luasnip").setup(opts)
 			require("luasnip.loaders.from_vscode").lazy_load()
@@ -18,8 +16,6 @@ return {
 
 	{
 		"hrsh7th/nvim-cmp",
-		version = false,
-		event = "InsertEnter",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"saadparwaiz1/cmp_luasnip",
@@ -28,9 +24,10 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 		},
-
 		opts = function()
 			return require("plugins.completion.config")
 		end,
+		version = false,
+		event = "insertenter",
 	},
 }

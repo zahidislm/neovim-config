@@ -1,6 +1,5 @@
 return {
 	"kevinhwang91/nvim-ufo",
-	event = "BufReadPost",
 	dependencies = { "kevinhwang91/promise-async" },
 	opts = {
 		fold_virt_text_handler = require("plugins.ufo.utils.handler"),
@@ -14,7 +13,6 @@ return {
 			},
 		},
 	},
-
 	config = function(_, opts)
 		require("ufo").setup(opts)
 
@@ -23,4 +21,5 @@ return {
 		local buffer = vim.api.nvim_get_current_buf()
 		require("ufo").setFoldVirtTextHandler(buffer, opts.fold_virt_text_handler)
 	end,
+	event = "VeryLazy",
 }
