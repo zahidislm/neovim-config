@@ -10,6 +10,7 @@ local leader_keymaps = {
 			u = { "<Cmd>Gitsigns undo_stage_hunk<CR>", "Undo the last call of stage_hunk" },
 			R = { "<Cmd>Gitsigns reset_buffer<CR>", "Reset the lines of all hunks in the buffer" },
 			p = { "<Cmd>Gitsigns preview_hunk<CR>", "Preview the hunk at the cursor position inline in the buffer" },
+			q = { "<Cmd>Gitsigns setqflist<CR>", "Adds all the current hunks into the quickfix list" },
 		},
 
 		["t"] = {
@@ -24,16 +25,16 @@ local leader_keymaps = {
 	},
 }
 
-local bracket_keymaps = {
-	["["] = { h = { "<Cmd>Gitsigns prev_hunk<CR>", "Hunk backward" } },
-	["]"] = { h = { "<Cmd>Gitsigns next_hunk<CR>", "Hunk forward" } },
+local default_replacement_keymaps = {
+	["<Up>"] = { "<Cmd>Gitsigns prev_hunk<CR>", "Hunk backward" },
+	["<Down>"] = { "<Cmd>Gitsigns next_hunk<CR>", "Hunk forward" },
 }
 
 local M = {}
 
 function M.setup(bufopts)
 	wk.register(leader_keymaps, bufopts)
-	wk.register(bracket_keymaps, { buffer = bufopts.buffer })
+	wk.register(default_replacement_keymaps, { buffer = bufopts.buffer })
 end
 
 return M
