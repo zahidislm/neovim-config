@@ -128,30 +128,7 @@ M.dropdown = function(opts)
 		},
 	}
 
-	return vim.tbl_deep_extend("force", theme_opts, opts)
-end
-
--- Only list files with extensions in the whitelist
-M.file_sorter = function(whitelist)
-	local sorter = require("telescope.sorters").get_fuzzy_file()
-
-	sorter._was_discarded = function()
-		return false
-	end
-
-	-- Filter based on whitelist
-	sorter.filter_function = function(_, prompt, entry)
-		for _, v in ipairs(whitelist) do
-			if entry.value:find(v) then
-				-- 0 is highest filtering score
-				return 0, prompt
-			end
-		end
-		-- -1 is considered filtered
-		return -1, prompt
-	end
-
-	return sorter
+	return vim.tbl_deep_extend("force", theme_opts, opts or {})
 end
 
 return M

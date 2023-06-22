@@ -22,9 +22,16 @@ return {
 	{ "<Leader>sg", util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
 	{ "<Leader>sG", util.telescope("live_grep"), desc = "Grep (root)" },
 	{ "<Leader>sb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Search buffers" },
-	{ "<Leader>ss", util.telescope("lsp_document_symbols<CR>", { symbols = lsp_symbols }), desc = "Goto LSP symbol" },
+	{ "<Leader>ss", util.telescope("lsp_document_symbols", { symbols = lsp_symbols }), desc = "Goto LSP symbol" },
+	{
+		"<Leader>sS",
+		util.telescope("lsp_dynamic_workspace_symbols", { symbols = lsp_symbols }),
+		desc = "Goto LSP symbol (workspace)",
+	},
 	{ "<Leader>sh", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
 	{ "<Leader>sm", "<Cmd>Telescope marks<CR>", desc = "Jump to mark" },
+	{ "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Fuzzy search in quickfix" },
+	{ "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Searches undotree" },
 
 	-- File Explorer
 	{ "<Leader>ff", util.telescope("find_files", { cwd = false }), desc = "Find file (cwd)" },

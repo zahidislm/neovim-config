@@ -1,5 +1,6 @@
 local actions = require("telescope.actions")
 local utils = require("plugins.telescope.utils")
+local icons = vim.g.ui_icons
 
 return {
 	defaults = {
@@ -14,7 +15,7 @@ return {
 			vertical = {
 				mirror = false,
 			},
-			width = 0.87,
+			width = 0.85,
 			height = 0.80,
 			preview_cutoff = 120,
 		},
@@ -28,8 +29,8 @@ return {
 		border = {},
 		borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 		entry_prefix = "  ",
-		prompt_prefix = ICONS.misc.prompt,
-		selection_caret = ICONS.misc.select,
+		prompt_prefix = icons.misc.prompt,
+		selection_caret = icons.misc.select,
 		-- Strategies
 		sorting_strategy = "ascending",
 		set_env = { COLORTERM = "truecolor" },
@@ -81,19 +82,6 @@ return {
 			},
 		},
 
-		lsp_definitions = {
-			theme = "cursor",
-			jump_type = "never",
-		},
-
-		lsp_references = {
-			theme = "ivy",
-			preview_title = false,
-			layout_config = {
-				height = 0.45,
-			},
-		},
-
 		diagnostics = {
 			theme = "ivy",
 			preview_title = false,
@@ -104,6 +92,8 @@ return {
 	},
 
 	extensions = {
+		["ui-select"] = { require("telescope.themes").get_dropdown() },
+
 		file_browser = {
 			grouped = true,
 			wrap_results = false,
