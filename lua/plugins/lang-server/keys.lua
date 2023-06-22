@@ -1,5 +1,4 @@
 local wk = require("which-key")
-
 local M = {}
 
 function M.rename()
@@ -18,10 +17,7 @@ function M.setup(client, buffer)
 		["<Leader>"] = {
 			c = {
 				name = "+code",
-				a = {
-					{ vim.lsp.buf.code_action, "Code Action" },
-					{ "<Cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action", mode = "v" },
-				},
+				a = { "<Cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action", mode = { "n", "v" } },
 				f = {
 					{
 						require("plugins.lang-server.utils.formatting").format,
@@ -35,12 +31,6 @@ function M.setup(client, buffer)
 						mode = "v",
 					},
 				},
-				r = {
-					M.rename,
-					"Rename object under cursor",
-					cond = cap.renameProvider,
-					expr = true,
-				},
 				d = { "<Cmd>Telescope diagnostics<CR>", "Search Diagnostics" },
 				l = {
 					name = "+lsp",
@@ -48,19 +38,22 @@ function M.setup(client, buffer)
 					a = { "<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add Folder" },
 					r = { "<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove Folder" },
 					l = { "<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List Folders" },
-					s = { "<Cmd>Telescope lsp_document_symbols<CR>", "Toggles LSP Symbol View" },
 				},
 			},
-			f = {
-				rf = { "<Cmd>Telescope lsp_references<CR>", "References" },
+			r = {
+				M.rename,
+				"Rename lsp object under cursor",
+				cond = cap.renameProvider,
+				expr = true,
+				mode = { "n", "v" },
 			},
 		},
 		g = {
 			name = "+goto",
-			d = { "<Cmd>Telescope lsp_definitions<CR>", "Goto Definition" },
-			D = { "<Cmd>Telescope lsp_declarations<CR>", "Goto Declaration" },
-			I = { "<Cmd>Telescope lsp_implementations<CR>", "Goto Implementation" },
-			t = { "<Cmd>Telescope lsp_type_definitions<CR>", "Goto Type Definition" },
+			R = { "<Cmd>Glance references<CR>", "References" },
+			D = { "<Cmd>Glance definitions<CR>", "Goto Definition" },
+			I = { "<Cmd>Glance implementations<CR>", "Goto Implementation" },
+			T = { "<Cmd>Glance type_definitions<CR>", "Goto Type Definition" },
 		},
 		["<C-k>"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help", mode = { "n", "i" } },
 		["K"] = {
