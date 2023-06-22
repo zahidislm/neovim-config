@@ -41,11 +41,5 @@ return {
 				},
 			},
 		},
-
-		tsserver = {
-			settings = {
-				completions = { completeFunctionCalls = true },
-			},
-		},
 	},
 }
