@@ -1,21 +1,19 @@
 return {
 	{
-		"nvim-treesitter/nvim-treesitter",
+		"kevinhwang91/nvim-treesitter",
 		name = "treesitter",
-		module = false,
-		build = ":TSUpdate",
-		keys = {
-			{ "<C-Space>", desc = "Increment selection" },
-			{ "<BS>", desc = "Shrink selection", mode = "x" },
-		},
-
 		opts = function()
 			return require("plugins.treesitter.config")
 		end,
-
 		config = function(_, opts)
 			return require("nvim-treesitter.configs").setup(opts)
 		end,
+		build = ":TSUpdate",
+		keys = {
+			{ "<Enter>", desc = "Increment selection" },
+			{ "<BS>", desc = "Shrink selection", mode = "x" },
+		},
+		module = false,
 	},
 
 	{
