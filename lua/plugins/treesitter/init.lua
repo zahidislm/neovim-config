@@ -13,7 +13,7 @@ return {
 			{ "<Enter>", desc = "Increment selection" },
 			{ "<BS>", desc = "Shrink selection", mode = "x" },
 		},
-		module = false,
+		event = "BufReadPost",
 	},
 
 	{
