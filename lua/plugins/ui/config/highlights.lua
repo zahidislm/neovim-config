@@ -37,52 +37,61 @@ M.heirline_hls = {
 	HeirlineMacro = { fg = status.fg, bg = "palette.blue" },
 }
 
-M.telescope_hls = {
-	TelescopeBorder = { fg = status.bg, bg = status.bg },
-	TelescopePromptBorder = { fg = light_bg, bg = light_bg },
-	TelescopePromptNormal = { fg = "syntax.variable", bg = light_bg },
-	TelescopePromptPrefix = { fg = light_bg, bg = light_bg },
-	TelescopeNormal = { bg = status.bg },
-	TelescopePreviewTitle = { fg = status.bg, bg = accent },
-	TelescopePromptTitle = { fg = status.bg, bg = accent },
-	TelescopePromptCounter = { bg = light_bg },
-	TelescopeResultsTitle = { fg = status.bg, bg = accent },
-	TelescopeMatching = { fg = "diag.error", bg = "NONE" },
+M.fzf_hls = {
+	FzfLuaBorder = { fg = status.bg, bg = status.bg },
+	FzfLuaPreviewNormal = { fg = light_bg, bg = light_bg },
+	FzfLuaSearch = { fg = "syntax.variable", bg = light_bg },
+	FzfLuaTitle = { fg = status.bg, bg = accent },
+	FzfLuaCursorLine = { bg = "bg0" },
+
+	-- FZF terminal colors
+	FzfLuaHighlight = { fg = "palette.blue" },
+	FzfLuaHighlightPlus = { fg = "syntax.builtin1" },
+	FzfLuaInfo = { fg = "palette.green" },
+	FzfLuaPrompt = { fg = "palette.magenta" },
+	FzfLuaMarker = { fg = "palette.red" },
+	FzfLuaSpinner = { fg = "syntax.builtin3" },
+	FzfLuaHeader = { fg = "syntax.conditional" },
+}
+
+M.mini_files_hls = {
+	MiniFilesBorder = { link = "FzfLuaBorder" },
+	MiniFilesNormal = { link = "Normal" },
+	MiniFilesTitle = { link = "FzfLuaTitle" },
+	MiniFilesTitleFocused = { link = "FzfLuaTitle" },
 }
 
 M.lspkinds_hls = {
-	mpItemAbbrMatch = { fg = "syntax.func", bg = "NONE", style = "bold" },
-	CmpItemAbbrMatchFuzzy = { fg = "syntax.func.dim", bg = "NONE", style = "bold" },
-	CmpItemMenu = { fg = "syntax.func.dim", bg = "NONE", style = "italic" },
-	CmpItemKindInterface = { fg = status.bg, bg = "syntax.builtin1", style = "bold" },
-	CmpItemKindColor = { fg = status.bg, bg = "syntax.builtin1", style = "bold" },
-	CmpItemKindTypeParameter = { fg = status.bg, bg = "syntax.builtin1", style = "bold" },
-	CmpItemKindText = { fg = status.bg, bg = "syntax.string", style = "bold" },
-	CmpItemKindEnum = { fg = status.bg, bg = "syntax.builtin2", style = "bold" },
-	CmpItemKindKeyword = { fg = status.bg, bg = "syntax.keyword", style = "bold" },
-	CmpItemKindConstant = { fg = status.bg, bg = "syntax.const", style = "bold" },
-	CmpItemKindConstructor = { fg = status.bg, bg = "syntax.const", style = "bold" },
-	CmpItemKindReference = { fg = status.bg, bg = "syntax.const", style = "bold" },
-	CmpItemKindFunction = { fg = status.bg, bg = "syntax.func", style = "bold" },
-	CmpItemKindStruct = { fg = status.bg, bg = "syntax.ident", style = "bold" },
-	CmpItemKindClass = { fg = status.bg, bg = "syntax.ident", style = "bold" },
-	CmpItemKindModule = { fg = status.bg, bg = "syntax.preproc", style = "bold" },
-	CmpItemKindOperator = { fg = status.bg, bg = "syntax.operator", style = "bold" },
-	CmpItemKindField = { fg = status.bg, bg = "syntax.field", style = "bold" },
-	CmpItemKindProperty = { fg = status.bg, bg = "syntax.keyword", style = "bold" },
-	CmpItemKindEvent = { fg = status.bg, bg = "syntax.preproc", style = "bold" },
-	CmpItemKindUnit = { fg = status.bg, bg = "syntax.type", style = "bold" },
-	CmpItemKindSnippet = { fg = status.bg, bg = "syntax.type", style = "bold" },
-	CmpItemKindFolder = { fg = status.bg, bg = "syntax.conditional", style = "bold" },
-	CmpItemKindVariable = { fg = status.bg, bg = "syntax.variable", style = "bold" },
-	CmpItemKindFile = { fg = status.bg, bg = "syntax.regex", style = "bold" },
-	CmpItemKindMethod = { fg = status.bg, bg = "syntax.preproc", style = "bold" },
-	CmpItemKindValue = { fg = status.bg, bg = "syntax.number", style = "bold" },
-	CmpItemKindEnumMember = { fg = status.bg, bg = "syntax.keyword", style = "bold" },
+	CmpBorder = { fg = light_bg },
+	CmpItemKindInterface = { fg = status.bg, bg = "syntax.builtin1" },
+	CmpItemKindColor = { fg = status.bg, bg = "syntax.builtin1" },
+	CmpItemKindTypeParameter = { fg = status.bg, bg = "syntax.builtin1" },
+	CmpItemKindText = { fg = status.bg, bg = "syntax.string" },
+	CmpItemKindEnum = { fg = status.bg, bg = "syntax.builtin2" },
+	CmpItemKindKeyword = { fg = status.bg, bg = "syntax.keyword" },
+	CmpItemKindConstant = { fg = status.bg, bg = "syntax.const" },
+	CmpItemKindConstructor = { fg = status.bg, bg = "syntax.const" },
+	CmpItemKindReference = { fg = status.bg, bg = "syntax.const" },
+	CmpItemKindFunction = { fg = status.bg, bg = "syntax.func" },
+	CmpItemKindStruct = { fg = status.bg, bg = "syntax.ident" },
+	CmpItemKindClass = { fg = status.bg, bg = "syntax.ident" },
+	CmpItemKindModule = { fg = status.bg, bg = "syntax.preproc" },
+	CmpItemKindOperator = { fg = status.bg, bg = "syntax.operator" },
+	CmpItemKindField = { fg = status.bg, bg = "syntax.field" },
+	CmpItemKindProperty = { fg = status.bg, bg = "syntax.keyword" },
+	CmpItemKindEvent = { fg = status.bg, bg = "syntax.preproc" },
+	CmpItemKindUnit = { fg = status.bg, bg = "syntax.type" },
+	CmpItemKindSnippet = { fg = status.bg, bg = "syntax.type" },
+	CmpItemKindFolder = { fg = status.bg, bg = "syntax.conditional" },
+	CmpItemKindVariable = { fg = status.bg, bg = "syntax.variable" },
+	CmpItemKindFile = { fg = status.bg, bg = "syntax.regex" },
+	CmpItemKindMethod = { fg = status.bg, bg = "syntax.preproc" },
+	CmpItemKindValue = { fg = status.bg, bg = "syntax.number" },
+	CmpItemKindEnumMember = { fg = status.bg, bg = "syntax.keyword" },
 }
 
 function M.setup()
-	local highlights = vim.tbl_extend("error", M.base_hls, M.heirline_hls, M.telescope_hls, M.lspkinds_hls)
+	local highlights = vim.tbl_extend("error", M.base_hls, M.heirline_hls, M.fzf_hls, M.mini_files_hls, M.lspkinds_hls)
 	return highlights
 end
 
