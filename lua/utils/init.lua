@@ -1,5 +1,23 @@
 local M = {}
-local root_patterns = { ".git", "/lua" }
+local terminals = {}
+
+-- run shell command and get output lines as lua table
+-- from: https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/utils.lua
+local function lua_systemlist(cmd)
+	local stdout, rc = {}, nil
+	local handle = io.popen(cmd .. " 2>&1 ; echo $?", "r")
+
+	if handle then
+		for line in handle:lines() do
+			stdout[#stdout + 1] = line
+		end
+		rc = tonumber(stdout[#stdout])
+		stdout[#stdout] = nil
+		handle:close()
+	end
+
+	return stdout, rc
+end
 
 ---@param on_attach fun(client, buffer)
 function M.on_attach(on_attach)
@@ -12,87 +30,35 @@ function M.on_attach(on_attach)
 	})
 end
 
--- returns the root directory based on:
--- * lsp workspace folders
--- * lsp root_dir
--- * root pattern of filename of the current buffer
--- * root pattern of cwd
----@return string
-function M.get_root()
-	---@type string?
-	local path = vim.api.nvim_buf_get_name(0)
-	path = path ~= "" and vim.loop.fs_realpath(path) or nil
-	---@type string[]
-	local roots = {}
-	if path then
-		for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
-			local workspace = client.config.workspace_folders
-			local paths = workspace
-					and vim.tbl_map(function(ws)
-						return vim.uri_to_fname(ws.uri)
-					end, workspace)
-				or client.config.root_dir and { client.config.root_dir }
-				or {}
-			for p = 1, #paths do
-				local r = vim.loop.fs_realpath(paths[p])
-				if path:find(r, 1, true) then
-					roots[#roots + 1] = r
-				end
-			end
-		end
-	end
-	table.sort(roots, function(a, b)
-		return #a > #b
-	end)
-	---@type string?
-	local root = roots[1]
-	if not root then
-		path = path and vim.fs.dirname(path) or vim.loop.cwd()
-		---@type string?
-		root = vim.fs.find(root_patterns, { path = path, upward = true })[1]
-		root = root and vim.fs.dirname(root) or vim.loop.cwd()
-	end
-	---@cast root string
-	return root
-end
-
--- this will return a function that calls telescope.
--- cwd will defautlt to lazyvim.util.get_root
--- for `files`, git_files or find_files will be chosen depending on .git
-function M.telescope(builtin, opts)
-	local params = { builtin = builtin, opts = opts }
-	return function()
-		builtin = params.builtin
-		opts = params.opts
-		local cwd = M.get_root()
-
-		if builtin == "find_files" then
-			local function is_git_repo()
-				return vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
-			end
-
-			local function get_git_root()
-				local dot_git_path = vim.fn.finddir(".git", ".;")
-				return vim.fn.fnamemodify(dot_git_path, ":h")
-			end
-
-			if is_git_repo() then
-				cwd = get_git_root()
-			end
-		end
-
-		opts = vim.tbl_deep_extend("force", { cwd = cwd }, opts or {})
-		require("telescope.builtin")[builtin](opts)
-	end
-end
-
 -- Opens a floating terminal (interactive by default)
 ---@param cmd? string[]|string
 function M.float_term(cmd, opts)
 	opts = vim.tbl_deep_extend("force", {
-		size = { width = 0.85, height = 0.85 },
-	}, opts or {})
-	require("lazy.util").float_term(cmd, opts)
+		ft = "lazyterm",
+		size = { width = 0.66, height = 0.66 },
+		border = "solid",
+	}, opts or {}, { persistent = true })
+
+	local termkey = vim.inspect({ cmd = cmd or "shell", cwd = opts.cwd, env = opts.env, count = vim.v.count1 })
+
+	if terminals[termkey] and terminals[termkey]:buf_valid() then
+		terminals[termkey]:toggle()
+	else
+		terminals[termkey] = require("lazy.util").float_term(cmd, opts)
+		local buf = terminals[termkey].buf
+
+		vim.b[buf].lazyterm_cmd = cmd
+		vim.keymap.set("t", "<C-q>", "<C-\\><c-n>:q!<CR>", { desc = "Exit terminal", buffer = buf, nowait = true })
+
+		vim.api.nvim_create_autocmd("BufEnter", {
+			buffer = buf,
+			callback = function()
+				vim.cmd.startinsert()
+			end,
+		})
+	end
+
+	return terminals[termkey]
 end
 
 -- Keymap helper
@@ -102,21 +68,20 @@ function M.keymap(mode, lhs, rhs, opts)
 	vim.keymap.set(mode, lhs, rhs, opts)
 end
 
--- Run shell command & return output
-function M.os_capture(cmd, raw)
-	local f = assert(io.popen(cmd, "r"))
-	local s = assert(f:read("*a"))
-	f:close()
-
-	if raw then
-		return s
+-- run shell command and get str output
+function M.lua_system(cmd)
+	local stdout, rc = lua_systemlist(cmd)
+	if next(stdout) == nil then
+		return nil, rc
 	end
+	return table.concat(stdout, "\n"), rc
+end
 
-	s = string.gsub(s, "^%s+", "")
-	s = string.gsub(s, "%s+$", "")
-	s = string.gsub(s, "[\n\r]+", " ")
-
-	return s
+-- get which python3 in current env
+-- NOTE(vir): assuming python3 exists on all systems
+function M.get_python()
+	local python, _ = M.lua_system("which python3")
+	return python
 end
 
 return M
