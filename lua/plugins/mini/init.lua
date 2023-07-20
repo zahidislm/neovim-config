@@ -3,10 +3,9 @@ local modules = {
 	"basics",
 	"bracketed",
 	"comment",
+	"files",
 	"indentscope",
 	"move",
-	"pairs",
-	"sessions",
 	"surround",
 }
 
@@ -20,6 +19,7 @@ local function init_mini(conf)
 		local mod_url = "echasnovski/mini." .. modules[mod]
 		local mod_dependencies = configuration["dependencies"] or nil
 		local mod_opts = configuration["opts"] or {}
+		local mod_init = configuration["init"] or nil
 		local mod_event = configuration["event"] or "VeryLazy"
 		local mod_keys = configuration["keys"] or nil
 
@@ -27,9 +27,13 @@ local function init_mini(conf)
 			mod_url,
 			dependencies = mod_dependencies,
 			opts = mod_opts,
-			event = mod_event,
+			init = mod_init,
 			keys = mod_keys,
 		}
+
+		if not mod_keys then
+			mod_spec["event"] = mod_event
+		end
 
 		spec[#spec + 1] = mod_spec
 	end

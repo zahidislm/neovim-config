@@ -15,6 +15,10 @@ return {
 				},
 			}
 		end,
+		keys = {
+			{ "a", mode = { "o", "x" } },
+			{ "i", mode = { "o", "x" } },
+		},
 	},
 
 	basics = {
@@ -29,30 +33,67 @@ return {
 		event = "User",
 	},
 
+	comment = { keys = { { "gc", mode = { "n", "v" } } } },
+
+	files = {
+		opts = { mappings = { go_in_plus = "<CR>" } },
+		keys = {
+			{
+				"<leader>fm",
+				function()
+					require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
+				end,
+				desc = "Open mini.files (directory of current file)",
+			},
+			{
+				"<leader>fM",
+				function()
+					require("mini.files").open(vim.loop.cwd(), true)
+				end,
+				desc = "Open mini.files (cwd)",
+			},
+		},
+	},
+
 	indentscope = {
 		opts = {
 			symbol = "│",
 			options = { try_as_border = true },
 		},
-		event = "BufReadPost",
+		init = function()
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = {
+					"help",
+					"lazy",
+					"mason",
+					"toggleterm",
+					"lazyterm",
+					"qf",
+					"fzf",
+				},
+				callback = function()
+					vim.b.miniindentscope_disable = true
+				end,
+			})
+		end,
+		event = "BufReadPre",
 	},
-
-	pairs = { event = "InsertEnter" },
 
 	surround = {
 		opts = {
 			mappings = {
-				add = "ba", -- Add surrounding in Normal and Visual modes
-				delete = "bd", -- Delete surrounding
-				find = "bf", -- Find surrounding (to the right)
-				find_left = "bF", -- Find surrounding (to the left)
-				highlight = "bh", -- Highlight surrounding
-				update_n_lines = "bn", -- Update `n_lines`
-				replace = "br", -- Replace surrounding
+				add = "gsa", -- Add surrounding in Normal and Visual modes
+				delete = "gsd", -- Delete surrounding
+				find = "gsf", -- Find surrounding (to the right)
+				find_left = "gsF", -- Find surrounding (to the left)
+				highlight = "gsh", -- Highlight surrounding
+				update_n_lines = "gsn", -- Update `n_lines`
+				replace = "gsr", -- Replace surrounding
 			},
 		},
 
-		keys = function(plugin, keys)
+		keys = function(_, keys)
+			local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
 			local opts = require("lazy.core.plugin").values(plugin, "opts", false)
 			local mappings = {
 				{ opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
