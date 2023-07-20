@@ -28,6 +28,29 @@ return {
 	},
 
 	{
+		"jay-babu/mason-null-ls.nvim",
+		dependencies = {
+			"lsp",
+			"mason",
+			{
+				"jose-elias-alvarez/null-ls.nvim",
+				dependencies = { "nvim-lua/plenary.nvim" },
+				opts = {
+					debounce = 250,
+					save_after_format = false,
+				},
+			},
+		},
+		opts = {
+			ensure_installed = FORMATTERS,
+			automatic_installation = false,
+			handlers = {},
+		},
+		event = "BufReadPre",
+	},
+
+	-- Utils
+	{
 		"smjonas/inc-rename.nvim",
 		dependencies = { "lsp" },
 		config = true,
