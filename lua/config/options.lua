@@ -1,5 +1,10 @@
 -- Additional options/keymaps/autocmds loaded by "mini.basics" plugin --
 local option = vim.opt
+local undo_dir = vim.fn.expand("$HOME") .. [[/.cache/nvim/undo]]
+
+if not vim.fn.isdirectory(undo_dir) then
+	vim.fn.mkdir(undo_dir)
+end
 
 -- Leader Key
 vim.g.mapleader = " "
@@ -20,9 +25,10 @@ option.foldcolumn = "0"
 option.foldenable = true
 option.foldnestmax = 3
 option.foldminlines = 1
+option.foldopen:remove({ "search" })
 
--- pop-up menu transparency
-option.pumblend = 0
+-- Cursor configuration
+option.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
 
 -- Global statusline
 option.laststatus = 3
@@ -38,6 +44,9 @@ option.scrolloff = 8
 
 -- Remove intro screen
 option.shortmess:append({ I = true })
+
+-- remove extra cmd display
+option.showcmd = false
 
 -- Highlight matching
 option.showmatch = true
@@ -62,43 +71,26 @@ option.updatetime = 200
 -- Max columns for syntax search
 option.synmaxcol = 200
 
+-- menu transparency
+option.pumblend = 0
+option.winblend = 0
+
 -- Undo dir (persistent undo's)
-local undo_dir = vim.fn.expand("$HOME") .. [[/.cache/nvim/undo]]
-if not vim.fn.isdirectory(undo_dir) then
-	vim.fn.mkdir(undo_dir)
-end
 option.undodir = undo_dir
 
--- Disable builtin vim plugins
-local disabled_built_ins = {
-	"2html_plugin",
-	"getscript",
-	"getscriptPlugin",
-	"gzip",
-	"logipat",
-	"netrw",
-	"netrwPlugin",
-	"netrwSettings",
-	"netrwFileHandlers",
-	"matchit",
-	"tar",
-	"tarPlugin",
-	"rrhelper",
-	"spellfile_plugin",
-	"vimball",
-	"vimballPlugin",
-	"zip",
-	"zipPlugin",
-	"tutor",
-	"rplugin",
-	"syntax",
-	"synmenu",
-	"optwin",
-	"compiler",
-	"bugreport",
-	"ftplugin",
-}
+-- disable unused providers
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.python_host_skip_check = 1
 
-for _, plugin in pairs(disabled_built_ins) do
-	vim.g["loaded_" .. plugin] = 1
-end
+-- set python path and shell
+-- has significant performance impact due to shell cmd call to find python
+-- defering this actually makes boot feel more responsive
+vim.defer_fn(function()
+	vim.g.python3_host_prog = require("utils").get_python()
+end, 0)
+
+-- remove ft maps
+vim.g.no_plugin_maps = 1
