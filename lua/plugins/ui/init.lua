@@ -51,15 +51,15 @@ return {
 		dependencies = {
 			"rebelot/heirline.nvim",
 			"nvim-tree/nvim-web-devicons",
-			"GitSigns",
 		},
 		opts = {
-			ui = {
+			globals = {
 				icons = {
 					enable_nerdfont = true,
 					enable_devicons = true,
 				},
 			},
+			highlights = { enable_fallback = false },
 		},
 		priority = 800,
 	},
