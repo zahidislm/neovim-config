@@ -31,7 +31,8 @@ function M.setup(client, buffer)
 						mode = "v",
 					},
 				},
-				d = { "<Cmd>Telescope diagnostics<CR>", "Search Diagnostics" },
+				d = { "<Cmd>FzfLua diagnostics_document<CR>", "Search Diagnostics <current file>" },
+				D = { "<Cmd>FzfLua diagnostics_workspace<CR>", "Search Diagnostics <workspace>" },
 				l = {
 					name = "+lsp",
 					i = { "<Cmd>LspInfo<CR>", "Lsp Info" },
@@ -55,7 +56,6 @@ function M.setup(client, buffer)
 			I = { "<Cmd>Glance implementations<CR>", "Goto Implementation" },
 			T = { "<Cmd>Glance type_definitions<CR>", "Goto Type Definition" },
 		},
-		["<C-k>"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help", mode = { "n", "i" } },
 		["K"] = {
 			function()
 				local winid = require("ufo").peekFoldedLinesUnderCursor()
