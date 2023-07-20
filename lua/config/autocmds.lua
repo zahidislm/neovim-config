@@ -35,7 +35,6 @@ autocmd("BufReadPost", {
 })
 
 autocmd("BufWritePre", {
-	group = augroup("auto_create_dir", { clear = true }),
 	callback = function(event)
 		local file = vim.loop.fs_realpath(event.match) or event.match
 
@@ -46,10 +45,11 @@ autocmd("BufWritePre", {
 	end,
 
 	desc = "create directories when needed, when saving a file.",
+	group = augroup("auto_create_dir", { clear = true }),
 })
 
 -- show cursor line only in active window
-vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+autocmd({ "InsertLeave", "WinEnter" }, {
 	callback = function()
 		local ok, cl = pcall(vim.api.nvim_win_get_var, 0, "auto-cursorline")
 		if ok and cl then
@@ -58,7 +58,8 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
 		end
 	end,
 })
-vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+
+autocmd({ "InsertEnter", "WinLeave" }, {
 	callback = function()
 		local cl = vim.wo.cursorline
 		if cl then
@@ -68,7 +69,13 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
 	end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
+autocmd("FileType", {
+	callback = function(event)
+		vim.bo[event.buf].buflisted = false
+		vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+	end,
+
+	desc = "close some filetypes with <q>.",
 	pattern = {
 		"qf",
 		"help",
@@ -78,11 +85,4 @@ vim.api.nvim_create_autocmd("FileType", {
 		"startuptime",
 		"checkhealth",
 	},
-
-	callback = function(event)
-		vim.bo[event.buf].buflisted = false
-		vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-	end,
-
-	desc = "close some filetypes with <q>.",
 })
