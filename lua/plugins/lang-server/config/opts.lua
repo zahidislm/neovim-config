@@ -1,8 +1,9 @@
 return {
 	diagnostics = {
 		underline = true,
+		float = { border = vim.g.ui_icons.misc.border },
 		update_in_insert = false,
-		virtual_text = { spacing = 2, prefix = "" },
+		virtual_text = { spacing = 2, source = "if_many", prefix = "" },
 		severity_sort = true,
 	},
 
