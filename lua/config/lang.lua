@@ -9,6 +9,7 @@ PARSERS = {
 	"javascript",
 	"json",
 	"lua",
+	"markdown",
 	"python",
 	"regex",
 	"rust",
@@ -28,7 +29,6 @@ SERVERS = {
 
 FORMATTERS = {
 	"black",
-	"rustfmt",
 	"stylua",
 }
 
