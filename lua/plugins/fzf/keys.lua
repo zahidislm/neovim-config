@@ -37,20 +37,20 @@ local function core_keys()
 		{ "<Leader>sq", "<Cmd>FzfLua quickfix<CR>", desc = "Fuzzy search in quickfix" },
 
 		-- File Explorer
-		{ "<Leader>ff", "<Cmd>FzfLua files<CR>", desc = "Find file" },
+		{ "<Leader>ff", "<Cmd>FzfLua files<CR>", desc = "Search for file" },
 		{
-			"<Leader>fD",
+			"<Leader>sD",
 			function()
 				return fzf_dotfiles()
 			end,
-			desc = "Fuzzy-search dotfiles",
+			desc = "Search through dotfiles",
 		},
 		{
-			"<Leader>fN",
+			"<Leader>sN",
 			function()
 				return fzf_nvimconfig()
 			end,
-			desc = "Fuzzy-search Neovim config",
+			desc = "Search through Neovim config",
 		},
 		{ "<Leader>fr", "<Cmd>FzfLua oldfiles<CR>", desc = "Open recent files" },
 
@@ -61,52 +61,8 @@ local function core_keys()
 	return keys
 end
 
-local function possession_keys()
-	local possession = require("nvim-possession")
-	local keys = {
-		{
-			"<Leader>pl",
-			function()
-				possession.list()
-			end,
-			mode = "n",
-			desc = "List sessions",
-		},
-		{
-			"<Leader>pn",
-			function()
-				possession.new()
-			end,
-			mode = "n",
-			desc = "New session",
-		},
-		{
-			"<Leader>pu",
-			function()
-				possession.update()
-			end,
-			mode = "n",
-			desc = "Update session",
-		},
-		{
-			"<Leader>pd",
-			function()
-				possession.delete()
-			end,
-			mode = "n",
-			desc = "Delete session",
-		},
-	}
-
-	return keys
-end
-
 function M.setup(mod)
 	mod = type(mod) == "string" and mod or "core"
-
-	if mod == "possession" then
-		return possession_keys()
-	end
 
 	return core_keys()
 end

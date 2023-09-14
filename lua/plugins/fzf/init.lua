@@ -23,34 +23,4 @@ return {
 			return require("plugins.fzf.keys").setup()
 		end,
 	},
-
-	{
-		"gennaro-tedesco/nvim-possession",
-		dependencies = { "fzf" },
-		opts = {
-			autoswitch = { enabled = true },
-			save_hook = function()
-				-- Get visible buffers
-				local visible_buffers = {}
-				local windows = vim.api.nvim_list_wins()
-				for win = 1, #windows do
-					visible_buffers[vim.api.nvim_win_get_buf(windows[win])] = true
-				end
-
-				local buflist = vim.api.nvim_list_bufs()
-				for bufnr = 1, #buflist do
-					if visible_buffers[buflist[bufnr]] == nil then -- Delete buffer if not visible
-						vim.cmd("bd " .. buflist[bufnr])
-					end
-				end
-			end,
-			fzf_winopts = {
-				width = 0.5,
-				row = 0.45,
-			},
-		},
-		keys = function()
-			return require("plugins.fzf.keys").setup("possession")
-		end,
-	},
 }
