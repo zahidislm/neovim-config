@@ -40,7 +40,6 @@ end
 local function setup_lsp_attach()
 	--setup on_attach
 	require("utils").on_attach(function(client, buffer)
-		require("plugins.lang-server.utils.formatting").setup(client, buffer)
 		require("plugins.lang-server.keys").setup(client, buffer)
 	end)
 end

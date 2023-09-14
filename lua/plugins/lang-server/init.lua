@@ -10,7 +10,7 @@ return {
 			require("plugins.lang-server.config").setup(opts)
 		end,
 		version = false,
-		event = "BufReadPre",
+		ft = vim.tbl_keys(SERVERS),
 	},
 
 	{
@@ -22,31 +22,26 @@ return {
 			config = true,
 		},
 		opts = {
-			ensure_installed = SERVERS,
+			ensure_installed = vim.tbl_flatten(vim.tbl_values(SERVERS)),
 			automatic_installation = true,
 		},
+        build = ":MasonUpdate",
 	},
 
 	{
-		"jay-babu/mason-null-ls.nvim",
-		dependencies = {
-			"lsp",
-			"mason",
-			{
-				"jose-elias-alvarez/null-ls.nvim",
-				dependencies = { "nvim-lua/plenary.nvim" },
-				opts = {
-					debounce = 250,
-					save_after_format = false,
-				},
+		"nvimdev/guard.nvim",
+		dependencies = { "lsp", "mason"},
+		opts = {
+            fmt_on_save = true,
+			lsp_as_default_formatter = true,
+			ft = {
+				lua = { fmt = { "stylua" } },
+				python = { fmt = { "black" } },
+				rust = { fmt = { "rustfmt" } },
 			},
 		},
-		opts = {
-			ensure_installed = FORMATTERS,
-			automatic_installation = false,
-			handlers = {},
-		},
-		event = "BufReadPre",
+        build = string.format(":MasonInstall " .. string.rep("%s ", #FORMATTERS), table.unpack(FORMATTERS)),
+		ft = vim.tbl_keys(SERVERS),
 	},
 
 	-- Utils

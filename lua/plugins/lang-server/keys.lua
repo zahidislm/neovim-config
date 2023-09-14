@@ -14,18 +14,27 @@ function M.setup(client, buffer)
 
 	local keymap = {
 		buffer = buffer,
+		["c"] = {
+			A = {
+				M.rename,
+				"Rename lsp object under cursor",
+				cond = cap.renameProvider,
+				expr = true,
+				mode = { "n", "v" },
+			},
+		},
 		["<Leader>"] = {
 			c = {
 				name = "+code",
 				a = { "<Cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action", mode = { "n", "v" } },
 				f = {
 					{
-						require("plugins.lang-server.utils.formatting").format,
+						"<Cmd>GuardFmt<CR>",
 						"Format Document",
 						cond = cap.documentFormattingProvider,
 					},
 					{
-						require("plugins.lang-server.utils.formatting").format,
+						"<Cmd>GuardFmt<CR>",
 						"Format Range",
 						cond = cap.documentRangeFormattingProvider,
 						mode = "v",
@@ -33,20 +42,6 @@ function M.setup(client, buffer)
 				},
 				d = { "<Cmd>FzfLua diagnostics_document<CR>", "Search Diagnostics <current file>" },
 				D = { "<Cmd>FzfLua diagnostics_workspace<CR>", "Search Diagnostics <workspace>" },
-				l = {
-					name = "+lsp",
-					i = { "<Cmd>LspInfo<CR>", "Lsp Info" },
-					a = { "<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add Folder" },
-					r = { "<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove Folder" },
-					l = { "<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List Folders" },
-				},
-			},
-			r = {
-				M.rename,
-				"Rename lsp object under cursor",
-				cond = cap.renameProvider,
-				expr = true,
-				mode = { "n", "v" },
 			},
 		},
 		g = {
@@ -56,7 +51,7 @@ function M.setup(client, buffer)
 			I = { "<Cmd>Glance implementations<CR>", "Goto Implementation" },
 			T = { "<Cmd>Glance type_definitions<CR>", "Goto Type Definition" },
 		},
-		["K"] = {
+		K = {
 			function()
 				local winid = require("ufo").peekFoldedLinesUnderCursor()
 				if not winid then

@@ -20,20 +20,20 @@ PARSERS = {
 }
 
 SERVERS = {
-	"jedi_language_server",
-	"rust_analyzer",
-	"ruff_lsp",
-	"lua_ls",
-	"taplo",
+	lua = { "lua_ls" },
+	python = { "jedi_language_server", "ruff_lsp" },
+	rust = { "rust_analyzer" },
+	toml = { "taplo" },
 }
+
+-- node-based LSP
+if vim.fn.executable("npm") == 1 then
+	SERVERS["html"] = { "html", "unocss" }
+	SERVERS["svelte"] = { "svelte" }
+	SERVERS["javascript"] = { "rome" }
+end
 
 FORMATTERS = {
 	"black",
 	"stylua",
 }
-
--- node-based LSP
-if vim.fn.executable("npm") == 1 then
-	local node_lsp = { "svelte", "unocss", "vtsls" }
-	SERVERS = vim.list_extend(SERVERS, node_lsp)
-end
