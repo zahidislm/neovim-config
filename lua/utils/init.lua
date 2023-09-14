@@ -1,5 +1,4 @@
 local M = {}
-local terminals = {}
 
 -- run shell command and get output lines as lua table
 -- from: https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/utils.lua
@@ -28,37 +27,6 @@ function M.on_attach(on_attach)
 			on_attach(client, buffer)
 		end,
 	})
-end
-
--- Opens a floating terminal (interactive by default)
----@param cmd? string[]|string
-function M.float_term(cmd, opts)
-	opts = vim.tbl_deep_extend("force", {
-		ft = "lazyterm",
-		size = { width = 0.66, height = 0.66 },
-		border = "solid",
-	}, opts or {}, { persistent = true })
-
-	local termkey = vim.inspect({ cmd = cmd or "shell", cwd = opts.cwd, env = opts.env, count = vim.v.count1 })
-
-	if terminals[termkey] and terminals[termkey]:buf_valid() then
-		terminals[termkey]:toggle()
-	else
-		terminals[termkey] = require("lazy.util").float_term(cmd, opts)
-		local buf = terminals[termkey].buf
-
-		vim.b[buf].lazyterm_cmd = cmd
-		vim.keymap.set("t", "<C-q>", "<C-\\><c-n>:q!<CR>", { desc = "Exit terminal", buffer = buf, nowait = true })
-
-		vim.api.nvim_create_autocmd("BufEnter", {
-			buffer = buf,
-			callback = function()
-				vim.cmd.startinsert()
-			end,
-		})
-	end
-
-	return terminals[termkey]
 end
 
 -- Keymap helper
