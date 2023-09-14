@@ -54,13 +54,6 @@ M.fzf_hls = {
 	FzfLuaHeader = { fg = "syntax.conditional" },
 }
 
-M.mini_files_hls = {
-	MiniFilesBorder = { link = "FzfLuaBorder" },
-	MiniFilesNormal = { link = "Normal" },
-	MiniFilesTitle = { link = "FzfLuaTitle" },
-	MiniFilesTitleFocused = { link = "FzfLuaTitle" },
-}
-
 M.lspkinds_hls = {
 	CmpBorder = { fg = light_bg },
 	CmpItemKindInterface = { fg = status.bg, bg = "syntax.builtin1" },
@@ -91,7 +84,7 @@ M.lspkinds_hls = {
 }
 
 function M.setup()
-	local highlights = vim.tbl_extend("error", M.base_hls, M.heirline_hls, M.fzf_hls, M.mini_files_hls, M.lspkinds_hls)
+	local highlights = vim.tbl_extend("error", M.base_hls, M.heirline_hls, M.fzf_hls, M.lspkinds_hls)
 	return highlights
 end
 
