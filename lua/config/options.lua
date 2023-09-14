@@ -1,4 +1,3 @@
--- Additional options/keymaps/autocmds loaded by "mini.basics" plugin --
 local option = vim.opt
 local undo_dir = vim.fn.expand("$HOME") .. [[/.cache/nvim/undo]]
 
@@ -9,74 +8,80 @@ end
 -- Leader Key
 vim.g.mapleader = " "
 
--- Use spaces instead of tabs
-option.expandtab = true
--- Number of auto-indent spaces
-option.shiftwidth = 4
--- Number of spaces per Tab
-option.softtabstop = 4
--- Number of columns per tab
-option.tabstop = 4
+-- Appearance
+option.breakindent = true -- Indent wrapped lines to match line start
+option.cmdheight = 0 -- Cmdline height
+option.cursorline = true -- Highlight current line
+option.fillchars = { eob = " " } -- Don't show `~` outside of buffer
+option.laststatus = 3 -- Global statusline
+option.linebreak = true -- Wrap long lines at 'breakat' (if 'wrap' is set)
+option.list = true -- Show some helper symbols
+option.number = true -- Show line numbers
+option.ruler = false -- Don't show cursor position in command line
+option.signcolumn = "yes" -- Always show sign column (otherwise it will shift text)
+option.splitbelow = true -- Horizontal splits will be below
+option.splitright = true -- Vertical splits will be to the right
+option.termguicolors = true -- Enable gui colors
+option.wrap = false -- Display long lines as just one line
+
+-- Blinking Cursor configuration
+option.guicursor = "n-v-c:block-Cursor,i-ci-ve:ver25-iCursor,r-cr:hor20,o:hor50,\z
+    a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,\z
+    sm:block-blinkwait175-blinkoff150-blinkon175"
+
+-- Backup
+option.backup = false -- Don't store backup while overwriting the file
+option.undodir = undo_dir -- Undo dir (persistent undo's)
+option.undofile = true -- Enable persistent undo (see also `:h undodir`)
+option.writebackup = false -- Don't store backup while overwriting the file
+
+-- Editing
+option.completeopt = { "menuone", "noinsert", "noselect" } -- Customize completions
+option.ignorecase = true -- Ignore case when searching (use `\C` to force not doing that)
+option.incsearch = true -- Show search results while typing
+option.infercase = true -- Infer letter cases for a richer built-in keyword completion
+option.formatoptions = "qjl1" -- Don't autoformat comments
+option.smartcase = true -- Don't ignore case when searching if pattern has upper case
+option.virtualedit = "block" -- Allow going past the end of line in visual block mode
+
+-- Tabs & Indent
+option.smartindent = true -- Make indenting smart
+option.preserveindent = true -- Preserve indent structure as much as possible
+option.expandtab = true -- Use spaces instead of tabs
+option.shiftwidth = 4 -- Number of auto-indent spaces
+option.softtabstop = 4 -- Number of spaces per Tab
+option.tabstop = 4 -- Number of columns per tab
 
 -- Folding configuration
-option.foldlevel = 99
-option.foldlevelstart = 99
 option.foldcolumn = "0"
 option.foldenable = true
+option.foldlevel = 99
+option.foldlevelstart = 99
 option.foldnestmax = 3
 option.foldminlines = 1
 option.foldopen:remove({ "search" })
 
--- Cursor configuration
-option.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
+-- Scrolling
+option.scrolljump = 5 -- Lines to scroll off screen
+option.scrolloff = 8 -- Lead scroll past bottom
 
--- Global statusline
-option.laststatus = 3
+-- System
+option.clipboard = "unnamedplus" -- Cursor configuration
+option.mouse = "a" -- Enable mouse for all available modes
+option.swapfile = false -- No swap file
 
--- sync with system clipboard register
-option.clipboard = "unnamedplus"
-
--- Lines to scroll off screen
-option.scrolljump = 5
-
--- Lead scroll by 8 lines
-option.scrolloff = 8
-
--- Remove intro screen
-option.shortmess:append({ I = true })
-
--- remove extra cmd display
-option.showcmd = false
-
--- Highlight matching
-option.showmatch = true
-option.matchtime = 3
-
--- No swap file
-option.swapfile = false
-
--- Real-time substitute
-option.inccommand = "split"
-
--- Cmdline height
-option.cmdheight = 0
-
--- Lazyily redraw
+-- Timings
 option.lazyredraw = true
 option.redrawtime = 5000
+option.updatetime = 200 -- Autocmd update delay
 
--- Autocmd update delay
-option.updatetime = 200
-
--- Max columns for syntax search
-option.synmaxcol = 200
-
--- menu transparency
-option.pumblend = 0
-option.winblend = 0
-
--- Undo dir (persistent undo's)
-option.undodir = undo_dir
+-- Misc
+option.inccommand = "split" -- Real-time substitute
+option.shortmess:append("WcCI") -- Remove intro screen & reduce command msgs
+option.showcmd = false -- remove extra cmd display
+option.splitkeep = "screen" -- Reduce scrolling on splits
+option.synmaxcol = 200 -- Max columns for syntax search
+vim.cmd("filetype plugin indent on") -- Enable all filetype plugins
 
 -- disable unused providers
 vim.g.loaded_node_provider = 0

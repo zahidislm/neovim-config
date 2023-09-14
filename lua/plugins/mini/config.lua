@@ -21,39 +21,7 @@ return {
 		},
 	},
 
-	basics = {
-		opts = {
-			options = { extra_ui = true },
-			mappings = {
-				windows = true,
-				move_with_alt = true,
-			},
-			autocommands = { relnum_in_visual_mode = true },
-		},
-		event = "User",
-	},
-
 	comment = { keys = { { "gc", mode = { "n", "v" } } } },
-
-	files = {
-		opts = { mappings = { go_in_plus = "<CR>" } },
-		keys = {
-			{
-				"<leader>fm",
-				function()
-					require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
-				end,
-				desc = "Open mini.files (directory of current file)",
-			},
-			{
-				"<leader>fM",
-				function()
-					require("mini.files").open(vim.loop.cwd(), true)
-				end,
-				desc = "Open mini.files (cwd)",
-			},
-		},
-	},
 
 	indentscope = {
 		opts = {
