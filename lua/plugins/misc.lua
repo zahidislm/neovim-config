@@ -17,4 +17,24 @@ return {
 		opts = { timeout = 175 },
 		event = "InsertEnter",
 	},
+
+	{
+		"abecodes/tabout.nvim",
+		dependencies = {
+			"treesitter",
+			"hrsh7th/nvim-cmp",
+		},
+		config = true,
+		event = "InsertEnter",
+		keys = {
+			{ "<C-x>", "<Plug>(TaboutMulti)", desc = "Multi-tabout forward", mode = "i" },
+			{ "<C-z>", "<Plug>(TaboutBackMulti)", desc = "Multi-tabout backward", mode = "i" },
+		},
+	},
+
+	{
+		"axkirillov/hbac.nvim",
+		opts = { threshold = 8 },
+		event = "VeryLazy",
+	},
 }
