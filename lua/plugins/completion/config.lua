@@ -46,10 +46,16 @@ return {
 
 		["<Tab>"] = cmp.mapping(function(fallback)
 			local has_words_before = function()
-				unpack = unpack or table.unpack
-				local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-				local match = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s")
-				return col ~= 0 and match == nil
+				local ignore_chars = { [["]], [[']] }
+				local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
+				local parsed_line = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]
+				local prev_char = parsed_line:sub(col, col)
+				local next_char = parsed_line:sub(col + 1, col + 1)
+				local has_ignore_char = vim.tbl_contains(ignore_chars, prev_char)
+					or vim.tbl_contains(ignore_chars, next_char)
+				local match = prev_char:match("%s")
+
+				return col ~= 0 and match == nil and not has_ignore_char
 			end
 
 			if cmp.visible() then
