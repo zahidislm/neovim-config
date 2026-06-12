@@ -1,0 +1,86 @@
+{
+  "plugins": {
+    "artio.nvim": {
+      "rev": "0b08d6862afe685fd78963808d022d7c15c89546",
+      "src": "https://github.com/comfysage/artio.nvim"
+    },
+    "bento.nvim": {
+      "rev": "08054c6cd3cfb1246f1bfbc74b04e1587f476003",
+      "src": "https://github.com/serhez/bento.nvim",
+      "version": "'feat/v2'"
+    },
+    "codedocs.nvim": {
+      "rev": "fd0893eb46056dd44e171b81ffd45468ed686977",
+      "src": "https://github.com/jeangiraldoo/codedocs.nvim"
+    },
+    "garbage-day.nvim": {
+      "rev": "4bea540f219a980334c9b36f8289f3cc2651d6e6",
+      "src": "https://github.com/zahidislm/garbage-day.nvim"
+    },
+    "glance.nvim": {
+      "rev": "bf86d8b79dce808e65fdb6e9269d0b4ed6d2eefc",
+      "src": "https://github.com/dnlhc/glance.nvim"
+    },
+    "guess-indent.nvim": {
+      "rev": "84a4987ff36798c2fc1169cbaff67960aed9776f",
+      "src": "https://github.com/nmac427/guess-indent.nvim"
+    },
+    "jupynvim": {
+      "rev": "43bc3b672f5b48d7c5f64f5832ef33fc465295cd",
+      "src": "https://github.com/sheng-tse/jupynvim"
+    },
+    "kanso.nvim": {
+      "rev": "1afbbb449aa0254823dbe1932e3cbb51886ff9fe",
+      "src": "https://github.com/webhooked/kanso.nvim"
+    },
+    "live-rename.nvim": {
+      "rev": "205bddec4bf1276c81a03777f8335d4ad034ae03",
+      "src": "https://github.com/saecki/live-rename.nvim"
+    },
+    "mini.nvim": {
+      "rev": "a59a9b7fb0a42cbcf022938ee5f0724320b66f63",
+      "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "mini.starter": {
+      "rev": "a7d8b353cf120fee32bb5d88e7a9de5eaec746e7",
+      "src": "https://github.com/nvim-mini/mini.starter"
+    },
+    "namu.nvim": {
+      "rev": "e7afbdf63a75ace6ccc6202d58a4f6f9ac09db92",
+      "src": "https://github.com/bassamsdata/namu.nvim"
+    },
+    "nvim-bqf": {
+      "rev": "c282a62bec6c0621a1ef5132aa3f4c9fc4dcc2c7",
+      "src": "https://github.com/kevinhwang91/nvim-bqf"
+    },
+    "nvim-jump": {
+      "rev": "f58eb5a36c414c19965e1c4d5dfb74d5a1f21ede",
+      "src": "https://github.com/yorickpeterse/nvim-jump"
+    },
+    "nvim-treesitter-textobjects": {
+      "rev": "851e865342e5a4cb1ae23d31caf6e991e1c99f1e",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+      "version": "'main'"
+    },
+    "render-markdown.nvim": {
+      "rev": "5adf0895310c1904e5abfaad40a2baad7fe44a07",
+      "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+    },
+    "tree-sitter-manager.nvim": {
+      "rev": "c8a7b7b91aa23da24e7d02874f78d4c668a08530",
+      "src": "https://github.com/romus204/tree-sitter-manager.nvim"
+    },
+    "vim-smoothie": {
+      "rev": "e57ada0bb54e08447944b034834f1f13a18b5411",
+      "src": "https://github.com/opalmay/vim-smoothie"
+    },
+    "vision.nvim": {
+      "rev": "7c4c430a8dd8546ff7e401ce5cd55a9fca6a43c8",
+      "src": "https://github.com/azorng/vision.nvim"
+    },
+    "which-key.nvim": {
+      "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
+      "src": "https://github.com/folke/which-key.nvim"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+local M = {}
+
+---@param colors table
+function M.get_hls(colors)
+  local theme = colors.theme
+  local blend = require("ui.highlights.coloring").blend
+
+  return {
+    -- Core
+    NormalFloat = { fg = theme.ui.float.fg, bg = theme.ui.float.bg },
+    FloatBorder = { fg = theme.ui.float.fg_border, bg = theme.ui.float.bg_border },
+    PmenuBorder = { fg = theme.ui.bg_search, bg = "NONE" },
+    -- StatusLine
+    StatusLine = { bg = "NONE" },
+    StatusLineModeNormal = { fg = theme.ui.bg, bg = theme.syn.fun },
+    StatusLineModeInsert = { fg = theme.ui.bg, bg = theme.diag.ok },
+    StatusLineModeVisual = { fg = theme.ui.bg, bg = theme.syn.keyword },
+    StatusLineModeCommand = { fg = theme.ui.bg, bg = theme.syn.operator },
+    StatuslineModePending = { fg = theme.ui.bg, bg = theme.syn.special1 },
+    StatusLineGit = { fg = theme.ui.fg_dim, bg = theme.ui.bg_p1 },
+    StatusLineGitAdd = { fg = theme.vcs.added, bg = theme.ui.bg_p1 },
+    StatusLineGitChange = { fg = theme.vcs.changed, bg = theme.ui.bg_p1 },
+    StatusLineGitDelete = { fg = theme.vcs.removed, bg = theme.ui.bg_p1 },
+    StatusLineDiagnosticError = { fg = theme.ui.bg, bg = theme.diag.error },
+    StatusLineDiagnosticWarn = { fg = theme.ui.bg, bg = theme.diag.warning },
+    StatusLineDiagnosticInfo = { fg = theme.ui.bg, bg = theme.diag.info },
+    StatusLineDiagnosticHint = { fg = theme.ui.bg, bg = theme.diag.hint },
+    StatusLineFile = { link = "StatusLineRuler" },
+    StatusLineFileBookmark = { fg = theme.ui.bg, bg = theme.syn.regex },
+    StatusLineFileModified = { fg = theme.ui.bg, bg = theme.syn.string },
+    StatusLineLSP = { fg = theme.ui.bg, bg = theme.syn.fun },
+    StatusLineRuler = { fg = theme.ui.fg, bg = theme.diff.change },
+    StatusLineMacro = { fg = theme.ui.bg, bg = theme.syn.special2 },
+    StatusLineSession = { fg = theme.ui.bg, bg = theme.syn.special1 },
+    StatusLineSearch = { fg = theme.ui.fg, bg = theme.ui.bg_search },
+    -- Markdown
+    ["@markup.heading.1.markdown"] = { fg = theme.term[5], bold = true },
+    ["@markup.heading.2.markdown"] = { fg = theme.term[13], bold = true },
+    ["@markup.heading.3.markdown"] = { fg = theme.term[6], bold = true },
+    ["@markup.heading.4.markdown"] = { fg = theme.term[3], bold = true },
+    ["@markup.heading.5.markdown"] = { fg = theme.term[4], bold = true },
+    ["@markup.heading.6.markdown"] = { fg = theme.term[2], bold = true },
+    ["@markup.link"] = { link = "Function" },
+    ["@markup.link.label"] = { link = "@constructor" },
+    ["@markup.link.label.symbol"] = { link = "@punctuation.bracket" },
+    ["@markup.list"] = { link = "Type" },
+    ["@markup.list.markdown"] = { link = "@string.regexp" },
+    ["@markup.list.checked"] = { link = "@diff.plus" },
+    ["@markup.list.unchecked"] = { link = "Comment" },
+    ["@markup.raw.markdown_inline"] = { link = "@narkup.raw" },
+    RenderMarkdownH1Bg = { bg = blend(theme.term[5], theme.ui.bg, 0.1) },
+    RenderMarkdownH2Bg = { bg = blend(theme.term[13], theme.ui.bg, 0.1) },
+    RenderMarkdownH3Bg = { bg = blend(theme.term[6], theme.ui.bg, 0.1) },
+    RenderMarkdownH4Bg = { bg = blend(theme.term[3], theme.ui.bg, 0.1) },
+    RenderMarkdownH5Bg = { bg = blend(theme.term[4], theme.ui.bg, 0.1) },
+    RenderMarkdownH6Bg = { bg = blend(theme.term[2], theme.ui.bg, 0.1) },
+    -- Namu
+    NamuPrefix = { link = "Special" },
+    NamuSourceIndicator = { link = "Ignore" },
+    NamuMatch = { link = "Identifier" },
+    NamuFilter = { link = "Type" },
+    NamuPrompt = { link = "FloatTitle" },
+    NamuSelected = { link = "Statement" },
+    NamuEmptyIndicator = { link = "Comment" },
+    NamuFooter = { link = "Comment" },
+    NamuCurrentItem = { link = "CursorLine" },
+    NamuCurrentItemIcon = { link = "NamuCurrentItem" },
+    NamuPrefixSymbol = { link = "@Comment" },
+    NamuSymbolFunction = { link = "@function" },
+    NamuSymbolMethod = { link = "@function.method" },
+    NamuSymbolClass = { link = "@lsp.type.class" },
+    NamuSymbolInterface = { link = "@lsp.type.interface" },
+    NamuSymbolVariable = { link = "@lsp.type.variable" },
+    NamuSymbolConstant = { link = "@lsp.type.constant" },
+    NamuSymbolProperty = { link = "@lsp.type.property" },
+    NamuSymbolField = { link = "@lsp.type.field" },
+    NamuSymbolEnum = { link = "@lsp.type.enum" },
+    NamuSymbolModule = { link = "@lsp.type.module" },
+    NmuTreeGuides = { link = "Comment" },
+    NamuFileInfo = { link = "Comment" },
+    NamuPreview = { link = "Visual" },
+    NamuParent = { link = "Title" },
+    NamuNested = { link = "Identifier" },
+    NamuStyle = { link = "Type" },
+    -- Misc
+    FoldedSep = { fg = theme.diag.hint },
+    FoldedText = { fg = theme.ui.bg, bg = theme.diag.hint },
+    JumpLabel = {
+      fg = theme.ui.bg,
+      bg = theme.syn.special1,
+      nocombine = true,
+      bold = true,
+    },
+  }
+end
+
+return M
