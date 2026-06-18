@@ -35,8 +35,6 @@ _G.Statusline.config = {
 
 ---@param event_group integer
 local function init(event_group)
-  api.nvim_del_augroup_by_name("StatuslineLazyLoad")
-
   local highlight = require("ui.statusline.highlight")
   local render = require("ui.statusline.render")
 

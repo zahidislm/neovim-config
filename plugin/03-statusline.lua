@@ -37,6 +37,7 @@ vim.api.nvim_create_autocmd("DirChanged", {
 -- THE LAZY BOOTLOADER (Only responsible for booting the render engine)
 local lazy_group = vim.api.nvim_create_augroup("StatuslineLazyLoad", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile" }, {
+  once = true,
   group = lazy_group,
   callback = function ()
     require("ui.statusline").init(core_group)
