@@ -393,7 +393,13 @@ function diagnostics.setup(config)
     diagnostics.config = vim.tbl_extend("force", diagnostics.config, config)
 
     if diagnostics.config.keymap then
-      vim.api.nvim_set_keymap("n", diagnostics.config.keymap, "", { callback = diagnostics.hover })
+      vim.api.nvim_set_keymap(
+        "n", diagnostics.config.keymap, "",
+        {
+          callback = diagnostics.hover,
+          desc = "Open diagnostic hover",
+        }
+      )
     end
   end
 end
