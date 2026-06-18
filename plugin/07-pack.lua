@@ -17,7 +17,7 @@
 ---@field main?         string                     Explicit module to require
 ---@field build?        string | function          Shell/Vim command (starts with :) or function
 ---@field keys?         PackKeymap[]               Keybindings to set on load
----@field sync?         boolean                    Load immediately during Neovim's sync boot phase
+---@field sync?         boolean                    Load immediately during Neovim's startup phase
 ---@field _queued?      boolean                    DFS deduplication state
 ---@field _loaded?      boolean                    Execution deduplication state
 
@@ -26,6 +26,7 @@ local ALT_HOSTS = { gl = "https://gitlab.com/", cb = "https://codeberg.com/" }
 ---@type table<string, PackData>
 local registry = {}
 local queue = {}
+local sync_queue = {}
 local scheduled = false
 
 -- ============================================================================
@@ -77,10 +78,7 @@ local function setup_plugin(name)
       elseif not ok then
         vim.notify(
           string.format("Module '%s' not found for '%s'. Try specifying `data.main`.", mod, name),
-          vim
-            .log
-            .levels
-            .WARN
+          vim.log.levels.WARN
         )
       end
     end
@@ -101,7 +99,11 @@ end
 -- Resolution Engine
 -- ============================================================================
 
-local function queue_spec(raw)
+--- Resolve a raw spec into a native vim.pack entry and route it to the
+--- correct queue.
+---@param raw           string | table Raw spec as passed to Pack.add
+---@param inherit_sync? boolean        True when a sync parent is pulling this in as a dependency
+local function queue_spec(raw, inherit_sync)
   local spec = type(raw) == "string" and { src = raw } or raw
   local src = spec.src or spec[1]
 
@@ -120,11 +122,17 @@ local function queue_spec(raw)
 
   registry[name] = data
 
+  -- A plugin is sync if it declares sync = true, or if a sync-marked
+  -- parent is pulling it in as a dependency.  Dependencies always inherit
+  -- the sync status of their dependant so a sync plugin is never left
+  -- waiting for a deferred dep.
+  local is_sync = inherit_sync or data.sync or false
+
   if data._queued then return end
   data._queued = true
 
   for _, dep in ipairs(data.dependencies or {}) do
-    queue_spec(dep)
+    queue_spec(dep, is_sync)
   end
 
   -- Build native vim.pack.Spec
@@ -133,28 +141,36 @@ local function queue_spec(raw)
   native.src = (host and ALT_HOSTS[host]) and (ALT_HOSTS[host] .. rest)
     or (src:find("://") and src or "https://github.com/" .. src)
 
-  table.insert(queue, native)
+  table.insert(is_sync and sync_queue or queue, native)
 end
 
 -- ============================================================================
 -- Global API & Hooks
 -- ============================================================================
 
+--- Pass a batch of native specs to vim.pack.add with a shared load callback.
+---@param batch table[]
+local function flush_batch(batch)
+  vim.pack.add(batch, {
+    confirm = false,
+    load = function (p)
+      try("Mount failed [" .. p.spec.name .. "]", vim.cmd, "packadd " .. p.spec.name)
+      setup_plugin(p.spec.name)
+    end,
+  })
+end
+
 local function flush()
   if #queue > 0 then
-    vim.pack.add(queue, {
-      confirm = false,
-      load = function (p)
-        try("Mount failed [" .. p.spec.name .. "]", vim.cmd, "packadd " .. p.spec.name)
-        setup_plugin(p.spec.name)
-      end,
-    })
+    flush_batch(queue)
     queue = {}
   end
   scheduled = false
 end
 
 _G.Pack = {
+  ---Register one or more plugin specs.
+  ---@param specs string | table | table[]
   add = function (specs)
     local is_single = type(specs) == "string"
       or (type(specs) == "table" and (type(specs[1]) == "string" or specs.src))
@@ -165,6 +181,11 @@ _G.Pack = {
       for _, s in ipairs(specs) do
         queue_spec(s)
       end
+    end
+
+    if #sync_queue > 0 then
+      flush_batch(sync_queue)
+      sync_queue = {}
     end
 
     if not scheduled and #queue > 0 then
@@ -186,7 +207,6 @@ vim.api.nvim_create_autocmd("PackChanged", {
     vim.schedule(function ()
       local b = plugin.build
       if type(b) == "function" then
-        -- Restored raw path string execution
         try("Build failed [" .. spec.name .. "]", b, ev.data.path)
       elseif type(b) == "string" then
         if b:sub(1, 1) == ":" then
