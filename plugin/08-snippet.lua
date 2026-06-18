@@ -1,82 +1,69 @@
 local M = {}
+
+-- snippet_registry[filetype][trigger] = body
 local snippet_registry = {}
-local is_patched = false
-
--------------------------------------------------------------------------------
--- Safely hook into mini.completion's item processor
--------------------------------------------------------------------------------
-local function ensure_patched()
-  if is_patched or type(_G.MiniCompletion) ~= "table" then return end
-
-  _G.MiniCompletion.config = _G.MiniCompletion.config or {}
-  _G.MiniCompletion.config.lsp_completion = _G.MiniCompletion.config.lsp_completion or {}
-
-  local orig_process = _G.MiniCompletion.config.lsp_completion.process_items
-    or _G.MiniCompletion.default_process_items
-
-  _G.MiniCompletion.config.lsp_completion.process_items = function (items, base)
-    local combined_items = vim.list_extend({}, items or {})
-
-    local active_clients = vim.lsp.get_clients({ bufnr = 0 })
-    local fallback_client_id = active_clients[1] and active_clients[1].id
-
-    local ft = vim.bo.filetype
-    if not ft or ft == "" then ft = "text" end
-
-    for trigger, body in pairs(snippet_registry) do
-      if vim.startswith(trigger, base) then
-        table.insert(combined_items, {
-          label = trigger,
-          insertText = trigger,
-          kind = 15,
-          client_id = fallback_client_id,
-          documentation = {
-            kind = "markdown",
-            value = string.format("```%s\n%s\n```", ft, body),
-          },
-        })
-      end
-    end
-
-    return orig_process(combined_items, base)
-  end
-
-  is_patched = true
-end
 
 -------------------------------------------------------------------------------
 -- Snippet Registration
 -------------------------------------------------------------------------------
----@param trigger string trigger string for snippet
----@param body string snippet text that will be expanded
----@param opts? vim.keymap.set.Opts
-function M.add(trigger, body, opts)
-  opts = vim.tbl_deep_extend("force", { buffer = 0 }, opts or {})
-  snippet_registry[trigger] = body
-
-  -- Manual insertion mapping for <c-]>
-  vim.keymap.set("ia", trigger, function ()
-    local raw = vim.fn.getchar(0)
-    local c = vim.fn.nr2char(raw)
-    if c == "" then
-      vim.snippet.expand(body)
-    else
-      vim.api.nvim_feedkeys(trigger .. c, "i", true)
+--- Register one or more snippets for the current buffer's filetype.
+---@param snippets table<string, string> map of trigger -> snippet body
+  function M.add(snippets)
+    local ft = vim.bo.filetype
+    local registry = snippet_registry[ft]
+    if not registry then
+      registry = {}
+      snippet_registry[ft] = registry
     end
-  end, opts
-  )
-end
-
-_G["vimsnip"] = { add = M.add }
+    for trigger, body in pairs(snippets) do
+      registry[trigger] = body
+    end
+  end
 
 -------------------------------------------------------------------------------
--- Autocommands (Expansion Hook)
+-- Completion integration
+-------------------------------------------------------------------------------
+--- Build LSP-completion-item-shaped entries for the current buffer's filetype.
+---@param base string current completion base (typed prefix)
+---@return table[] items shaped like LSP `CompletionItem`s
+function M.get_items(base)
+  local ft = vim.bo.filetype
+  local snippets = snippet_registry[ft]
+  if not snippets then return {} end
+
+  local active_clients = vim.lsp.get_clients({ bufnr = 0 })
+  local fallback_client_id = active_clients[1] and active_clients[1].id
+
+  local items = {}
+  for trigger, body in pairs(snippets) do
+    if vim.startswith(trigger, base) then
+      table.insert(items, {
+        label = trigger,
+        insertText = body,
+        kind = vim.lsp.protocol.CompletionItemKind.Snippet,
+        client_id = fallback_client_id,
+        documentation = {
+          kind = "markdown",
+          value = string.format("```%s\n%s\n```", ft ~= "" and ft or "text", body),
+        },
+      })
+    end
+  end
+  return items
+end
+
+_G["vimsnip"] = M
+
+-------------------------------------------------------------------------------
+-- Autocommands
 -------------------------------------------------------------------------------
 local group = vim.api.nvim_create_augroup("CustomSnippetIntegration", { clear = true })
 vim.api.nvim_create_autocmd("LspAttach", {
   group = group,
   callback = function (args)
-    vim.schedule(ensure_patched)
     vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+    if _G.MiniIcons then _G.MiniIcons.tweak_lsp_kind() end
   end,
 })
+
+return M
