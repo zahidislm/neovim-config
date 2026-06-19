@@ -3,7 +3,7 @@ local snippet_registry = {}
 
 -------------------------------------------------------------------------------
 -- Snippet Registration
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 --- Register one or more snippets for the current buffer's filetype.
 ---@param snippets table<string, string> map of trigger -> snippet body
 function M.add(snippets)
