@@ -1,24 +1,22 @@
 local M = {}
-
--- snippet_registry[filetype][trigger] = body
 local snippet_registry = {}
 
 -------------------------------------------------------------------------------
 -- Snippet Registration
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 --- Register one or more snippets for the current buffer's filetype.
 ---@param snippets table<string, string> map of trigger -> snippet body
-  function M.add(snippets)
-    local ft = vim.bo.filetype
-    local registry = snippet_registry[ft]
-    if not registry then
-      registry = {}
-      snippet_registry[ft] = registry
-    end
-    for trigger, body in pairs(snippets) do
-      registry[trigger] = body
-    end
+function M.add(snippets)
+  local ft = vim.bo.filetype
+  local registry = snippet_registry[ft]
+  if not registry then
+    registry = {}
+    snippet_registry[ft] = registry
   end
+  for trigger, body in pairs(snippets) do
+    registry[trigger] = body
+  end
+end
 
 -------------------------------------------------------------------------------
 -- Completion integration
