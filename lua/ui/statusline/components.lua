@@ -172,7 +172,6 @@ M.components = {
   session = {
     render = function ()
       local session = vim.v.this_session
-      if session == "" then return "" end
       local name = vim.fn.fnamemodify(session, ":t")
       return name == "" and "" or icons.statusline.session .. name
     end,
