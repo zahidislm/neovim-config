@@ -52,16 +52,4 @@ end
 
 _G["vimsnip"] = M
 
--------------------------------------------------------------------------------
--- Autocommands
--------------------------------------------------------------------------------
-local group = vim.api.nvim_create_augroup("CustomSnippetIntegration", { clear = true })
-vim.api.nvim_create_autocmd("LspAttach", {
-  group = group,
-  callback = function (args)
-    vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-    if _G.MiniIcons then _G.MiniIcons.tweak_lsp_kind() end
-  end,
-})
-
 return M

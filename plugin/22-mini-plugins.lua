@@ -90,6 +90,11 @@ Pack.add({
         },
       }
       require("mini.completion").setup(comp_opts)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function (args)
+          vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+        end,
+      })
 
       -- mini.diff
       require("mini.diff").setup({})
@@ -98,6 +103,12 @@ Pack.add({
       local icons = require("mini.icons")
       local style = vim.g.use_nerdfonts and "glyph" or "ascii"
       icons.setup({ style = style })
+      vim.api.nvim_create_autocmd("LspAttach", {
+        once = true,
+        callback = function ()
+          if _G.MiniIcons then _G.MiniIcons.tweak_lsp_kind() end
+        end,
+      })
 
       -- mini.indentscope
       local ind_opts = { symbol = vim.g.iconchars.misc.v_border }
