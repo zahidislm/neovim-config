@@ -1,4 +1,3 @@
-local M = {}
 local snippet_registry = {}
 
 -------------------------------------------------------------------------------
@@ -6,7 +5,7 @@ local snippet_registry = {}
 -------------------------------------------------------------------------------
 --- Register one or more snippets for the current buffer's filetype.
 ---@param snippets table<string, string> map of trigger -> snippet body
-function M.add(snippets)
+local function add(snippets)
   local ft = vim.bo.filetype
   local registry = snippet_registry[ft]
   if not registry then
@@ -24,7 +23,7 @@ end
 --- Build LSP-completion-item-shaped entries for the current buffer's filetype.
 ---@param base string current completion base (typed prefix)
 ---@return table[] items shaped like LSP `CompletionItem`s
-function M.get_items(base)
+local function get_items(base)
   local ft = vim.bo.filetype
   local snippets = snippet_registry[ft]
   if not snippets then return {} end
@@ -50,6 +49,4 @@ function M.get_items(base)
   return items
 end
 
-_G["vimsnip"] = M
-
-return M
+_G["vimsnip"] = { add = add, get_items = get_items }
