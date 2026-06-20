@@ -41,11 +41,6 @@ M.sep_hl = {}
 -- Named Caches  ·  render.lua
 -- ─────────────────────────────────────────────────────────────────────────────
 
---- bufnr -> boolean
---- Caches whether a buffer should hide the statusline
----@type table<number, boolean>
-M.ignore = {}
-
 --- winid → WindowState { values, pills, final_string }.
 --- The render engine's per-window component value and pill cache.
 --- Entries are modified in-place by on_event(); cleared on WinClosed.
@@ -55,13 +50,6 @@ M.win = {}
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Bulk Invalidation Helpers
 -- ─────────────────────────────────────────────────────────────────────────────
-
---- Drops all buffer-scoped state for a given buffer.
---- Intended for BufDelete / BufWipeout autocmds.
----@param bufnr number
-function M.clear_buf(bufnr)
-  M.ignore[bufnr] = nil
-end
 
 --- Drops window-scoped state for a given window.
 --- Intended for WinClosed autocmd.

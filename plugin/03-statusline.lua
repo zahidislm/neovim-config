@@ -17,14 +17,6 @@ vim.api.nvim_create_autocmd("WinClosed", {
   desc = "[statusline] cleanup window state",
 })
 
-vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
-  group = core_group,
-  callback = function (args)
-    require("ui.statusline.cache").clear_buf(args.buf)
-  end,
-  desc = "[statusline] clear git timer for closed buffer",
-})
-
 vim.api.nvim_create_autocmd("DirChanged", {
   group = core_group,
   callback = function ()
