@@ -6,7 +6,7 @@ Pack.add({
       local install = loadfile(path .. "/lua/jupynvim/install.lua")()
       install.run({ dir = path })
     end,
-    config = {},
+    config = { explorer_keys = {}, terminal_keys = {}, pick_keys = {} },
   },
 })
 
