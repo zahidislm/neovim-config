@@ -79,6 +79,88 @@ Pack.add({
   },
 })
 
+-- Diff Viewer
+Pack.add({
+  "dlyongemallo/diffview-plus.nvim",
+  data = {
+    sync = true,
+    main = "diffview",
+    init = function ()
+      local diffview_group = vim.api.nvim_create_augroup("DiffviewFilesEvents", {
+        clear = true,
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "DiffviewFiles",
+        group = diffview_group,
+        callback = function (args)
+          vim.opt_local.cursorline = true
+          vim.b[args.buf].statusline_disable = true
+          vim.b[args.buf].miniindentscope_disable = true
+          vim.cmd([[hi Cursor blend=100]])
+          vim.cmd([[set guicursor+=a:Cursor/lCursor]])
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("WinLeave", {
+        group = diffview_group,
+        callback = function ()
+          local current_ft = vim.bo.filetype
+
+          if current_ft == "DiffviewFiles" then
+            vim.cmd([[hi Cursor blend=0]])
+          end
+        end,
+      })
+    end,
+    config = {
+      show_help_hints = false,
+      hide_merge_artifacts = true,
+      clean_up_buffers = true,
+      auto_close_on_empty = true,
+      enhanced_diff_hl = true,
+      diffopt = { algorithm = "histogram" },
+      file_panel = {
+        show_branch_name = true,
+        always_show_sections = true,
+      },
+      status_icons = {
+        ["A"] = vim.g.iconchars.git.FileStaged,    -- Added
+        ["?"] = vim.g.iconchars.git.FileUntracked, -- Untracked
+        ["M"] = vim.g.iconchars.git.FileModified,  -- Modified
+        ["R"] = vim.g.iconchars.git.FileRenamed,   -- Renamed
+        ["U"] = vim.g.iconchars.git.FileUnmerged,  -- Unmerged
+        ["X"] = vim.g.iconchars.git.FileUntracked, -- Unknown
+        ["D"] = vim.g.iconchars.git.FileDeleted,   -- Deleted
+        ["!"] = vim.g.iconchars.git.FileIgnored,   -- Ignored
+      },
+      view = {
+        merge_tool = {
+          layout = "diff4_mixed",
+          disable_diagnostics = true,
+          winbar_info = true,
+        },
+        cycle_layouts = {
+          merge_tool = { "diff4_mixed", "diff3_mixed", "diff3_horizontal", "diff1_plain" },
+        },
+      },
+      default_args = {
+        DiffviewOpen = { "--imply-local" },
+      },
+      hooks = {
+        diff_buf_read = function (_)
+          vim.opt_local.wrap = true
+          vim.opt_local.list = false
+          vim.opt_local.colorcolumn = { 80 }
+        end,
+      },
+    },
+    keys = {
+      { [[\D]], "<Cmd>DiffviewToggle<CR>", desc = "toggle diffview" },
+    },
+  },
+})
+
 -- Easymotion Jumping
 Pack.add({
   "yorickpeterse/nvim-jump",
@@ -162,7 +244,7 @@ Pack.add({
   data = {
     config = {
       preset = "helix",
-      filter = function (mapping) return mapping.desc and mapping.desc ~= "" end,
+      filter = function (mapping) return mapping.desc ~= "" or mapping.desc ~= "diffview_ignore" end,
       spec = {
         { "<Leader>a", group = "assist", icon = { icon = "󰁤 ", color = "purple" } },
         { "<Leader>d", group = "diagnostic", icon = { icon = " ", color = "orange" } },
