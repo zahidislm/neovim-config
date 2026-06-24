@@ -208,7 +208,7 @@ Pack.add({
     keys = {
       -- mini.diff
       {
-        [[\d]],
+        [[\h]],
         "<Cmd>lua _G.MiniDiff.toggle_overlay()<CR>",
         desc = "Toggle hunk view",
       },

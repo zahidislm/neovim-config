@@ -41,7 +41,7 @@ toggle_keymap("r", "<Cmd>setlocal relativenumber!<CR>", "toggle 'relativenumber'
 toggle_keymap("s", "<Cmd>setlocal spell!<CR>", "toggle 'spell'")
 toggle_keymap("w", "<Cmd>setlocal wrap!<CR>", "toggle 'wrap'")
 
-toggle_keymap("D", function ()
+toggle_keymap("d", function ()
   if vim.diagnostic.is_enabled() then
     vim.diagnostic.enable(false)
   else
