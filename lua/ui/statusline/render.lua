@@ -163,12 +163,15 @@ end
 --- Called on every statusline redraw via `%!v:lua._StatuslineNew_Eval()`.
 ---@return string
 function Render.evaluate()
-  if vim.g.statusline_disable == true or vim.b.statusline_disable == true
-    or vim.bo.filetype == "ministarter" then
+  if vim.g.statusline_disable == true then return " " end
+
+  local winid = vim.g.statusline_winid or api.nvim_get_current_win()
+  local bufnr = api.nvim_win_get_buf(winid)
+
+  if vim.b[bufnr].statusline_disable == true or vim.bo[bufnr].filetype == "ministarter" then
     return " "
   end
 
-  local winid = vim.g.statusline_winid or api.nvim_get_current_win()
   return ensure_win_state(winid).final_string
 end
 
