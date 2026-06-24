@@ -1,7 +1,7 @@
 {
   "plugins": {
     "artio.nvim": {
-      "rev": "0b08d6862afe685fd78963808d022d7c15c89546",
+      "rev": "52a074e6a15780df350c03b5c7ab47f706fe6da8",
       "src": "https://github.com/comfysage/artio.nvim"
     },
     "bento.nvim": {
@@ -10,11 +10,15 @@
       "version": "'feat/v2'"
     },
     "codedocs.nvim": {
-      "rev": "fd0893eb46056dd44e171b81ffd45468ed686977",
+      "rev": "9c9a12ad13aa11a28486a7210789055c1482d237",
       "src": "https://github.com/jeangiraldoo/codedocs.nvim"
     },
+    "diffview-plus.nvim": {
+      "rev": "d5c09986681a671613aef0226ef409c01561d64c",
+      "src": "https://github.com/dlyongemallo/diffview-plus.nvim"
+    },
     "garbage-day.nvim": {
-      "rev": "4bea540f219a980334c9b36f8289f3cc2651d6e6",
+      "rev": "cb64d8df977cc2dbee0a69f56b36621f6163666d",
       "src": "https://github.com/zahidislm/garbage-day.nvim"
     },
     "glance.nvim": {
@@ -26,7 +30,7 @@
       "src": "https://github.com/nmac427/guess-indent.nvim"
     },
     "jupynvim": {
-      "rev": "43bc3b672f5b48d7c5f64f5832ef33fc465295cd",
+      "rev": "9602701ff859530ce2894908dfda0724ee6adad8",
       "src": "https://github.com/sheng-tse/jupynvim"
     },
     "kanso.nvim": {
@@ -38,11 +42,11 @@
       "src": "https://github.com/saecki/live-rename.nvim"
     },
     "mini.nvim": {
-      "rev": "a59a9b7fb0a42cbcf022938ee5f0724320b66f63",
+      "rev": "c594be5b095204e99473825ec2dee872e7409a4d",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "mini.starter": {
-      "rev": "a7d8b353cf120fee32bb5d88e7a9de5eaec746e7",
+      "rev": "0575c96206d63fd98d7f786df78dc225bf847d95",
       "src": "https://github.com/nvim-mini/mini.starter"
     },
     "namu.nvim": {
@@ -63,11 +67,11 @@
       "version": "'main'"
     },
     "render-markdown.nvim": {
-      "rev": "5adf0895310c1904e5abfaad40a2baad7fe44a07",
+      "rev": "f422cb5c6855f150e2ddcfaf44e7157b98b34f6a",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "tree-sitter-manager.nvim": {
-      "rev": "c8a7b7b91aa23da24e7d02874f78d4c668a08530",
+      "rev": "ae305699da5e97b6cffdd5cc6f6045b1b0bd26ea",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim"
     },
     "vim-smoothie": {
