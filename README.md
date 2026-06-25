@@ -13,6 +13,13 @@
 
 <br>
 
+## Philosophy
+
+To me, `neovim` is first: a text editor, second: a code editor, third: a diff viewer.
+Therefore, my configuration and workflow is designed around that idea.
+This configuration doesn't try to do everything nor replace what a multiplexer, terminal, or a proper IDE tries to do. But it does try to make editing text on neovim more enjoyable and convenient (at least to me).
+Use a terminal to managae files/directories/structure. Use a multiplexer for complex splits. Use an IDE to debug. Use neovim to edit.
+
 > [!NOTE]
 > This is a personal configuration, tuned for one person's workflow on purpose. It isn't a distribution, it doesn't try to be beginner-friendly, and large parts of it exist because I wanted to learn how a particular Neovim internal worked, not because there was no plugin that already did the job. Feel free to read, steal, or fork pieces of it, but I'd think twice before pointing `git clone` straight at `~/.config/nvim` and hoping for the best.
 
