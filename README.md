@@ -68,7 +68,18 @@ Forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statusco
 
 ### `diag-hover.lua`
 
-A replacement for `vim.diagnostic.open_float()`. The interesting part isn't the rendering (which tints the background by severity using an alpha blend), it's the positioning. Rather than always opening below the cursor and occasionally clipping off-screen, it checks four quadrants relative to the cursor and picks the first one that actually fits the screen. It tracks which quadrant is currently occupied so a second float doesn't stack directly on top of the first, and draws border-corner glyphs so the box visually "points" back at the cursor.
+A replacement for `vim.diagnostic.open_float()`.
+
+<details>
+<summary><b>Expand to see details.</b></summary>
+<br>
+
+<picture><img src="https://i.8upload.com/image/df5cbae0ddcdf2d0/screenshot-hover-diag.png" alt="diag-hover screenshot" /></picture>
+
+
+The interesting part isn't the rendering (which tints the background by severity using an alpha blend), it's the positioning. Rather than always opening below the cursor and occasionally clipping off-screen, it checks four quadrants relative to the cursor and picks the first one that actually fits the screen. It tracks which quadrant is currently occupied so a second float doesn't stack directly on top of the first, and draws border-corner glyphs so the box visually "points" back at the cursor.
+</details>
+
 
 ### `breadcrumbs.lua`: LSP symbols, falling back to Tree-sitter
 
