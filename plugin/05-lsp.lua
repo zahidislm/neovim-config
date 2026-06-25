@@ -3,6 +3,8 @@ local function keymap(mode, lhs, rhs, bufnr, desc)
   vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
 end
 
+--- LSP symbols provided globaly for all lsp clients
+---@param bufnr int
 local function global_provider(bufnr)
   keymap(
     "n", "gri", "<Cmd>Glance implementations<CR>", bufnr, "Show implementations of the cursorword"
@@ -17,6 +19,9 @@ local function global_provider(bufnr)
   keymap("n", "grO", "<Cmd>Glance definitions<CR>", bufnr, "Show definition of the cursorword")
 end
 
+--- Rename symbol provider
+---@param client table LSP Client information
+---@param bufnr  int Current buffer
 local function rename_provider(client, bufnr)
   local caps = client ~= nil and client.server_capabilities or {}
 
@@ -33,6 +38,9 @@ local function rename_provider(client, bufnr)
   end
 end
 
+--- Format provider
+---@param client table LSP CLient information 
+---@param bufnr int Current buffer
 local function format_provider(client, bufnr)
   local caps = client ~= nil and client.server_capabilities or {}
 
