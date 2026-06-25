@@ -80,10 +80,18 @@ A replacement for `vim.diagnostic.open_float()`.
 The interesting part isn't the rendering (which tints the background by severity using an alpha blend), it's the positioning. Rather than always opening below the cursor and occasionally clipping off-screen, it checks four quadrants relative to the cursor and picks the first one that actually fits the screen. It tracks which quadrant is currently occupied so a second float doesn't stack directly on top of the first, and draws border-corner glyphs so the box visually "points" back at the cursor.
 </details>
 
-
 ### `breadcrumbs.lua`: LSP symbols, falling back to Tree-sitter
 
-A winbar component. If an attached LSP client supports `textDocument/documentSymbol`, it walks the returned symbol tree to find the symbol path containing the cursor. If nothing's attached, it walks up the Tree-sitter parent chain instead. It matches node types across roughly ten grammars onto a shared set of icon categories, dynamically recovering names for anonymous nodes (like a JS arrow function or Lua `M.foo = function()`) by looking one level up at the enclosing declaration.
+A winbar component to show current symbol.
+
+<details>
+<summary><b>Expand to see details.</b></summary>
+<br>
+
+<picture><img src="https://i.8upload.com/image/4861067022e098f4/screenshot-breadcrumbs.png" alt="breadcrumbs screenshot" /></picture>
+
+If an attached LSP client supports `textDocument/documentSymbol`, it walks the returned symbol tree to find the symbol path containing the cursor. If nothing's attached, it walks up the Tree-sitter parent chain instead. It matches node types across roughly ten grammars onto a shared set of icon categories, dynamically recovering names for anonymous nodes (like a JS arrow function or Lua `M.foo = function()`) by looking one level up at the enclosing declaration.
+</details>
 
 ### `foldtext.lua`: Folds that keep their syntax highlighting
 
