@@ -1,7 +1,7 @@
-# ⏣ Neovim Configuration (v1.12+)
+# ⏣ Neovim Configuration
 
 > [!NOTE]
-> An optimized, Neovim environment. Built around the principles of *Kansō* (簡素)—simplicity and the elimination of clutter—this setup leverages the bleeding-edge features of Neovim 1.12+ and the native Lua API to deliver a lightweight, high-performance editing experience.
+> An optimized, personal Neovim environment. Built around the principles of *Kansō* (簡素)—simplicity and the elimination of clutter—this setup leverages the bleeding-edge features of Neovim 1.12+ and the native Lua API to deliver a lightweight, high-performance editing experience.
 
 ## Core Philosophy
 
