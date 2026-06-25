@@ -5,7 +5,7 @@
 **A from-scratch Neovim setup built on `vim.pack`, native LSP, and a hand-rolled UI layer.**
 
 ![Neovim](https://img.shields.io/badge/Neovim-%E2%89%A50.12-57A143?style=flat-square&logo=neovim&logoColor=white)
-![Lua](https://img.shields.io/badge/Lua-100%25-2C2D72?style=flat-square&logo=lua&logoColor=white)
+![macOS](https://img.shields.io/badge/macOS-000000?style=flat-square&logo=apple&logoColor=F0F0F0)
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square)
 ![Colorscheme](https://img.shields.io/badge/colorscheme-Kans%C5%8D-8a7a99?style=flat-square)
 
@@ -223,10 +223,9 @@ Binaries aren't installed for you. Whichever servers you actually use need to al
 > [!IMPORTANT]
 > Neovim **0.12 or newer** is required. This config leans on `vim.pack`, native `lsp/*.lua` config files, and `vim._core.ui2`, none of which exist on 0.11 or earlier.
 
-- **Neovim ≥ 0.12**,
-- **git**
+- VCS: currently `git` is needed for vim.pack. `jj` support to come soon.
 - Whichever **per-language tooling** your `after/lsp/*.lua` files actually point at. `clangd`, `uv`/`uvx` (for `ty`/`ruff`), `R`, `julia`, `taplo`, `zls`, and so on. None of it is installed for you; there's no Mason here to do it.
-- Optionally, **Go** and an `INCEPTION_AI_TOKEN` environment variable, only if you want `cursortab.nvim` to load at all.
+- Optionally, **Go compiler** and an `INCEPTION_AI_TOKEN` environment variable, only if you want `cursortab.nvim` to load at all.
 - A **Nerd Font**, if you'd rather keep `vim.g.use_nerdfonts = true` than fall back to the plain Unicode icon set.
 
 ```bash
