@@ -102,6 +102,53 @@ local function eval(val, ...)
   return (can_call and new_val ~= nil) and new_val or nil
 end
 
+--- wraps a single line to fit within `width`
+--- display cells. A word that alone exceeds `width` is hard-broken
+--- character-by-character so no row is ever wider than `width`.
+---@param text  string
+---@param width integer Max display width per resulting row.
+---@return string[] rows
+local function wrap_text(text, width)
+  width = math.max(1, width)
+  if vim.fn.strdisplaywidth(text) <= width then return { text } end
+
+  local rows, line, line_w = {}, "", 0
+
+  local function push_word(word, word_w)
+    if word_w > width then
+      if line_w > 0 then
+        table.insert(rows, line)
+        line, line_w = "", 0
+      end
+      for _, ch in ipairs(vim.fn.split(word, "\\zs")) do
+        local ch_w = vim.fn.strdisplaywidth(ch)
+        if line_w > 0 and line_w + ch_w > width then
+          table.insert(rows, line)
+          line, line_w = ch, ch_w
+        else
+          line, line_w = line .. ch, line_w + ch_w
+        end
+      end
+      return
+    end
+
+    if line_w == 0 then
+      line, line_w = word, word_w
+    elseif line_w + 1 + word_w <= width then
+      line, line_w = line .. " " .. word, line_w + 1 + word_w
+    else
+      table.insert(rows, line)
+      line, line_w = word, word_w
+    end
+  end
+
+  for word in text:gmatch("%S+") do
+    push_word(word, vim.fn.strdisplaywidth(word))
+  end
+  if line ~= "" then table.insert(rows, line) end
+  return rows
+end
+
 --- Retrieves the evaluated decoration properties for a given diagnostic item.
 ---@param level integer | string The severity level key.
 ---@param ...   any              Arguments passed to the dynamic evaluators.
@@ -128,7 +175,9 @@ diagnostics.config = {
     local max = math.floor(vim.o.columns * 0.4)
     local use = 1
     for _, item in ipairs(items) do
-      use = math.min(math.max(vim.fn.strdisplaywidth(item.message or ""), use), max)
+      for _, line in ipairs(vim.split(item.message or "", "\n", { trimempty = true })) do
+        use = math.min(math.max(vim.fn.strdisplaywidth(line), use), max)
+      end
     end
     return use
   end,
@@ -237,33 +286,27 @@ function diagnostics.__build_buffer_state(items, cursor)
   vim.api.nvim_buf_set_lines(diagnostics.buffer, 0, -1, false, {})
 
   for i, item in ipairs(items) do
-    local lines = vim.split(item.message, "\n", { trimempty = true })
+    local lines = {}
+    for _, paragraph in ipairs(vim.split(item.message or "", "\n", { trimempty = true })) do
+      vim.list_extend(lines, wrap_text(paragraph, message_width))
+    end
+    if #lines == 0 then
+      lines = { "" }
+    end
+
     local current = (cursor[2] >= item.col and cursor[2] <= item.end_col)
-    if current then cursor_y = i end
+    if current then cursor_y = diagnostic_lines + 1 end
 
     vim.api.nvim_buf_set_lines(diagnostics.buffer, diagnostic_lines, -1, false, lines)
     local decorations = get_decorations(item.severity, item, current)
     ranges[i] = { item.lnum, item.col }
 
-    vim.api.nvim_buf_set_extmark(diagnostics.buffer, diagnostics.ns, diagnostic_lines, 0, {
-      virt_text = decorations.icon,
-      virt_text_pos = "inline",
-      line_hl_group = decorations.line_hl_group,
-      end_row = diagnostic_lines + 1,
-    })
-
-    for j = 2, #lines do
-      vim.api.nvim_buf_set_extmark(
-        diagnostics.buffer,
-        diagnostics.ns,
-        diagnostic_lines + j - 1,
-        0,
-        {
-          virt_text = decorations.padding,
-          virt_text_pos = "inline",
-          line_hl_group = decorations.line_hl_group,
-        }
-      )
+    for j = 1, #lines do
+      vim.api.nvim_buf_set_extmark(diagnostics.buffer, diagnostics.ns, diagnostic_lines + j - 1, 0, {
+        virt_text = j == 1 and decorations.icon or decorations.padding,
+        virt_text_pos = "inline",
+        line_hl_group = decorations.line_hl_group,
+      })
     end
 
     diagnostic_lines = diagnostic_lines + #lines
@@ -295,9 +338,7 @@ function diagnostics.__setup_window(source_win, W, D, cursor_y)
     vim.api.nvim_win_set_config(diagnostics.window, height_calc_config)
   end
 
-  vim.wo[diagnostics.window].wrap = true
-  vim.wo[diagnostics.window].linebreak = true
-  vim.wo[diagnostics.window].breakindent = true
+  vim.wo[diagnostics.window].wrap = false
 
   local H = vim.api.nvim_win_text_height(diagnostics.window, { start_row = 0, end_row = -1 }).all
   local border, relative, anchor, row, col = diagnostics.__win_args(source_win, W, H)
@@ -393,13 +434,10 @@ function diagnostics.setup(config)
     diagnostics.config = vim.tbl_extend("force", diagnostics.config, config)
 
     if diagnostics.config.keymap then
-      vim.api.nvim_set_keymap(
-        "n", diagnostics.config.keymap, "",
-        {
-          callback = diagnostics.hover,
-          desc = "Open diagnostic hover",
-        }
-      )
+      vim.api.nvim_set_keymap("n", diagnostics.config.keymap, "", {
+        callback = diagnostics.hover,
+        desc = "Open diagnostic hover",
+      })
     end
   end
 end
