@@ -2,6 +2,8 @@
 
 # ⏣ neovim-config
 
+![Screenshot of neovim configuration in both light & dark mode](https://i.8upload.com/image/90e83324810d6f10/banner.png)
+
 **A from-scratch Neovim setup built on `vim.pack`, native LSP, and a hand-rolled UI layer.**
 
 ![Neovim](https://img.shields.io/badge/Neovim-%E2%89%A50.12-57A143?style=flat-square&logo=neovim&logoColor=white)
