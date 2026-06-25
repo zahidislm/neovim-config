@@ -95,7 +95,16 @@ If an attached LSP client supports `textDocument/documentSymbol`, it walks the r
 
 ### `foldtext.lua`: Folds that keep their syntax highlighting
 
+A custom (and rather aesthetic) foldtext implementation.
+
+<details>
+<summary><b>Expand to see details.</b></summary>
+<br>
+
+<picture><img src="https://i.8upload.com/image/6eed6e8054d6f3a2/screenshot-foldtext.png" alt="foldtext screenshot" /></picture>
+
 Neovim's default foldtext just shows the bare first line. This runs the buffer's actual Tree-sitter `highlights` query against the fold's start and end lines, resolving overlapping capture ranges to reassemble the line as a list of `{text, highlight}` chunks. A folded function signature still shows types and keywords in their normal colors.
+</details>
 
 ### `quickfix.lua`: A custom `quickfixtextfunc` handler
 
