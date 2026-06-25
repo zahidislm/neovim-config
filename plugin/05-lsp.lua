@@ -20,7 +20,7 @@ local function global_provider(bufnr)
 end
 
 --- Rename symbol provider
----@param client table LSP Client information
+---@param client vim.lsp.Client? LSP Client information
 ---@param bufnr  int Current buffer
 local function rename_provider(client, bufnr)
   local caps = client ~= nil and client.server_capabilities or {}
@@ -39,7 +39,7 @@ local function rename_provider(client, bufnr)
 end
 
 --- Format provider
----@param client table LSP CLient information 
+---@param client vim.lsp.Client? LSP CLient information 
 ---@param bufnr int Current buffer
 local function format_provider(client, bufnr)
   local caps = client ~= nil and client.server_capabilities or {}
