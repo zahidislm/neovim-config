@@ -108,7 +108,16 @@ Neovim's default foldtext just shows the bare first line. This runs the buffer's
 
 ### `quickfix.lua`: A custom `quickfixtextfunc` handler
 
+Custom styling & layout for quickfix items.
+
+<details>
+<summary><b>Expand to see details.</b></summary>
+<br>
+
+<picture><img src="https://i.8upload.com/image/f3b79e67153ac072/screenshot-quickfix.png" alt="quickfix screenshot" /></picture>
+
 Each line gets a diagnostic-severity icon, a `mini.icons` filetype icon, and a path where every interior segment is abbreviated down to one or two characters. Everything lines up into three aligned columns separated by `│`, which doubles as the delimiter `nvim-bqf` expects for its fzf preview filter. It prefers showing the *live* buffer line over the stored item text so a long-running quickfix session reflects edits you've made since the list was built.
+</details>
 
 ### `statusline`: An event-driven statusline
 
