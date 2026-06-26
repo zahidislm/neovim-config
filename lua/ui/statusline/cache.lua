@@ -19,18 +19,6 @@ M.repo = {}
 -- Named Caches  ·  highlight.lua
 -- ─────────────────────────────────────────────────────────────────────────────
 
---- hl_name → style table { fg, bg, ... }.
---- Saved during setup so highlights can be faithfully restored after a
---- ColorScheme event without re-running the full setup() call.
----@type table<string, table>
-M.saved_hl = {}
-
---- Synthesised hl_name → mini.icons bg hex string.
---- Lets resolve_hl() skip nvim_set_hl on repeat visits for the same file type.
---- Entries are updated (not cleared) on ColorScheme to match the new base fg.
----@type table<string, string>
-M.file_hl = {}
-
 --- parent_hl_name → true.
 --- Guards against re-creating separator highlights that already exist.
 --- Entries are regenerated (overwritten) on ColorScheme.
