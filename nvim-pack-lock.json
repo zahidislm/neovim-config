@@ -18,7 +18,7 @@
       "src": "https://github.com/dlyongemallo/diffview-plus.nvim"
     },
     "garbage-day.nvim": {
-      "rev": "cb64d8df977cc2dbee0a69f56b36621f6163666d",
+      "rev": "8c77a79311821546175fa3c655bcc87782472160",
       "src": "https://github.com/zahidislm/garbage-day.nvim"
     },
     "glance.nvim": {
