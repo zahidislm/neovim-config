@@ -58,6 +58,13 @@ function M.clear_win(winid)
   M.win[winid] = nil
 end
 
+--- Drops state for all windows
+function M.clear_all_wins()
+  for k in pairs(M.win) do
+    M.win[k] = nil
+  end
+end
+
 --- Empties all session-level caches without reallocating tables (GC friendly).
 --- Intended for DirChanged, where every repo and git-status assumption is stale.
 function M.clear_session()

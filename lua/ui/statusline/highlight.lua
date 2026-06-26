@@ -107,23 +107,18 @@ function Highlight.setup()
   Highlight.palette = get_palette()
 
   for hl_name, style in pairs(build_highlights(Highlight.palette)) do
-    api.nvim_set_hl(0, hl_name, vim.tbl_extend("keep", style, { default = true }))
+    local opts = vim.tbl_extend("keep", style, { default = true })
+    api.nvim_set_hl(0, hl_name, opts)
   end
 end
 
 function Highlight.on_colorscheme()
-  -- 1. Restore defaults
   Highlight.setup()
-
   vim.defer_fn(function ()
-    local statusline_bg = Highlight.get_color("StatusLine", "bg", "NONE")
-
-    for parent_hl in pairs(cache.sep_hl) do
-      apply_separator_hl(parent_hl, statusline_bg)
-    end
-
+    cache.sep_hl = {}
+    cache.clear_all_wins()
     vim.cmd.redrawstatus()
-  end, 30)
+  end, 67)
 end
 
 return Highlight
