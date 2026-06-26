@@ -9,9 +9,11 @@ function M.get_hls(colors)
     -- Core
     NormalFloat = { fg = theme.ui.float.fg, bg = theme.ui.float.bg },
     FloatBorder = { fg = theme.ui.float.fg_border, bg = theme.ui.float.bg_border },
-    PmenuBorder = { fg = theme.ui.bg_search, bg = "NONE" },
+    Pmenu = { fg = theme.ui.pmenu.fg, bg = theme.ui.bg },
+    PmenuBorder = { fg = theme.ui.bg_search, bg = theme.ui.bg },
+    PmenuMatch = { fg = theme.syn.fun, bold = true },
     -- StatusLine
-    StatusLine = { bg = "NONE" },
+    StatusLine = { bg = theme.ui.none },
     StatusLineModeNormal = { fg = theme.ui.bg, bg = theme.syn.fun },
     StatusLineModeInsert = { fg = theme.ui.bg, bg = theme.diag.ok },
     StatusLineModeVisual = { fg = theme.ui.bg, bg = theme.syn.keyword },
