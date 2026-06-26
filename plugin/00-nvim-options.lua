@@ -14,7 +14,7 @@ opt.winborder = "rounded" -- Float window border style
 opt.pumborder = "rounded" -- Completion window border style
 opt.pumblend = 10         -- Completion window transparency
 opt.pumheight = 7         -- Maximum completion menu height
-opt.pummaxwidth = 80      -- Maximum completion menu width
+opt.pummaxwidth = 55      -- Maximum completion menu width
 opt.fillchars:append({
   eob = " ",
   fold = " ",

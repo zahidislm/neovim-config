@@ -77,9 +77,15 @@ Pack.add({
           source_func = "omnifunc",
           auto_setup = false,
           process_items = function (items, base)
+            local MAX_ABBR_LEN = 40
+            local function truncate(s, max_len)
+              if vim.fn.strcharlen(s) <= max_len then return s end
+              return vim.fn.strcharpart(s, 0, max_len - 1) .. "…"
+            end
             for _, item in ipairs(items) do
               item.detail = nil
               item.labelDetails = nil
+              item.label = truncate(item.label, MAX_ABBR_LEN)
             end
             if _G.vimsnip then
               vim.list_extend(items, _G.vimsnip.get_items(base))
