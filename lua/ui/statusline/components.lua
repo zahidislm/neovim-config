@@ -143,11 +143,16 @@ M.components = {
     hl = "StatusLineGit",
   },
   lsp = {
-    render = function (_, winid)
+    render = function (args, winid)
       local bufnr = api.nvim_win_get_buf(winid)
       local names = {}
       for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-        names[#names + 1] = client.name
+        local is_detaching = args.event == "LspDetach" and args.data
+          and args.data.client_id == client.id
+
+        if not is_detaching then
+          names[#names + 1] = client.name
+        end
       end
       return table.concat(names, "|")
     end,
