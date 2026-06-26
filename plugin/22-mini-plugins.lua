@@ -90,8 +90,7 @@ Pack.add({
             if _G.vimsnip then
               vim.list_extend(items, _G.vimsnip.get_items(base))
             end
-            local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
-            return _G["MiniCompletion"].default_process_items(items, base, process_items_opts)
+            return _G["MiniCompletion"].default_process_items(items, base)
           end,
         },
       }
