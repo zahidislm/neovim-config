@@ -117,12 +117,10 @@ Pack.add({
       show_help_hints = false,
       hide_merge_artifacts = true,
       clean_up_buffers = true,
-      auto_close_on_empty = true,
       enhanced_diff_hl = true,
       diffopt = { algorithm = "histogram" },
       file_panel = {
         show_branch_name = true,
-        always_show_sections = true,
       },
       status_icons = {
         ["A"] = vim.g.iconchars.git.FileStaged,    -- Added
