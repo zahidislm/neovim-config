@@ -12,6 +12,7 @@ opt.cmdheight = 0      -- Cmdline height
 -- option.winblend = 8          -- Transparency
 opt.winborder = "rounded" -- Float window border style
 opt.pumborder = "rounded" -- Completion window border style
+opt.pumblend = 10         -- Completion window transparency
 opt.pumheight = 7         -- Maximum completion menu height
 opt.pummaxwidth = 80      -- Maximum completion menu width
 opt.fillchars:append({
