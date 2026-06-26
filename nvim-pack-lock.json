@@ -30,7 +30,7 @@
       "src": "https://github.com/nmac427/guess-indent.nvim"
     },
     "jupynvim": {
-      "rev": "9602701ff859530ce2894908dfda0724ee6adad8",
+      "rev": "666717172ea4b008af0a3361dd1794cfd3b2ac44",
       "src": "https://github.com/sheng-tse/jupynvim"
     },
     "kanso.nvim": {
@@ -42,11 +42,11 @@
       "src": "https://github.com/saecki/live-rename.nvim"
     },
     "mini.nvim": {
-      "rev": "c594be5b095204e99473825ec2dee872e7409a4d",
+      "rev": "c248713d3530710f67ec804cfbdfcd5b02b19dee",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "mini.starter": {
-      "rev": "0575c96206d63fd98d7f786df78dc225bf847d95",
+      "rev": "a1c26c1c4acd08beb5b0057c663acb6e5f5b7042",
       "src": "https://github.com/nvim-mini/mini.starter"
     },
     "namu.nvim": {
