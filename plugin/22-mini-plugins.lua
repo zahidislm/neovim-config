@@ -156,10 +156,10 @@ Pack.add({
       -- Smart Tab
       local tab_modes = { "i", "s" }
       local tab_steps = {
-        "vimsnippet_next", "pmenu_next", "increase_indent", "jump_after_tsnode", "jump_after_close",
+        "pmenu_next", "vimsnippet_next", "increase_indent", "jump_after_tsnode", "jump_after_close",
       }
       local shifttab_steps = {
-        "vimsnippet_prev", "pmenu_prev", "decrease_indent", "jump_before_tsnode", "jump_before_open",
+        "pmenu_prev", "vimsnippet_prev", "decrease_indent", "jump_before_tsnode", "jump_before_open",
       }
       key.map_multistep(tab_modes, "<Tab>", tab_steps)
       key.map_multistep(tab_modes, "<S-Tab>", shifttab_steps)
