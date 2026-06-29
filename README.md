@@ -40,7 +40,6 @@ This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp
   - [foldtext](#foldtextlua-folds-that-keep-their-syntax-highlighting)
   - [quickfix](#quickfixlua-a-custom-quickfixtextfunc-handler)
   - [statusline](#statusline-an-event-driven-statusline)
-  - [pack-manager](#pack-managerlua-a-dashboard-for-vimpack)
   - [theming](#icons-coloring-and-the-highlight-overrides)
 - [Plugins](#the-plugins)
   - [vim.pack wrapper](#packadd-the-vimpack-wrapper)
@@ -127,10 +126,6 @@ Designed to be highly efficient in both performance and memory usage:
 - State is cached per-window, so splits genuinely have independent statuslines, and cache is cleared on `WinClosed`.
 - The git segment doesn't poll. It uses `vim.uv.new_fs_event` to watch `.git/HEAD` directly, correctly resolving worktrees and submodules by following the `gitdir: <path>` pointer. 
 - Separator highlights are synthesized on demand by sampling each component's resolved background color rather than being declared up front.
-
-### `pack-manager.lua`: A dashboard for `vim.pack`
-
-`:Pack` opens a floating-window plugin manager for the native `vim.pack` API. `:Pack check` fetches tags for pinned plugins, finds the newest one, and diffs the commit range looking for Conventional-Commits-style breaking markers (`feat!:`, `fix(scope)!:`, etc.). It allows you to see a breaking change coming *before* it's even tagged.
 
 ### Icons, coloring, and the highlight overrides
 
