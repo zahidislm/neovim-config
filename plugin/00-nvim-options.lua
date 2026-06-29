@@ -100,7 +100,7 @@ opt.splitkeep = "screen"   -- Reduce scrolling on splits
 opt.synmaxcol = 200        -- Max columns for syntax search
 opt.jumpoptions = "view"   -- make the jumplist behavior more intuitive
 
--- wether or not current enivronment supports nerd fonts
+-- whether or not current environment supports nerd fonts
 vim.g.use_nerdfonts = true
 
 -- global language variables

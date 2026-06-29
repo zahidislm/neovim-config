@@ -63,7 +63,7 @@ Pack.add({
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },
           }),
-          -- Class declerations
+          -- Class declarations
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
           -- HTML Tags
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },

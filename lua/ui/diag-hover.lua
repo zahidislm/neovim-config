@@ -427,7 +427,7 @@ function diagnostics.hover(window)
   diagnostics.__attach_keymaps(window, ranges)
 end
 
---- Initializes the diagnostics plugin configuration and global autocommands.
+--- Initializes the diagnostics plugin configuration and global autocmds.
 ---@param config? diagnostics.config Optional configuration table overrides.
 function diagnostics.setup(config)
   if type(config) == "table" then
