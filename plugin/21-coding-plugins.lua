@@ -1,4 +1,4 @@
--- Codedoc Generaation
+-- Codedoc Generation
 Pack.add({
   "jeangiraldoo/codedocs.nvim",
   data = {

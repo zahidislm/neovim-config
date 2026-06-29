@@ -29,7 +29,7 @@ keymap(
 )
 
 -- Paste
-keymap({ norm, vis }, "<M-p>", [["+P`[v`]=]], { desc = "Put from clipboard" })
+keymap({ norm, vis }, "=pp", [["+P`[v`]=]], { desc = "Put from clipboard" })
 keymap({ norm, vis }, "gp", "`[v`]", { desc = "Select previous paste" })
 keymap({ norm, vis }, "=p", [[P`[v`]=]], { desc = "Formatted put" })
 

@@ -1,4 +1,4 @@
-vim.api.nvim_create_autocmd("BufReadPre", {
+vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
   once = true,
   callback = function ()
     local opts = {

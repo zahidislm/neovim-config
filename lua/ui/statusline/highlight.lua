@@ -115,10 +115,9 @@ end
 function Highlight.on_colorscheme()
   Highlight.setup()
   vim.defer_fn(function ()
-    cache.sep_hl = {}
-    cache.clear_all_wins()
+    cache.clear_rendering()
     vim.cmd.redrawstatus()
-  end, 67)
+  end, 100)
 end
 
 return Highlight

@@ -63,7 +63,7 @@ Pack.add({
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },
           }),
-          -- Class declerations
+          -- Class declarations
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
           -- HTML Tags
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
@@ -156,10 +156,10 @@ Pack.add({
       -- Smart Tab
       local tab_modes = { "i", "s" }
       local tab_steps = {
-        "vimsnippet_next", "pmenu_next", "increase_indent", "jump_after_tsnode", "jump_after_close",
+        "pmenu_next", "vimsnippet_next", "increase_indent", "jump_after_tsnode", "jump_after_close",
       }
       local shifttab_steps = {
-        "vimsnippet_prev", "pmenu_prev", "decrease_indent", "jump_before_tsnode", "jump_before_open",
+        "pmenu_prev", "vimsnippet_prev", "decrease_indent", "jump_before_tsnode", "jump_before_open",
       }
       key.map_multistep(tab_modes, "<Tab>", tab_steps)
       key.map_multistep(tab_modes, "<S-Tab>", shifttab_steps)
@@ -198,17 +198,17 @@ Pack.add({
           ["<"] = { output = { left = "< ", right = " >" } },
         },
         mappings = {
-          add = "ys",
+          add = "gs",
           delete = "ds",
           find = "",
           find_left = "",
           highlight = "",
           replace = "cs",
-          update_n_lines = "",
         },
         search_method = "cover_or_next",
       }
       require("mini.surround").setup(surr_opts)
+      vim.keymap.del("x", "gs")
     end,
     keys = {
       -- mini.diff
@@ -319,9 +319,9 @@ Pack.add({
       -- mini.surround
       {
         "s",
-        "<Cmd><C-u>lua MiniSurround.add('visual')<CR>",
+        [[:<C-u>lua MiniSurround.add('visual')<CR>]],
         mode = "x",
-        desc = "Add surroundinf to selection",
+        desc = "Add surrounding to selection",
       },
     },
   },

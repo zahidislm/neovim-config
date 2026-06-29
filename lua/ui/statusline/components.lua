@@ -49,7 +49,6 @@ local _bookmark_str = icons.statusline.label .. " "
 local _bm_cache = nil
 local _bm_loaded = false
 
----@return table | nil
 local function get_bm()
   if not _bm_loaded then
     local ok, mod = pcall(require, "bento.api")
@@ -61,9 +60,9 @@ end
 
 ---@class ComponentDef
 ---@field default?    string
----@field render      fun(args: table, winid: number): string
----@field resolve_hl? fun(winid: number): string
----@field condition?  fun(winid: number): boolean
+---@field render      fun(args: table, winid: int): string
+---@field resolve_hl? fun(winid: int): string
+---@field condition?  fun(winid: int): boolean
 ---@field events      string[]
 ---@field hl?         string
 ---@field max_width?  number
@@ -144,11 +143,16 @@ M.components = {
     hl = "StatusLineGit",
   },
   lsp = {
-    render = function (_, winid)
+    render = function (args, winid)
       local bufnr = api.nvim_win_get_buf(winid)
       local names = {}
       for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-        names[#names + 1] = client.name
+        local is_detaching = args.event == "LspDetach" and args.data
+          and args.data.client_id == client.id
+
+        if not is_detaching then
+          names[#names + 1] = client.name
+        end
       end
       return table.concat(names, "|")
     end,

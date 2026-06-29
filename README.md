@@ -22,7 +22,7 @@ To me, `neovim` is first: a text editor, second: a code editor, third: a diff vi
 Therefore, my configuration and workflow is designed around that idea.
 This configuration doesn't try to do everything nor replace what a multiplexer, terminal, or a proper IDE tries to do. But it does try to make editing text on neovim more enjoyable and convenient (at least to me).
 
-Use a terminal to managae files/directories/structure. Use a multiplexer for complex splits. Use an IDE to debug. Use neovim to edit.
+Use a terminal to manage files/directories/structure. Use a multiplexer for complex splits. Use an IDE to debug. Use neovim to edit.
 
 > [!NOTE]
 > This is a personal configuration, tuned for one person's workflow on purpose. It isn't a distribution, it doesn't try to be beginner-friendly, and large parts of it exist because I wanted to learn how a particular Neovim internal worked, not because there was no plugin that already did the job. Feel free to read, steal, or fork pieces of it, but I'd think twice before pointing `git clone` straight at `~/.config/nvim` and hoping for the best.
@@ -286,6 +286,7 @@ A few pieces here started as someone else's code, then got bent into shape for t
 - once more to folke, where I learned most of my lua scripting from.
 - drowning-cat for their [unscope](https://github.com/nvim-mini/mini.nvim/discussions/1951) textobject.
 - MariaSolOs's (core neovim maintainer!) [dotfiles](https://github.com/MariaSolOs/dotfiles/tree/main/.config/nvim) where I got so, so, so many inspirations from especially for her LSP configs.
+- comfysage's [sylvee](https://github.com/comfysage/sylvee) project where I took inspiration for the config structure and for their inlayhint configuration.
 - nvimdev's [modeline.nvim](https://github.com/nvimdev/modeline.nvim), where I got the initial inspiration for my statusline implementation.
 - once more, OXY2DEV's [dotfiles](https://github.com/OXY2DEV/.dotfiles) where I forked so many UI components from.
 - echasnovski's [mini.nvim](https://github.com/nvim-mini/mini.nvim). His work is literally the backbone of my configuration. vim.pack included.

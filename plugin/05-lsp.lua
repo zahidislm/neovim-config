@@ -3,7 +3,7 @@ local function keymap(mode, lhs, rhs, bufnr, desc)
   vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
 end
 
---- LSP symbols provided globaly for all lsp clients
+--- LSP symbols provided globally for all lsp clients
 ---@param bufnr int
 local function global_provider(bufnr)
   keymap(
@@ -67,7 +67,7 @@ end
 
 vim.lsp.enable(lsp_configs)
 
--- LSP Configuration whenever LSP is attaced.
+-- LSP Configuration whenever LSP is attached.
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function (args)
     local bufnr = args.buf
