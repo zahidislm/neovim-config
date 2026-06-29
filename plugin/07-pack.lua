@@ -21,7 +21,7 @@
 ---@field _queued?      boolean                    DFS deduplication state
 ---@field _loaded?      boolean                    Execution deduplication state
 
-local ALT_HOSTS = { gl = "https://gitlab.com/", cb = "https://codeberg.com/" }
+local ALT_HOSTS = { gl = "https://gitlab.com/", cb = "https://codeberg.org/" }
 
 ---@type table<string, PackData>
 local registry = {}
