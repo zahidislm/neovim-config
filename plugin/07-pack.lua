@@ -235,6 +235,3 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end)
   end,
 })
-
-local ok, ui = pcall(require, "ui.pack-manager")
-if ok then ui.setup() end
