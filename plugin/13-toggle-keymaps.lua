@@ -20,6 +20,16 @@ local function toggle_loc()
   end
 end
 
+local function toggle_spell()
+  vim.wo.spell = not vim.wo.spell
+  if vim.wo.spell then
+    vim.bo.spelllang = "en_us"
+    vim.notify("spellcheck: ON (en_us)", vim.log.levels.INFO)
+  else
+    vim.notify("spellcheck: OFF", vim.log.levels.INFO)
+  end
+end
+
 -- Keymap helper
 local function keymap(mode, lhs, rhs, opts)
   opts = vim.tbl_deep_extend("force", { silent = true }, opts or {})
@@ -38,7 +48,7 @@ toggle_keymap("n", "<Cmd>setlocal number!<CR>", "toggle 'number'")
 toggle_keymap("l", toggle_loc, "toggle loclist")
 toggle_keymap("q", toggle_qf, "toggle quickfix list")
 toggle_keymap("r", "<Cmd>setlocal relativenumber!<CR>", "toggle 'relativenumber'")
-toggle_keymap("s", "<Cmd>setlocal spell!<CR>", "toggle 'spell'")
+toggle_keymap("s", toggle_spell, "toggle 'spell'")
 toggle_keymap("w", "<Cmd>setlocal wrap!<CR>", "toggle 'wrap'")
 
 toggle_keymap("d", function ()
