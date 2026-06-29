@@ -110,13 +110,13 @@ augroup("DiagnosticListUpdate", function (g)
   aucmd({ "DiagnosticChanged" }, {
     group = g,
     callback = function (args)
-      local qf = vim.fn.getqflist({ title = true, winid = true })
+      local qf = fn.getqflist({ title = true, winid = true })
       if qf.winid ~= 0 and qf.title == "Diagnostics" then
         vim.diagnostic.setqflist({ open = false })
       end
 
-      for _, win in ipairs(vim.fn.win_findbuf(args.buf) or {}) do
-        local loc = vim.fn.getloclist(win, { title = true, winid = true })
+      for _, win in ipairs(fn.win_findbuf(args.buf) or {}) do
+        local loc = fn.getloclist(win, { title = true, winid = true })
         if loc.winid ~= 0 and loc.title == "Diagnostics" then
           vim.diagnostic.setloclist({ win_id = win, open = false })
         end
@@ -189,8 +189,8 @@ augroup("FloatDocs", function (g)
         return
       end
 
-      local win = vim.api.nvim_get_current_win()
-      local config = vim.api.nvim_win_get_config(win)
+      local win = api.nvim_get_current_win()
+      local config = api.nvim_win_get_config(win)
 
       if config.relative ~= "" then
         return
@@ -203,7 +203,7 @@ augroup("FloatDocs", function (g)
 
       local title_text = ft == "help" and " Vimdoc " or " Man Page "
 
-      vim.api.nvim_win_set_config(win, {
+      api.nvim_win_set_config(win, {
         relative = "editor",
         width = width,
         height = height,
