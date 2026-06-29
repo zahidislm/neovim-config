@@ -61,6 +61,10 @@
       "rev": "f58eb5a36c414c19965e1c4d5dfb74d5a1f21ede",
       "src": "https://github.com/yorickpeterse/nvim-jump"
     },
+    "nvim-pack-ui": {
+      "rev": "f36e3cfd4859052b5751c681edb80feed0b87966",
+      "src": "https://codeberg.org/cryptomilk/nvim-pack-ui"
+    },
     "nvim-treesitter-textobjects": {
       "rev": "851e865342e5a4cb1ae23d31caf6e991e1c99f1e",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",

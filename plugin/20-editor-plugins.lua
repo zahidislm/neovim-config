@@ -236,6 +236,9 @@ Pack.add({
   },
 })
 
+-- vim.pack UI
+Pack.add("cb:cryptomilk/nvim-pack-ui")
+
 -- Which-key
 Pack.add({
   "folke/which-key.nvim",
