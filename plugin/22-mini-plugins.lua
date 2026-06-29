@@ -198,17 +198,17 @@ Pack.add({
           ["<"] = { output = { left = "< ", right = " >" } },
         },
         mappings = {
-          add = "ys",
+          add = "gs",
           delete = "ds",
           find = "",
           find_left = "",
           highlight = "",
           replace = "cs",
-          update_n_lines = "",
         },
         search_method = "cover_or_next",
       }
       require("mini.surround").setup(surr_opts)
+      vim.keymap.del("x", "gs")
     end,
     keys = {
       -- mini.diff
@@ -319,9 +319,9 @@ Pack.add({
       -- mini.surround
       {
         "s",
-        "<Cmd><C-u>lua MiniSurround.add('visual')<CR>",
+        [[:<C-u>lua MiniSurround.add('visual')<CR>]],
         mode = "x",
-        desc = "Add surroundinf to selection",
+        desc = "Add surrounding to selection",
       },
     },
   },
