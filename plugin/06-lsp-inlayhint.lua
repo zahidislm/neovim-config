@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local client = vim.lsp.get_client_by_id(args.data.client_id)
 
     if client ~= nil then
-      if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+      if client:supports_method("textDocument/inlayHint") then
         local inlay_hints_group = vim.api.nvim_create_augroup("toggle_inlay_hints", {
           clear = false,
         })
