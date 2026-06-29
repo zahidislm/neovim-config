@@ -286,6 +286,7 @@ A few pieces here started as someone else's code, then got bent into shape for t
 - once more to folke, where I learned most of my lua scripting from.
 - drowning-cat for their [unscope](https://github.com/nvim-mini/mini.nvim/discussions/1951) textobject.
 - MariaSolOs's (core neovim maintainer!) [dotfiles](https://github.com/MariaSolOs/dotfiles/tree/main/.config/nvim) where I got so, so, so many inspirations from especially for her LSP configs.
+- comfysage's [sylvee](https://github.com/comfysage/sylvee) project where I took inspiration for the config structure and for their inlayhint configuration.
 - nvimdev's [modeline.nvim](https://github.com/nvimdev/modeline.nvim), where I got the initial inspiration for my statusline implementation.
 - once more, OXY2DEV's [dotfiles](https://github.com/OXY2DEV/.dotfiles) where I forked so many UI components from.
 - echasnovski's [mini.nvim](https://github.com/nvim-mini/mini.nvim). His work is literally the backbone of my configuration. vim.pack included.
