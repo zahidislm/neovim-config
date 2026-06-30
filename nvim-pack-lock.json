@@ -14,7 +14,7 @@
       "src": "https://github.com/jeangiraldoo/codedocs.nvim"
     },
     "diffview-plus.nvim": {
-      "rev": "d5c09986681a671613aef0226ef409c01561d64c",
+      "rev": "ce6464524374eb6d013e536979dcda82d1112c9c",
       "src": "https://github.com/dlyongemallo/diffview-plus.nvim"
     },
     "garbage-day.nvim": {
@@ -42,7 +42,7 @@
       "src": "https://github.com/saecki/live-rename.nvim"
     },
     "mini.nvim": {
-      "rev": "1599a473aa6f5290a5d740b1144846e6f0c3963d",
+      "rev": "dc8a9918c3b1bc18a5fcd04d39b6d658074c0886",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "mini.starter": {
@@ -75,7 +75,7 @@
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "tree-sitter-manager.nvim": {
-      "rev": "ae305699da5e97b6cffdd5cc6f6045b1b0bd26ea",
+      "rev": "966c28dbc68fc99c82c51a64b6ec37f420aab880",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim"
     },
     "vim-smoothie": {
