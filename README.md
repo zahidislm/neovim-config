@@ -229,7 +229,7 @@ There's no `mason.nvim` and no `nvim-lspconfig` server registry in this config. 
 | `zls` | Zig | |
 | `r_language_server` | R, R Markdown, Quarto | |
 | `julials` | Julia | ships a custom `:LspJuliaActivateEnv` command that reimplements the Julia VS Code extension's environment scanning (`JULIA_DEPOT_PATH`, project files) entirely in Lua |
-| `marksman` | Markdown | |
+| `markdown-oxide` | Markdown | |
 | `neocmake` | CMake | |
 | `taplo` | TOML | |
 | `shuck` | sh, bash, zsh, ksh | |
