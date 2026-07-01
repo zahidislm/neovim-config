@@ -98,7 +98,7 @@ function M.setup()
 
   did_setup = true
 
-  local timer = assert((vim.uv or vim.loop).new_timer())
+  local timer = assert(vim.uv.new_timer())
   timer:start(config.refresh, config.refresh, function ()
     sign_cache = {}
     cache = {}
@@ -128,22 +128,6 @@ function M.buf_signs(buf, wanted)
   local signs = {}
 
   if wanted.git or wanted.sign then
-    if vim.fn.has("nvim-0.10") == 0 then
-      -- Only needed for Neovim <0.10
-      -- Newer versions include legacy signs in nvim_buf_get_extmarks
-      for _, sign in ipairs(vim.fn.sign_getplaced(buf, { group = "*" })[1].signs) do
-        local ret = vim.fn.sign_getdefined(sign.name)[1] --[[@as Statuscolumn.Sign]]
-        if ret then
-          ret.priority = sign.priority
-          ret.type = M.is_git_sign(sign.name) and "git" or "sign"
-          signs[sign.lnum] = signs[sign.lnum] or {}
-          if wanted[ret.type] then
-            table.insert(signs[sign.lnum], ret)
-          end
-        end
-      end
-    end
-
     -- Get extmark signs
     local extmarks = vim.api.nvim_buf_get_extmarks(
       buf, -1, 0, -1, { details = true, type = "sign" }
