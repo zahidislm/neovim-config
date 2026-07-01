@@ -67,7 +67,6 @@ augroup("CloseWithQ", function (g)
       "man",
       "notify",
       "nvim-pack",
-      "lspinfo",
       "startuptime",
       "checkhealth",
     },
