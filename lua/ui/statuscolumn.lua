@@ -98,7 +98,7 @@ function M.setup()
 
   did_setup = true
 
-  local timer = assert((vim.uv or vim.loop).new_timer())
+  local timer = assert(vim.uv.new_timer())
   timer:start(config.refresh, config.refresh, function ()
     sign_cache = {}
     cache = {}
