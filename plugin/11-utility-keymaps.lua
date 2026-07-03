@@ -84,13 +84,13 @@ keymap({ ins, vis }, "<D-s>", "<Esc><Cmd>silent! update | redraw<CR>", {
 })
 
 -- Create new file
-keymap(norm, "<Leader>fn", [[<Cmd>lua require("utils").smart_new_file()<CR>]], {
+keymap(norm, "<Leader>fn", [[<Cmd>lua require("utils.fileops").smart_new_file()<CR>]], {
   desc = "Create new file",
 })
 
 -- Rename file
 keymap(
-  norm, "<Leader>fr", [[<Cmd>lua require("utils").rename_file()<CR>]], { desc = "Create new file" }
+  norm, "<Leader>fr", [[<Cmd>lua require("utils.fileops").rename_file()<CR>]], { desc = "Create new file" }
 )
 
 -- Clear QF/loclist
