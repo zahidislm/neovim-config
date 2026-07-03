@@ -14,9 +14,8 @@ end
 
 vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
   callback = function ()
-    local diaghover = require("ui.diag-hover")
-    if diaghover.window and vim.api.nvim_get_current_win() ~= diaghover.window then
-      diaghover.close()
+    if _G.diaghover.window and vim.api.nvim_get_current_win() ~= _G.diaghover.window then
+      _G.diaghover.close()
     end
   end,
 })

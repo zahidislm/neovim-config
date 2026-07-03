@@ -212,6 +212,7 @@ function diaghover.__setup_window(source_win, W, D, cursor_y)
     vim.api.nvim_win_set_config(diaghover.window, height_calc_config)
   end
 
+  _G.diaghover.window = diaghover.window
   vim.wo[diaghover.window].wrap = false
 
   local H = vim.api.nvim_win_text_height(diaghover.window, { start_row = 0, end_row = -1 }).all
@@ -317,5 +318,7 @@ if diaghover.config.keymap then
     desc = "Open diagnostic hover",
   })
 end
+
+_G.diaghover = { hover = diaghover.hover, close = diaghover.close }
 
 return diaghover
