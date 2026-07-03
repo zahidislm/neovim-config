@@ -1,14 +1,17 @@
 -- Forked from OXY2DEV (https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/diagnostics.lua)
 -- Fancy diagnostics hover for Neovim.
 
-local colours = require("ui.highlights.coloring")
+local colors = require("ui.highlights.coloring")
+local floatpos = require("utils.floatpos")
 local icons = vim.g.iconchars
+
+local diaghover = {}
 
 ------------------------------------------------------------------------------
 -- Types
 ------------------------------------------------------------------------------
 
----@class diagnostics.config
+---@class diaghover.config
 ---@field keymap?           string
 ---@field decoration_width? integer | fun(items: table): integer
 ---@field width?            integer | fun(items: table): integer
@@ -17,21 +20,14 @@ local icons = vim.g.iconchars
 ---@field alpha?            number Background highlight blending ratio (default: 0.1)
 
 ------------------------------------------------------------------------------
--- Initialization
-------------------------------------------------------------------------------
-
-_G.__used_quads = _G.__used_quads or {}
-local diagnostics = {}
-
-------------------------------------------------------------------------------
 -- Highlight Management
 ------------------------------------------------------------------------------
 
 --- Dynamically generates FancyDiagnostic groups based on current colorscheme.
-function diagnostics.__generate_highlights()
+function diaghover.__generate_highlights()
   local bg_hl = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
   local normal_bg = bg_hl.bg or (vim.o.background == "dark" and "#1e1e2e" or "#eff1f5")
-  local alpha = diagnostics.config.alpha or 0.1
+  local alpha = diaghover.config.alpha or 0.1
 
   local groups = {
     Default = { target = "@comment", fallback = "#9399b2" },
@@ -45,8 +41,8 @@ function diagnostics.__generate_highlights()
     local fg_hl = vim.api.nvim_get_hl(0, { name = conf.target, link = false })
     local fg = fg_hl.fg or conf.fallback
 
-    local hex_fg = colours.hex(colours.parse(fg))
-    local blended_bg = colours.blend(fg, normal_bg, alpha)
+    local hex_fg = colors.hex(colors.parse(fg))
+    local blended_bg = colors.blend(fg, normal_bg, alpha)
 
     vim.api.nvim_set_hl(0, string.format("FancyDiagnostic%s", kind), {
       fg = hex_fg,
@@ -92,73 +88,16 @@ end
 -- Helpers
 ------------------------------------------------------------------------------
 
---- Safely evaluates a dynamic property (function or static value).
----@param val any The value or function to evaluate.
----@param ... any Arguments to pass if `val` is a function.
----@return any evaluated_value The resulting value.
-local function eval(val, ...)
-  if type(val) ~= "function" then return val end
-  local can_call, new_val = pcall(val, ...)
-  return (can_call and new_val ~= nil) and new_val or nil
-end
-
---- wraps a single line to fit within `width`
---- display cells. A word that alone exceeds `width` is hard-broken
---- character-by-character so no row is ever wider than `width`.
----@param text  string
----@param width integer Max display width per resulting row.
----@return string[] rows
-local function wrap_text(text, width)
-  width = math.max(1, width)
-  if vim.fn.strdisplaywidth(text) <= width then return { text } end
-
-  local rows, line, line_w = {}, "", 0
-
-  local function push_word(word, word_w)
-    if word_w > width then
-      if line_w > 0 then
-        table.insert(rows, line)
-        line, line_w = "", 0
-      end
-      for _, ch in ipairs(vim.fn.split(word, "\\zs")) do
-        local ch_w = vim.fn.strdisplaywidth(ch)
-        if line_w > 0 and line_w + ch_w > width then
-          table.insert(rows, line)
-          line, line_w = ch, ch_w
-        else
-          line, line_w = line .. ch, line_w + ch_w
-        end
-      end
-      return
-    end
-
-    if line_w == 0 then
-      line, line_w = word, word_w
-    elseif line_w + 1 + word_w <= width then
-      line, line_w = line .. " " .. word, line_w + 1 + word_w
-    else
-      table.insert(rows, line)
-      line, line_w = word, word_w
-    end
-  end
-
-  for word in text:gmatch("%S+") do
-    push_word(word, vim.fn.strdisplaywidth(word))
-  end
-  if line ~= "" then table.insert(rows, line) end
-  return rows
-end
-
 --- Retrieves the evaluated decoration properties for a given diagnostic item.
 ---@param level integer | string The severity level key.
 ---@param ...   any              Arguments passed to the dynamic evaluators.
 ---@return table evaluated_decorations Map of resolved decoration properties.
 local function get_decorations(level, ...)
   local output = {}
-  local conf = diagnostics.config.decorations[level] or diagnostics.config.decorations["default"]
+  local conf = diaghover.config.decorations[level] or diaghover.config.decorations["default"]
   if not conf then return output end
   for k, v in pairs(conf) do
-    output[k] = eval(v, ...)
+    output[k] = floatpos.eval(v, ...)
   end
   return output
 end
@@ -167,10 +106,9 @@ end
 -- Core Configuration
 ------------------------------------------------------------------------------
 
-diagnostics.config = {
+diaghover.config = {
   keymap = "<leader><space>",
   decoration_width = 4,
-  alpha = 0.1,
   width = function (items)
     local max = math.floor(vim.o.columns * 0.4)
     local use = 1
@@ -189,77 +127,13 @@ diagnostics.config = {
     [vim.diagnostic.severity.ERROR] = handle_diagnostic_level("Error", icons.diagnostics.Error),
     default = handle_diagnostic_level("Default", "? "),
   },
+  alpha = 0.1,
 }
 
-diagnostics.ns = vim.api.nvim_create_namespace("fancy_diagnostics")
-diagnostics.buffer = nil
-diagnostics.window = nil
-diagnostics.quad = nil
-
-------------------------------------------------------------------------------
--- UI Layout & Math
-------------------------------------------------------------------------------
-
---- Updates the global state tracking which quadrant is currently occupied.
----@param quad  string  The quadrant identifier.
----@param state boolean True if occupied, false if freed.
-function diagnostics.update_quad(quad, state)
-  if _G.__used_quads then _G.__used_quads[quad] = state end
-end
-
---- Calculates optimal floating window position via short-circuit evaluation.
----@param window integer The source window ID.
----@param w      integer The calculated width of the hover window.
----@param h      integer The calculated height of the hover window.
----@return string|table border, string relative, string anchor, integer row, integer col
-function diagnostics.__win_args(window, w, h)
-  local cursor = vim.api.nvim_win_get_cursor(window)
-  local screenpos = vim.fn.screenpos(window, cursor[1], cursor[2])
-  local screen_width = vim.o.columns - 2
-  local screen_height = vim.o.lines - vim.o.cmdheight - 2
-
-  -- Bottom Right Priority
-  if not _G.__used_quads["bottom_right"] and (screenpos.row + h <= screen_height)
-    and (screenpos.curscol + w <= screen_width) then
-    diagnostics.quad = "bottom_right"
-    return { "├", "─", "╮", "│", "╯", "─", "╰", "│" }, "cursor", "NW", 1, 0
-
-    -- Top Right Fallback
-  elseif not _G.__used_quads["top_right"] and h < screenpos.row
-    and (screenpos.curscol + 2 <= screen_width) then
-    diagnostics.quad = "top_right"
-    return { "╭", "─", "╮", "│", "╯", "─", "├", "│" }, "cursor", "SW", 0, 0
-
-    -- Bottom Left Fallback
-  elseif not _G.__used_quads["bottom_left"] and (screenpos.row + h <= screen_height)
-    and screenpos.curscol > w then
-    diagnostics.quad = "bottom_left"
-    return { "╭", "─", "┤", "│", "╯", "─", "╰", "│" }, "cursor", "NE", 1, 1
-
-    -- Top Left Fallback
-  elseif not _G.__used_quads["top_left"] and h < screenpos.row and screenpos.curscol > w then
-    diagnostics.quad = "top_left"
-    return { "╭", "─", "╮", "│", "┤", "─", "╰", "│" }, "cursor", "SE", 0, 1
-  end
-
-  -- Default to Center if no cursor-relative quadrant fits securely
-  diagnostics.quad = "center"
-  return "rounded",
-    "editor", "NW",
-    math.ceil((vim.o.lines - h) / 2), math.ceil((vim.o.columns - w) / 2)
-end
-
---- Closes the hover window and frees the used screen quadrant.
-function diagnostics.close()
-  if diagnostics.window and vim.api.nvim_win_is_valid(diagnostics.window) then
-    pcall(vim.api.nvim_win_close, diagnostics.window, true)
-    diagnostics.window = nil
-  end
-  if diagnostics.quad then
-    diagnostics.update_quad(diagnostics.quad, false)
-    diagnostics.quad = nil
-  end
-end
+diaghover.ns = vim.api.nvim_create_namespace("diagnostic-hover")
+diaghover.buffer = nil
+diaghover.window = nil
+diaghover.quad = nil
 
 ------------------------------------------------------------------------------
 -- Window Generation Lifecycle
@@ -273,9 +147,9 @@ end
 ---@return integer cursor_y The relative line index the cursor is currently resting on.
 ---@return table ranges     Location map to allow jumping to diagnostic.
 ---@return integer? level   The highest severity level found.
-function diagnostics.__build_buffer_state(items, cursor)
-  local message_width = eval(diagnostics.config.width, items)
-  local D = eval(diagnostics.config.decoration_width, items) or 0
+function diaghover.__build_buffer_state(items, cursor)
+  local message_width = floatpos.eval(diaghover.config.width, items)
+  local D = floatpos.eval(diaghover.config.decoration_width, items) or 0
   local W = message_width + D
 
   local diagnostic_lines = 0
@@ -283,12 +157,12 @@ function diagnostics.__build_buffer_state(items, cursor)
   local ranges = {}
   local level
 
-  vim.api.nvim_buf_set_lines(diagnostics.buffer, 0, -1, false, {})
+  vim.api.nvim_buf_set_lines(diaghover.buffer, 0, -1, false, {})
 
   for i, item in ipairs(items) do
     local lines = {}
     for _, paragraph in ipairs(vim.split(item.message or "", "\n", { trimempty = true })) do
-      vim.list_extend(lines, wrap_text(paragraph, message_width))
+      vim.list_extend(lines, floatpos.wrap_text(paragraph, message_width))
     end
     if #lines == 0 then
       lines = { "" }
@@ -297,12 +171,12 @@ function diagnostics.__build_buffer_state(items, cursor)
     local current = (cursor[2] >= item.col and cursor[2] <= item.end_col)
     if current then cursor_y = diagnostic_lines + 1 end
 
-    vim.api.nvim_buf_set_lines(diagnostics.buffer, diagnostic_lines, -1, false, lines)
+    vim.api.nvim_buf_set_lines(diaghover.buffer, diagnostic_lines, -1, false, lines)
     local decorations = get_decorations(item.severity, item, current)
     ranges[i] = { item.lnum, item.col }
 
     for j = 1, #lines do
-      vim.api.nvim_buf_set_extmark(diagnostics.buffer, diagnostics.ns, diagnostic_lines + j - 1, 0, {
+      vim.api.nvim_buf_set_extmark(diaghover.buffer, diaghover.ns, diagnostic_lines + j - 1, 0, {
         virt_text = j == 1 and decorations.icon or decorations.padding,
         virt_text_pos = "inline",
         line_hl_group = decorations.line_hl_group,
@@ -321,7 +195,7 @@ end
 ---@param W          integer Target width.
 ---@param D          integer Decoration padding offset.
 ---@param cursor_y   integer Target line inside the hover buffer to align with.
-function diagnostics.__setup_window(source_win, W, D, cursor_y)
+function diaghover.__setup_window(source_win, W, D, cursor_y)
   local height_calc_config = {
     relative = "editor",
     row = 0,
@@ -332,61 +206,63 @@ function diagnostics.__setup_window(source_win, W, D, cursor_y)
     hide = true,
   }
 
-  if not diagnostics.window or not vim.api.nvim_win_is_valid(diagnostics.window) then
-    diagnostics.window = vim.api.nvim_open_win(diagnostics.buffer, false, height_calc_config)
+  if not diaghover.window or not vim.api.nvim_win_is_valid(diaghover.window) then
+    diaghover.window = vim.api.nvim_open_win(diaghover.buffer, false, height_calc_config)
   else
-    vim.api.nvim_win_set_config(diagnostics.window, height_calc_config)
+    vim.api.nvim_win_set_config(diaghover.window, height_calc_config)
   end
 
-  vim.wo[diagnostics.window].wrap = false
+  _G.diaghover.window = diaghover.window
+  vim.wo[diaghover.window].wrap = false
 
-  local H = vim.api.nvim_win_text_height(diagnostics.window, { start_row = 0, end_row = -1 }).all
-  local border, relative, anchor, row, col = diagnostics.__win_args(source_win, W, H)
+  local H = vim.api.nvim_win_text_height(diaghover.window, { start_row = 0, end_row = -1 }).all
+  local pos = floatpos.compute(source_win, W, H)
+  diaghover.quad = pos.quad
 
-  vim.api.nvim_win_set_config(diagnostics.window, {
-    relative = relative or "cursor",
-    row = row or 0,
-    col = col or 0,
+  vim.api.nvim_win_set_config(diaghover.window, {
+    relative = pos.relative,
+    row = pos.row,
+    col = pos.col,
     width = W,
     height = H,
-    anchor = anchor,
-    border = border or "none",
+    anchor = pos.anchor,
+    border = pos.border,
     style = "minimal",
     hide = false,
   })
 
-  vim.api.nvim_win_set_cursor(diagnostics.window, { cursor_y, 0 })
-  diagnostics.update_quad(diagnostics.quad, true)
+  vim.api.nvim_win_set_cursor(diaghover.window, { cursor_y, 0 })
+  floatpos.set_quad(diaghover.quad, true)
 
-  vim.wo[diagnostics.window].signcolumn = "no"
-  vim.wo[diagnostics.window].conceallevel = 3
-  vim.wo[diagnostics.window].concealcursor = "ncv"
-  vim.wo[diagnostics.window].winhl = "FloatBorder:@comment,Normal:Normal"
+  vim.wo[diaghover.window].signcolumn = "no"
+  vim.wo[diaghover.window].conceallevel = 3
+  vim.wo[diaghover.window].concealcursor = "ncv"
+  vim.wo[diaghover.window].winhl = "FloatBorder:@comment,Normal:Normal"
 end
 
 --- Injects navigation keymaps into the floating buffer.
 ---@param source_win integer The window to return focus to.
 ---@param ranges     table   Mapping of buffer lines to diagnostic locations.
-function diagnostics.__attach_keymaps(source_win, ranges)
-  vim.api.nvim_buf_set_keymap(diagnostics.buffer, "n", "<CR>", "", {
+function diaghover.__attach_keymaps(source_win, ranges)
+  vim.api.nvim_buf_set_keymap(diaghover.buffer, "n", "<CR>", "", {
     desc = "Go to diagnostic location",
     callback = function ()
-      local _cursor = vim.api.nvim_win_get_cursor(diagnostics.window)
+      local _cursor = vim.api.nvim_win_get_cursor(diaghover.window)
       local location = ranges[_cursor[1]]
       if location then
         location[1] = location[1] + 1
         vim.api.nvim_win_set_cursor(source_win, location)
         vim.api.nvim_set_current_win(source_win)
-        diagnostics.close()
+        diaghover.close()
       end
     end,
   })
 
-  vim.api.nvim_buf_set_keymap(diagnostics.buffer, "n", "q", "", {
+  vim.api.nvim_buf_set_keymap(diaghover.buffer, "n", "q", "", {
     desc = "Exit diagnostics window",
     callback = function ()
       pcall(vim.api.nvim_set_current_win, source_win)
-      diagnostics.close()
+      diaghover.close()
     end,
   })
 end
@@ -395,51 +271,54 @@ end
 -- Module Exports
 ------------------------------------------------------------------------------
 
+--- Closes the hover window and frees the used screen quadrant.
+function diaghover.close()
+  floatpos.close(diaghover)
+end
+
 --- Triggers the diagnostic hover window for the current line.
 ---@param window? integer The target window ID (defaults to current window).
-function diagnostics.hover(window)
+function diaghover.hover(window)
   window = window or vim.api.nvim_get_current_win()
   local buffer = vim.api.nvim_win_get_buf(window)
   local cursor = vim.api.nvim_win_get_cursor(window)
   local items = vim.diagnostic.get(buffer, { lnum = cursor[1] - 1 })
 
   if #items == 0 then
-    diagnostics.close()
+    diaghover.close()
     return vim.api.nvim_echo({
       { " diagnostics.lua ", "DiagnosticVirtualTextWarn" },
       { ": No diagnostic under cursor", "@comment" },
     }, true, {})
-  elseif diagnostics.window and vim.api.nvim_win_is_valid(diagnostics.window) then
-    return vim.api.nvim_set_current_win(diagnostics.window)
+  elseif diaghover.window and vim.api.nvim_win_is_valid(diaghover.window) then
+    return vim.api.nvim_set_current_win(diaghover.window)
   end
 
-  if diagnostics.quad then diagnostics.update_quad(diagnostics.quad, false) end
-  if not diagnostics.buffer or not vim.api.nvim_buf_is_valid(diagnostics.buffer) then
-    diagnostics.buffer = vim.api
+  if diaghover.quad then floatpos.set_quad(diaghover.quad, false) end
+  if not diaghover.buffer or not vim.api.nvim_buf_is_valid(diaghover.buffer) then
+    diaghover.buffer = vim.api
       .nvim_create_buf(false, true)
   end
 
-  vim.bo[diagnostics.buffer].ft = "markdown"
-  vim.api.nvim_buf_clear_namespace(diagnostics.buffer, diagnostics.ns, 0, -1)
+  vim.bo[diaghover.buffer].ft = "markdown"
+  vim.api.nvim_buf_clear_namespace(diaghover.buffer, diaghover.ns, 0, -1)
 
-  local W, D, cursor_y, ranges, level = diagnostics.__build_buffer_state(items, cursor)
-  diagnostics.__setup_window(window, W, D, cursor_y, level)
-  diagnostics.__attach_keymaps(window, ranges)
+  local W, D, cursor_y, ranges = diaghover.__build_buffer_state(items, cursor)
+  diaghover.__setup_window(window, W, D, cursor_y)
+  diaghover.__attach_keymaps(window, ranges)
 end
 
---- Initializes the diagnostics plugin configuration and global autocmds.
----@param config? diagnostics.config Optional configuration table overrides.
-function diagnostics.setup(config)
-  if type(config) == "table" then
-    diagnostics.config = vim.tbl_extend("force", diagnostics.config, config)
+------------------------------------------------------------------------------
+-- Init
+------------------------------------------------------------------------------
 
-    if diagnostics.config.keymap then
-      vim.api.nvim_set_keymap("n", diagnostics.config.keymap, "", {
-        callback = diagnostics.hover,
-        desc = "Open diagnostic hover",
-      })
-    end
-  end
+if diaghover.config.keymap then
+  vim.api.nvim_set_keymap("n", diaghover.config.keymap, "", {
+    callback = diaghover.hover,
+    desc = "Open diagnostic hover",
+  })
 end
 
-return diagnostics
+_G.diaghover = { hover = diaghover.hover, close = diaghover.close }
+
+return diaghover
