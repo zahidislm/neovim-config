@@ -1,7 +1,7 @@
 -- Forked from OXY2DEV (https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/diagnostics.lua)
 -- Fancy diagnostics hover for Neovim.
 
-local colours = require("ui.highlights.coloring")
+local colors = require("ui.highlights.coloring")
 local floatpos = require("ui.floatpos")
 local icons = vim.g.iconchars
 
@@ -41,8 +41,8 @@ function diaghover.__generate_highlights()
     local fg_hl = vim.api.nvim_get_hl(0, { name = conf.target, link = false })
     local fg = fg_hl.fg or conf.fallback
 
-    local hex_fg = colours.hex(colours.parse(fg))
-    local blended_bg = colours.blend(fg, normal_bg, alpha)
+    local hex_fg = colors.hex(colors.parse(fg))
+    local blended_bg = colors.blend(fg, normal_bg, alpha)
 
     vim.api.nvim_set_hl(0, string.format("FancyDiagnostic%s", kind), {
       fg = hex_fg,
