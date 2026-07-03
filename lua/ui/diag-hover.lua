@@ -2,7 +2,7 @@
 -- Fancy diagnostics hover for Neovim.
 
 local colors = require("ui.highlights.coloring")
-local floatpos = require("ui.floatpos")
+local floatpos = require("utils.floatpos")
 local icons = vim.g.iconchars
 
 local diaghover = {}
