@@ -1,7 +1,7 @@
 -- Forked from OXY2DEV (https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/diagnostics.lua)
 -- Fancy diagnostics hover for Neovim.
 
-local colors = require("ui.highlights.coloring")
+local colors = require("utils.coloring")
 local floatpos = require("utils.floatpos")
 local icons = vim.g.iconchars
 

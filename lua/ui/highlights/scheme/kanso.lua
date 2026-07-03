@@ -3,7 +3,7 @@ local M = {}
 ---@param colors table
 function M.get_hls(colors)
   local theme = colors.theme
-  local blend = require("ui.highlights.coloring").blend
+  local blend = require("utils.coloring").blend
 
   return {
     -- Core
