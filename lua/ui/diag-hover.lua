@@ -1,7 +1,6 @@
 -- Forked from OXY2DEV (https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/diagnostics.lua)
 -- Fancy diagnostics hover for Neovim.
 
-local colors = require("utils.coloring")
 local floatpos = require("utils.floatpos")
 local icons = vim.g.iconchars
 
@@ -25,35 +24,14 @@ local diaghover = {}
 
 --- Dynamically generates FancyDiagnostic groups based on current colorscheme.
 function diaghover.__generate_highlights()
-  local bg_hl = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
-  local normal_bg = bg_hl.bg or (vim.o.background == "dark" and "#1e1e2e" or "#eff1f5")
-  local alpha = diaghover.config.alpha or 0.1
-
-  local groups = {
+  floatpos.generate_kind_highlights("DiagnosticHover", {
     Default = { target = "@comment", fallback = "#9399b2" },
     Info = { target = "DiagnosticInfo", fallback = "#94e2d5" },
     Hint = { target = "DiagnosticHint", fallback = "#94e2d5" },
     Warn = { target = "DiagnosticWarn", fallback = "#f9e2af" },
     Error = { target = "DiagnosticError", fallback = "#f38ba8" },
-  }
-
-  for kind, conf in pairs(groups) do
-    local fg_hl = vim.api.nvim_get_hl(0, { name = conf.target, link = false })
-    local fg = fg_hl.fg or conf.fallback
-
-    local hex_fg = colors.hex(colors.parse(fg))
-    local blended_bg = colors.blend(fg, normal_bg, alpha)
-
-    vim.api.nvim_set_hl(0, string.format("FancyDiagnostic%s", kind), {
-      fg = hex_fg,
-      bg = blended_bg,
-    })
-
-    vim.api.nvim_set_hl(0, string.format("FancyDiagnostic%sIcon", kind), {
-      fg = normal_bg,
-      bg = hex_fg,
-    })
-  end
+  }, diaghover.config.alpha
+  )
 end
 
 --- Generates formatting and highlight group mappings for a specific diagnostic severity.
@@ -61,10 +39,10 @@ end
 ---@param icon  string The icon to display for this severity.
 ---@return table decoration_config Configuration table containing width, line_hl_group, icon, and padding.
 local function handle_diagnostic_level(level, icon)
-  local default = string.format("FancyDiagnostic%s", "Default")
-  local default_icon_hl = string.format("FancyDiagnostic%sIcon", "Default")
-  local bg = string.format("FancyDiagnostic%s", level)
-  local icon_hl = string.format("FancyDiagnostic%sIcon", level)
+  local default = string.format("DiagnosticHover%s", "Default")
+  local default_icon_hl = string.format("DiagnosticHover%sIcon", "Default")
+  local bg = string.format("DiagnosticHover%s", level)
+  local icon_hl = string.format("DiagnosticHover%sIcon", level)
 
   return {
     width = 3,

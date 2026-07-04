@@ -169,6 +169,34 @@ function M.compute(window, w, h)
 end
 
 ------------------------------------------------------------------------------
+-- Highlight generation
+------------------------------------------------------------------------------
+
+--- Regenerates a themed family of highlight groups from `groups`, each
+--- mapping a semantic key (e.g. "Error", "Function") to a highlight to pull
+--- a color from.
+---@param prefix string
+---@param groups table<string, { target: string, fallback: string }>
+---@param alpha? number Blend ratio of the accent color into `Normal`'s bg (default 0.1).
+function M.generate_kind_highlights(prefix, groups, alpha)
+  local colors = require("utils.coloring")
+  local bg_hl = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+  local normal_bg = bg_hl.bg or (vim.o.background == "dark" and "#1e1e2e" or "#eff1f5")
+  alpha = alpha or 0.1
+
+  for key, conf in pairs(groups) do
+    local fg_hl = vim.api.nvim_get_hl(0, { name = conf.target, link = false })
+    local fg = fg_hl.fg or conf.fallback
+
+    local hex_fg = colors.hex(colors.parse(fg))
+    local blended_bg = colors.blend(fg, normal_bg, alpha)
+
+    vim.api.nvim_set_hl(0, prefix .. key, { fg = hex_fg, bg = blended_bg })
+    vim.api.nvim_set_hl(0, prefix .. key .. "Icon", { fg = normal_bg, bg = hex_fg })
+  end
+end
+
+------------------------------------------------------------------------------
 -- Utility
 ------------------------------------------------------------------------------
 
