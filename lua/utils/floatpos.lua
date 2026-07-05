@@ -196,6 +196,20 @@ function M.generate_kind_highlights(prefix, groups, alpha)
   end
 end
 
+--- Generates a single highlight group whose fg is `Normal`'s fg blended
+--- towards `Normal`'s bg
+---@param name   string
+---@param ratio? number Blend ratio kept from the original fg (default 0.45); lower fades more.
+function M.generate_muted_highlight(name, ratio)
+  local colors = require("utils.coloring")
+  local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+  local fg = normal.fg or "#cdd6f4"
+  local bg = normal.bg or (vim.o.background == "dark" and "#181D21") or "#F2F3F4"
+  vim.api.nvim_set_hl(0, name, {
+    fg = colors.blend(fg, bg, ratio or 0.45),
+  })
+end
+
 ------------------------------------------------------------------------------
 -- Utility
 ------------------------------------------------------------------------------
