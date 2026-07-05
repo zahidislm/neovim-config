@@ -265,7 +265,7 @@ function M.open(window)
   local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/hover" })
   if #clients == 0 then
     return api.nvim_echo({
-      { " lsp-hover ", "DiagnosticVirtualTextWarn" },
+      { " hovers/lsp ", "DiagnosticVirtualTextWarn" },
       { ": No LSP hover provider for this buffer", "@comment" },
     }, true, {})
   end
