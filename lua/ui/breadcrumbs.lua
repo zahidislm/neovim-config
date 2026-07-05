@@ -309,6 +309,11 @@ local function breadcrumbs_set()
   local bufnr = vim.api.nvim_get_current_buf()
   local winnr = vim.api.nvim_get_current_win()
 
+  -- Don't enable breadcrumbs on floating windows/hovers
+  if vim.api.nvim_win_get_config(winnr).relative ~= "" then
+    return
+  end
+
   local uri = vim.lsp.util.make_text_document_params(bufnr).uri
   if not uri or uri:sub(1, (uri:find(":") or 1) - 1) ~= "file" then
     vim.api.nvim_set_option_value("winbar", "", { win = winnr })
