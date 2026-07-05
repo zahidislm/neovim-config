@@ -75,10 +75,11 @@ local icon_cache = {}
 
 ---@param category string
 ---@param name     string
----@return string Winbar highlight-wrapped icon, or "" when MiniIcons is unavailable.
+---@return string Winbar highlight-wrapped icon, a shared plain glyph as a
+---                fallback, or "" when neither is available.
 local function get_icon(category, name)
   if not _G.MiniIcons then
-    return ""
+    return (vim.g.iconchars.kinds and vim.g.iconchars.kinds[name]) or ""
   end
   local key = category .. ":" .. name
   if not icon_cache[key] then
