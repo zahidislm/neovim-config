@@ -74,7 +74,7 @@ M.config = {
     local use = 1
     for _, item in ipairs(items) do
       for _, line in ipairs(vim.split(item.message or "", "\n", { trimempty = true })) do
-        use = math.min(math.max(vim.fn.strdisplaywidth(line), use), max)
+        use = math.max(use, math.min(vim.fn.strdisplaywidth(line), max))
       end
     end
     return use
