@@ -191,7 +191,6 @@ local function setup_window(source_win, W, D, cursor_y)
     api.nvim_win_set_config(M.window, height_calc_config)
   end
 
-  _G.diaghover.window = M.window
   vim.wo[M.window].wrap = false
 
   local H = api.nvim_win_text_height(M.window, { start_row = 0, end_row = -1 }).all
@@ -217,6 +216,16 @@ local function setup_window(source_win, W, D, cursor_y)
   vim.wo[M.window].conceallevel = 3
   vim.wo[M.window].concealcursor = "ncv"
   vim.wo[M.window].winhl = "FloatBorder:@comment,Normal:Normal"
+
+  api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "InsertCharPre", "BufHidden" }, {
+    buffer = api.nvim_win_get_buf(source_win),
+    callback = function ()
+      if M.window and api.nvim_get_current_win() ~= M.window then
+        M.close()
+        return true
+      end
+    end,
+  })
 end
 
 --- Injects navigation keymaps into the floating buffer.
@@ -296,7 +305,5 @@ if M.config.keymap then
     desc = "Open diagnostic hover",
   })
 end
-
-_G.diaghover = { hover = M.hover, close = M.close }
 
 return M
