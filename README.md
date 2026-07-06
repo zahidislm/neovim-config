@@ -35,8 +35,8 @@ This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp
 
 - [The UI](#the-ui)
   - [statuscolumn](#statuscolumnlua)
-  - [hovers](#hovers-lspand-diagnostics-floats-off-a-shared-positioning-engine)
-  - [breadcrumbs](#breadcrumbslua-lsp-symbols-falling-back-to-tree-sitter)
+  - [hovers](#hovers-collection-of-custom-float-ui)
+  - [breadcrumbs](#breadcrumbslua-symbols-winbar)
   - [foldtext](#foldtextlua-folds-that-keep-their-syntax-highlighting)
   - [quickfix](#quickfixlua-a-custom-quickfixtextfunc-handler)
   - [statusline](#statusline-an-event-driven-statusline)
@@ -66,7 +66,7 @@ None of this is here because the equivalent plugins are bad. `lualine.nvim`, `no
 
 Forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statuscolumn implementation, then trimmed down strictly to marks, signs, git signs, and folds.
 
-### `hovers/`: LSP and diagnostics floats off a shared positioning engine
+### `hovers`: Collection of custom float UI
  
 `hovers/diagnostics.lua` replaces `vim.diagnostic.open_float()`, and `hovers/lsp.lua` replaces `vim.lsp.buf.hover()` (bound to `K`). Both are thin skins over the same placement math, which lives in `lua/utils/hoverpos.lua` so it isn't duplicated across two nearly-identical floating windows.
  
@@ -80,7 +80,7 @@ Forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statusco
 `hovers/lsp.lua` classifies whatever's under the cursor into a kind (function, class, variable, and so on) via treesitter/semantic-token captures, tints the border and title badge to match, and re-wraps the returned markdown to a sane width instead of trusting whatever the language server sent. It splits the signature from the documentation on the first `---` divider (or first fenced code block) and dims everything past that split.
 </details>
 
-### `breadcrumbs.lua`: LSP symbols, falling back to Tree-sitter
+### `breadcrumbs.lua`: Symbols winbar
 
 A winbar component to show current symbol.
 
