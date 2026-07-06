@@ -30,6 +30,7 @@ M.config = {
 M.ns = api.nvim_create_namespace("lsp_hover")
 M.window = nil
 M.quad = nil
+M.docs_line = nil
 
 ------------------------------------------------------------------------------
 -- Kind classification
@@ -224,7 +225,10 @@ end
 local function style_content(float_buf, lines, kind, width)
   local docs_start, needs_divider = find_signature_end(lines)
   local total_lines = api.nvim_buf_line_count(float_buf)
-  if not (docs_start and docs_start < total_lines) then return end
+  if not (docs_start and docs_start < total_lines) then
+    M.docs_line = nil
+    return
+  end
 
   api.nvim_buf_clear_namespace(float_buf, M.ns, 0, -1)
   local hl_suffix = kind:gsub("^%l", string.upper)
@@ -244,6 +248,9 @@ local function style_content(float_buf, lines, kind, width)
       priority = 100,
     })
   end
+
+  -- Remembers where the documentation starts
+  M.docs_line = needs_divider and docs_start or math.min(docs_start + 1, total_lines - 1)
 end
 
 ------------------------------------------------------------------------------
@@ -258,7 +265,11 @@ function M.open(window)
   window = window or api.nvim_get_current_win()
 
   if M.window and api.nvim_win_is_valid(M.window) then
-    return api.nvim_set_current_win(M.window)
+    api.nvim_set_current_win(M.window)
+    if M.docs_line then
+      pcall(api.nvim_win_set_cursor, M.window, { M.docs_line + 1, 0 })
+    end
+    return
   end
 
   local bufnr = api.nvim_win_get_buf(window)
