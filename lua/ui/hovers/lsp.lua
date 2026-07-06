@@ -157,6 +157,50 @@ function M.__generate_highlights()
 end
 
 ------------------------------------------------------------------------------
+-- Documentation Re-wrap
+------------------------------------------------------------------------------
+
+-- Line prefixes marking structural markdown we should never reformat
+local STRUCTURAL_LINE = "^%s*[#>]" -- headings, block quotes
+local LIST_ITEM_LINE = "^%s*[%-%*%+]%s" -- "- foo", "* foo", "+ foo"
+local ORDERED_ITEM_LINE = "^%s*%d+[%.%)]%s" -- "1. foo", "2) foo"
+local THEMATIC_BREAK_LINE = "^%s*%-%-%-+%s*$" -- "---"
+
+--- Rewraps paragraphs in `lines` to fit `width`
+---@param lines string[]
+---@param width integer
+---@return string[]
+local function rewrap_align(lines, width)
+  local out = {}
+  local paragraph = {}
+  local in_code_block = false
+
+  local function flush_paragraph()
+    if #paragraph == 0 then return end
+    vim.list_extend(out, floatpos.wrap_text(table.concat(paragraph, " "), width))
+    paragraph = {}
+  end
+
+  for _, line in ipairs(lines) do
+    if line:match("^%s*```") then
+      flush_paragraph()
+      in_code_block = not in_code_block
+      table.insert(out, line)
+    elseif in_code_block or line:match("^%s*$")
+      or line:match(STRUCTURAL_LINE) or line:match(LIST_ITEM_LINE)
+      or line:match(ORDERED_ITEM_LINE) or line:match(THEMATIC_BREAK_LINE) then
+      flush_paragraph()
+      table.insert(out, line)
+    else
+      table.insert(paragraph, vim.trim(line))
+    end
+  end
+  flush_paragraph()
+
+  return out
+end
+
+------------------------------------------------------------------------------
 -- Window Generation
 ------------------------------------------------------------------------------
 
@@ -290,6 +334,9 @@ function M.open(window)
 
     local lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
     if vim.tbl_isempty(lines) then return end
+
+    local max_width = floatpos.eval(M.config.max_width)
+    lines = rewrap_align(lines, max_width)
 
     local float_buf, float_win = vim.lsp.util.open_floating_preview(lines, "markdown", {
       max_width = floatpos.eval(M.config.max_width),
