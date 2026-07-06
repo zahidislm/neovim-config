@@ -179,7 +179,7 @@ local function setup_window(source_win, W, D, cursor_y)
     relative = "editor",
     row = 0,
     col = 1,
-    width = math.max(1, W - D),
+    width = math.max(10, W - D),
     height = 2,
     style = "minimal",
     hide = true,
