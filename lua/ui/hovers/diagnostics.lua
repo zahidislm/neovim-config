@@ -213,7 +213,7 @@ local function setup_window(source_win, W, D, cursor_y)
   vim.wo[M.window].concealcursor = "ncv"
   vim.wo[M.window].winhl = "FloatBorder:@comment,Normal:Normal"
 
-  api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "InsertCharPre", "BufHidden" }, {
+  api.nvim_create_autocmd(floatpos.close_events, {
     group = api.nvim_create_augroup("diagnostic-hover-autoclose", { clear = true }),
     buffer = api.nvim_win_get_buf(source_win),
     callback = function ()
@@ -271,10 +271,7 @@ function M.hover(window)
 
   if #items == 0 then
     M.close()
-    return api.nvim_echo({
-      { " hovers/diagnostics ", "DiagnosticVirtualTextWarn" },
-      { ": No diagnostic under cursor", "@comment" },
-    }, true, {})
+    return floatpos.notify_empty("diagnostics", "No diagnostic under cursor")
   elseif M.window and api.nvim_win_is_valid(M.window) then
     return api.nvim_set_current_win(M.window)
   end

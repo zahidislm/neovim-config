@@ -1,5 +1,6 @@
 -- Shared dynamic positioning & sizing logic for cursor-anchored floating windows
 
+local api = vim.api
 local M = {}
 
 ------------------------------------------------------------------------------
@@ -26,6 +27,9 @@ local M = {}
 
 -- Tracks occupied quadrants
 M.used_quads = {}
+
+-- Events to close float
+M.close_events = { "CursorMoved", "CursorMovedI", "InsertCharPre", "BufHidden" }
 
 ---@param quad  floatpos.quad?
 ---@param state boolean
@@ -98,66 +102,64 @@ end
 -- Positioning
 ------------------------------------------------------------------------------
 
+local quadrants = {
+  {
+    quad = "bottom_right",
+    anchor = "NW",
+    row = 1,
+    col = 0,
+    border = { "├", "─", "╮", "│", "╯", "─", "╰", "│" },
+    fits = function (sp, w, h, sw, sh) return sp.row + h <= sh and sp.curscol + w <= sw end,
+  },
+  {
+    quad = "top_right",
+    anchor = "SW",
+    row = 0,
+    col = 0,
+    border = { "╭", "─", "╮", "│", "╯", "─", "├", "│" },
+    fits = function (sp, _, h, sw, _) return h < sp.row and sp.curscol + 2 <= sw end,
+  },
+  {
+    quad = "bottom_left",
+    anchor = "NE",
+    row = 1,
+    col = 1,
+    border = { "╭", "─", "┤", "│", "╯", "─", "╰", "│" },
+    fits = function (sp, w, h, _, sh) return sp.row + h <= sh and sp.curscol > w end,
+  },
+  {
+    quad = "top_left",
+    anchor = "SE",
+    row = 0,
+    col = 1,
+    border = { "╭", "─", "╮", "│", "┤", "─", "╰", "│" },
+    fits = function (sp, w, h, _, _) return h < sp.row and sp.curscol > w end,
+  },
+}
+
 --- Calculates the optimal floating window placement relative to the cursor
 ---@param window integer The source window whose cursor the float anchors to.
 ---@param w      integer The calculated width of the float.
 ---@param h      integer The calculated height of the float.
 ---@return floatpos.result
 function M.compute(window, w, h)
-  local cursor = vim.api.nvim_win_get_cursor(window)
+  local cursor = api.nvim_win_get_cursor(window)
   local screenpos = vim.fn.screenpos(window, cursor[1], cursor[2])
-  local screen_width = vim.o.columns - 2
-  local screen_height = vim.o.lines - vim.o.cmdheight - 2
+  local sw, sh = vim.o.columns - 2, vim.o.lines - vim.o.cmdheight - 2
 
-  -- Bottom Right Priority
-  if not M.used_quads["bottom_right"] and (screenpos.row + h <= screen_height)
-    and (screenpos.curscol + w <= screen_width) then
-    return {
-      border = { "├", "─", "╮", "│", "╯", "─", "╰", "│" },
-      relative = "cursor",
-      anchor = "NW",
-      row = 1,
-      col = 0,
-      quad = "bottom_right",
-    }
-
-    -- Top Right Fallback
-  elseif not M.used_quads["top_right"] and h < screenpos.row
-    and (screenpos.curscol + 2 <= screen_width) then
-    return {
-      border = { "╭", "─", "╮", "│", "╯", "─", "├", "│" },
-      relative = "cursor",
-      anchor = "SW",
-      row = 0,
-      col = 0,
-      quad = "top_right",
-    }
-
-    -- Bottom Left Fallback
-  elseif not M.used_quads["bottom_left"] and (screenpos.row + h <= screen_height)
-    and screenpos.curscol > w then
-    return {
-      border = { "╭", "─", "┤", "│", "╯", "─", "╰", "│" },
-      relative = "cursor",
-      anchor = "NE",
-      row = 1,
-      col = 1,
-      quad = "bottom_left",
-    }
-
-    -- Top Left Fallback
-  elseif not M.used_quads["top_left"] and h < screenpos.row and screenpos.curscol > w then
-    return {
-      border = { "╭", "─", "╮", "│", "┤", "─", "╰", "│" },
-      relative = "cursor",
-      anchor = "SE",
-      row = 0,
-      col = 1,
-      quad = "top_left",
-    }
+  for _, q in ipairs(quadrants) do
+    if not M.used_quads[q.quad] and q.fits(screenpos, w, h, sw, sh) then
+      return {
+        border = q.border,
+        relative = "cursor",
+        anchor = q.anchor,
+        row = q.row,
+        col = q.col,
+        quad = q.quad,
+      }
+    end
   end
 
-  -- Default to Center if no cursor-relative quadrant fits securely
   return {
     border = "rounded",
     relative = "editor",
@@ -180,19 +182,19 @@ end
 ---@param alpha? number Blend ratio of the accent color into `Normal`'s bg (default 0.1).
 function M.generate_kind_highlights(prefix, groups, alpha)
   local colors = require("utils.coloring")
-  local bg_hl = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+  local bg_hl = api.nvim_get_hl(0, { name = "Normal", link = false })
   local normal_bg = bg_hl.bg or (vim.o.background == "dark" and "#1e1e2e" or "#eff1f5")
   alpha = alpha or 0.1
 
   for key, conf in pairs(groups) do
-    local fg_hl = vim.api.nvim_get_hl(0, { name = conf.target, link = false })
+    local fg_hl = api.nvim_get_hl(0, { name = conf.target, link = false })
     local fg = fg_hl.fg or conf.fallback
 
     local hex_fg = colors.hex(colors.parse(fg))
     local blended_bg = colors.blend(fg, normal_bg, alpha)
 
-    vim.api.nvim_set_hl(0, prefix .. key, { fg = hex_fg, bg = blended_bg })
-    vim.api.nvim_set_hl(0, prefix .. key .. "Icon", { fg = normal_bg, bg = hex_fg })
+    api.nvim_set_hl(0, prefix .. key, { fg = hex_fg, bg = blended_bg })
+    api.nvim_set_hl(0, prefix .. key .. "Icon", { fg = normal_bg, bg = hex_fg })
   end
 end
 
@@ -202,10 +204,10 @@ end
 ---@param ratio? number Blend ratio kept from the original fg (default 0.45); lower fades more.
 function M.generate_muted_highlight(name, ratio)
   local colors = require("utils.coloring")
-  local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+  local normal = api.nvim_get_hl(0, { name = "Normal", link = false })
   local fg = normal.fg or "#cdd6f4"
   local bg = normal.bg or (vim.o.background == "dark" and "#181D21") or "#F2F3F4"
-  vim.api.nvim_set_hl(0, name, {
+  api.nvim_set_hl(0, name, {
     fg = colors.blend(fg, bg, ratio or 0.45),
   })
 end
@@ -217,14 +219,24 @@ end
 --- Closes a float previously positioned with `M.compute` and frees its quadrant
 ---@param state floatpos.state
 function M.close(state)
-  if state.window and vim.api.nvim_win_is_valid(state.window) then
-    pcall(vim.api.nvim_win_close, state.window, true)
+  if state.window and api.nvim_win_is_valid(state.window) then
+    pcall(api.nvim_win_close, state.window, true)
     state.window = nil
   end
   if state.quad then
     M.set_quad(state.quad, false)
     state.quad = nil
   end
+end
+
+--- Warns if there's no content to push into float
+---@param name string Name of float/hover
+---@param msg  string
+function M.notify_empty(name, msg)
+  api.nvim_echo({
+    { string.format(" hovers/%s ", name), "DiagnosticVirtualTextWarn" },
+    { ": " .. msg, "@comment" },
+  }, true, {})
 end
 
 return M

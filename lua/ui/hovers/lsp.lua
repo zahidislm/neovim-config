@@ -328,10 +328,7 @@ function M.open(window)
   local bufnr = api.nvim_win_get_buf(window)
   local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/hover" })
   if #clients == 0 then
-    return api.nvim_echo({
-      { " hovers/lsp ", "DiagnosticVirtualTextWarn" },
-      { ": No LSP hover provider for this buffer", "@comment" },
-    }, true, {})
+    return floatpos.notify_empty("lsp", "No diagnostic under cursor")
   end
 
   local cursor = api.nvim_win_get_cursor(window)
@@ -352,7 +349,7 @@ function M.open(window)
       max_height = floatpos.eval(M.config.max_height),
       focus_id = "lsp-hover",
       focusable = true,
-      close_events = { "CursorMoved", "CursorMovedI", "InsertCharPre", "BufHidden" },
+      close_events = floatpos.close_events,
     })
 
     M.window = float_win
