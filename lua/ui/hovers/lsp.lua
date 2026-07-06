@@ -1,7 +1,7 @@
 -- Dynamically positioned, kind-aware LSP hover float
 
 local api = vim.api
-local floatpos = require("utils.floatpos")
+local hoverpos = require("utils.hoverpos")
 local M = {}
 
 ------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ end
 local function truncation_footer(lines, width, height)
   local rows = 0
   for _, line in ipairs(lines) do
-    rows = rows + #floatpos.wrap_text(line, width)
+    rows = rows + #hoverpos.wrap_text(line, width)
     if rows > height then
       return { { string.format(" ⋯ press %s to enter ", M.config.keymap), "LspHoverMuted" } }
     end
@@ -152,8 +152,8 @@ end
 
 --- Dynamically regenerates LspHover* groups based on the current colorscheme.
 function M.__generate_highlights()
-  floatpos.generate_kind_highlights("LspHover", kind_types, M.config.alpha)
-  floatpos.generate_muted_highlight("LspHoverMuted", M.config.dim_alpha)
+  hoverpos.generate_kind_highlights("LspHover", kind_types, M.config.alpha)
+  hoverpos.generate_muted_highlight("LspHoverMuted", M.config.dim_alpha)
 end
 
 ------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ local function rewrap_align(lines, width)
 
   local function flush_paragraph()
     if #paragraph == 0 then return end
-    vim.list_extend(out, floatpos.wrap_text(table.concat(paragraph, " "), width))
+    vim.list_extend(out, hoverpos.wrap_text(table.concat(paragraph, " "), width))
     paragraph = {}
   end
 
@@ -214,10 +214,10 @@ end
 local function place_window(source_win, float_win)
   local width = api.nvim_win_get_width(float_win)
   local height = api.nvim_win_get_height(float_win)
-  local pos = floatpos.compute(source_win, width, height)
+  local pos = hoverpos.compute(source_win, width, height)
 
   M.quad = pos.quad
-  floatpos.set_quad(pos.quad, true)
+  hoverpos.set_quad(pos.quad, true)
 
   return pos, width, height
 end
@@ -301,7 +301,7 @@ local function watch_for_close(float_win)
     pattern = tostring(float_win),
     once = true,
     callback = function ()
-      floatpos.close(M)
+      hoverpos.close(M)
     end,
   })
 end
@@ -328,7 +328,7 @@ function M.open(window)
   local bufnr = api.nvim_win_get_buf(window)
   local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/hover" })
   if #clients == 0 then
-    return floatpos.notify_empty("lsp", "No diagnostic under cursor")
+    return hoverpos.notify_empty("lsp", "No diagnostic under cursor")
   end
 
   local cursor = api.nvim_win_get_cursor(window)
@@ -341,15 +341,15 @@ function M.open(window)
     local lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
     if vim.tbl_isempty(lines) then return end
 
-    local max_width = floatpos.eval(M.config.max_width)
+    local max_width = hoverpos.eval(M.config.max_width)
     lines = rewrap_align(lines, max_width)
 
     local float_buf, float_win = vim.lsp.util.open_floating_preview(lines, "markdown", {
       max_width = max_width,
-      max_height = floatpos.eval(M.config.max_height),
+      max_height = hoverpos.eval(M.config.max_height),
       focus_id = "lsp-hover",
       focusable = true,
-      close_events = floatpos.close_events,
+      close_events = hoverpos.close_events,
     })
 
     M.window = float_win

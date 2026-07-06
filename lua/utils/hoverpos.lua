@@ -1,4 +1,4 @@
--- Shared dynamic positioning & sizing logic for cursor-anchored floating windows
+-- Shared dynamic positioning & sizing logic for cursor-anchored floating windows (hovers)
 
 local api = vim.api
 local M = {}
@@ -7,19 +7,19 @@ local M = {}
 -- Types
 ------------------------------------------------------------------------------
 
----@alias floatpos.quad "top_left" | "top_right" | "bottom_left" | "bottom_right" | "center"
+---@alias hoverpos.quad "top_left" | "top_right" | "bottom_left" | "bottom_right" | "center"
 
----@class floatpos.result
+---@class hoverpos.result
 ---@field border   string | table
 ---@field relative string
 ---@field anchor   string
 ---@field row      integer
 ---@field col      integer
----@field quad     floatpos.quad
+---@field quad     hoverpos.quad
 
----@class floatpos.state
+---@class hoverpos.state
 ---@field window integer?
----@field quad   floatpos.quad?
+---@field quad   hoverpos.quad?
 
 ------------------------------------------------------------------------------
 -- Quadrant bookkeeping
@@ -31,7 +31,7 @@ M.used_quads = {}
 -- Events to close float
 M.close_events = { "CursorMoved", "CursorMovedI", "InsertCharPre", "BufHidden" }
 
----@param quad  floatpos.quad?
+---@param quad  hoverpos.quad?
 ---@param state boolean
 function M.set_quad(quad, state)
   if quad then M.used_quads[quad] = state end
@@ -141,7 +141,7 @@ local quadrants = {
 ---@param window integer The source window whose cursor the float anchors to.
 ---@param w      integer The calculated width of the float.
 ---@param h      integer The calculated height of the float.
----@return floatpos.result
+---@return hoverpos.result
 function M.compute(window, w, h)
   local cursor = api.nvim_win_get_cursor(window)
   local screenpos = vim.fn.screenpos(window, cursor[1], cursor[2])
@@ -217,7 +217,7 @@ end
 ------------------------------------------------------------------------------
 
 --- Closes a float previously positioned with `M.compute` and frees its quadrant
----@param state floatpos.state
+---@param state hoverpos.state
 function M.close(state)
   if state.window and api.nvim_win_is_valid(state.window) then
     pcall(api.nvim_win_close, state.window, true)

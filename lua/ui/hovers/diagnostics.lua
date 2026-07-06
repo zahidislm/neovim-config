@@ -2,7 +2,7 @@
 -- Fancy diagnostics hover for Neovim.
 
 local api = vim.api
-local floatpos = require("utils.floatpos")
+local hoverpos = require("utils.hoverpos")
 local icons = vim.g.iconchars
 
 local M = {}
@@ -25,7 +25,7 @@ local M = {}
 
 --- Dynamically generates FancyDiagnostic groups based on current colorscheme.
 function M.__generate_highlights()
-  floatpos.generate_kind_highlights("DiagnosticHover", {
+  hoverpos.generate_kind_highlights("DiagnosticHover", {
     Default = { target = "@comment", fallback = "#9399b2" },
     Info = { target = "DiagnosticInfo", fallback = "#94e2d5" },
     Hint = { target = "DiagnosticHint", fallback = "#94e2d5" },
@@ -108,7 +108,7 @@ local function get_decorations(level, ...)
   local conf = M.config.decorations[level] or M.config.decorations["default"]
   if not conf then return output end
   for k, v in pairs(conf) do
-    output[k] = floatpos.eval(v, ...)
+    output[k] = hoverpos.eval(v, ...)
   end
   return output
 end
@@ -125,8 +125,8 @@ end
 ---@return integer cursor_y The relative line index the cursor is currently resting on.
 ---@return table ranges     Location map to allow jumping to diagnostic.
 local function build_buffer_state(items, cursor)
-  local message_width = floatpos.eval(M.config.width, items)
-  local D = floatpos.eval(M.config.decoration_width, items) or 0
+  local message_width = hoverpos.eval(M.config.width, items)
+  local D = hoverpos.eval(M.config.decoration_width, items) or 0
   local W = message_width + D
 
   local diagnostic_lines = 0
@@ -138,7 +138,7 @@ local function build_buffer_state(items, cursor)
   for i, item in ipairs(items) do
     local lines = {}
     for _, paragraph in ipairs(vim.split(item.message or "", "\n", { trimempty = true })) do
-      vim.list_extend(lines, floatpos.wrap_text(paragraph, message_width))
+      vim.list_extend(lines, hoverpos.wrap_text(paragraph, message_width))
     end
     if #lines == 0 then
       lines = { "" }
@@ -190,7 +190,7 @@ local function setup_window(source_win, W, D, cursor_y)
   vim.wo[M.window].wrap = false
 
   local H = api.nvim_win_text_height(M.window, { start_row = 0, end_row = -1 }).all
-  local pos = floatpos.compute(source_win, W, H)
+  local pos = hoverpos.compute(source_win, W, H)
   M.quad = pos.quad
 
   api.nvim_win_set_config(M.window, {
@@ -206,14 +206,14 @@ local function setup_window(source_win, W, D, cursor_y)
   })
 
   api.nvim_win_set_cursor(M.window, { cursor_y, 0 })
-  floatpos.set_quad(M.quad, true)
+  hoverpos.set_quad(M.quad, true)
 
   vim.wo[M.window].signcolumn = "no"
   vim.wo[M.window].conceallevel = 3
   vim.wo[M.window].concealcursor = "ncv"
   vim.wo[M.window].winhl = "FloatBorder:@comment,Normal:Normal"
 
-  api.nvim_create_autocmd(floatpos.close_events, {
+  api.nvim_create_autocmd(hoverpos.close_events, {
     group = api.nvim_create_augroup("diagnostic-hover-autoclose", { clear = true }),
     buffer = api.nvim_win_get_buf(source_win),
     callback = function ()
@@ -258,7 +258,7 @@ end
 
 --- Closes the hover window and frees the used screen quadrant.
 function M.close()
-  floatpos.close(M)
+  hoverpos.close(M)
 end
 
 --- Triggers the diagnostic hover window for the current line.
@@ -271,12 +271,12 @@ function M.hover(window)
 
   if #items == 0 then
     M.close()
-    return floatpos.notify_empty("diagnostics", "No diagnostic under cursor")
+    return hoverpos.notify_empty("diagnostics", "No diagnostic under cursor")
   elseif M.window and api.nvim_win_is_valid(M.window) then
     return api.nvim_set_current_win(M.window)
   end
 
-  if M.quad then floatpos.set_quad(M.quad, false) end
+  if M.quad then hoverpos.set_quad(M.quad, false) end
   if not M.buffer or not api.nvim_buf_is_valid(M.buffer) then
     M.buffer = api.nvim_create_buf(false, true)
   end
