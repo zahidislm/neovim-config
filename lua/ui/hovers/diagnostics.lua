@@ -46,7 +46,6 @@ local function handle_diag_level(level, icon)
   local icon_hl = string.format("DiagnosticHover%sIcon", level)
 
   return {
-    width = 3,
     line_hl_group = function (_, current) return current and bg or default end,
     icon = function (_, current)
       return {
@@ -125,7 +124,6 @@ end
 ---@return integer D        Decoration width padding.
 ---@return integer cursor_y The relative line index the cursor is currently resting on.
 ---@return table ranges     Location map to allow jumping to diagnostic.
----@return integer? level   The highest severity level found.
 local function build_buffer_state(items, cursor)
   local message_width = floatpos.eval(M.config.width, items)
   local D = floatpos.eval(M.config.decoration_width, items) or 0
@@ -134,7 +132,6 @@ local function build_buffer_state(items, cursor)
   local diagnostic_lines = 0
   local cursor_y = 1
   local ranges = {}
-  local level
 
   api.nvim_buf_set_lines(M.buffer, 0, -1, false, {})
 
@@ -163,10 +160,9 @@ local function build_buffer_state(items, cursor)
     end
 
     diagnostic_lines = diagnostic_lines + #lines
-    if current == true and (not level or item.severity < level) then level = item.severity end
   end
 
-  return W, D, cursor_y, ranges, level
+  return W, D, cursor_y, ranges
 end
 
 --- Configures the floating window dimensions, borders, and appearance.
@@ -218,6 +214,7 @@ local function setup_window(source_win, W, D, cursor_y)
   vim.wo[M.window].winhl = "FloatBorder:@comment,Normal:Normal"
 
   api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "InsertCharPre", "BufHidden" }, {
+    group = api.nvim_create_augroup("diagnostic-hover-autoclose", { clear = true }),
     buffer = api.nvim_win_get_buf(source_win),
     callback = function ()
       if M.window and api.nvim_get_current_win() ~= M.window then
