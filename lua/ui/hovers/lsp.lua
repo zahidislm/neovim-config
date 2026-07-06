@@ -225,14 +225,12 @@ end
 --- Applies position and kind-accented border/title/footer/winhl to
 --- the float in one window-config update.
 ---@param float_win integer
----@param pos       floatpos.result The placement from `hover.__place_window`.
----@param kind      string          A key into `KIND_TARGETS`.
----@param lines     string[]        The markdown lines the float was opened with.
+---@param pos       floatpos.result                                    The placement from `place_window`.
+---@param display   { icon: string, label: string, hl_suffix: string } From `kind_display`.
+---@param lines     string[]                                           The markdown lines the float was opened with.
 ---@param width     integer
 ---@param height    integer
-local function style_window(float_win, pos, kind, lines, width, height)
-  local display = kind_display(kind)
-
+local function style_window(float_win, pos, display, lines, width, height)
   local win_config = {
     relative = pos.relative,
     anchor = pos.anchor,
@@ -264,9 +262,9 @@ end
 --- built-in separator, draws an accent-colored divider between the two.
 ---@param float_buf integer
 ---@param lines     string[] The markdown lines the float was opened with.
----@param kind      string   A key into `KIND_TARGETS`.
+---@param hl_suffix string   From `kind_display(kind).hl_suffix`.
 ---@param width     integer
-local function style_content(float_buf, lines, kind, width)
+local function style_content(float_buf, lines, hl_suffix, width)
   local docs_start, needs_divider = find_signature_end(lines)
   local total_lines = api.nvim_buf_line_count(float_buf)
   if not (docs_start and docs_start < total_lines) then
@@ -275,7 +273,6 @@ local function style_content(float_buf, lines, kind, width)
   end
 
   api.nvim_buf_clear_namespace(float_buf, M.ns, 0, -1)
-  local hl_suffix = kind:gsub("^%l", string.upper)
 
   local divider_line = docs_start - 1
   if needs_divider and divider_line >= 0 and divider_line < total_lines then
@@ -347,10 +344,10 @@ function M.open(window)
     })
 
     M.window = float_win
+    local display = kind_display(kind)
     local pos, width, height = place_window(window, float_win)
-    style_window(float_win, pos, kind, lines, width, height)
-    style_content(float_buf, lines, kind, width)
-    api.nvim_create_autocmd("WinClosed", {
+    style_window(float_win, pos, display, lines, width, height)
+    style_content(float_buf, lines, display.hl_suffix, width)
       pattern = tostring(float_win),
       once = true,
       callback = function ()
