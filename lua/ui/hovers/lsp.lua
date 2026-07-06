@@ -294,6 +294,18 @@ local function style_content(float_buf, lines, hl_suffix, width)
   M.docs_line = needs_divider and docs_start or math.min(docs_start + 1, total_lines - 1)
 end
 
+--- Frees the float's quadrant whenever it closes
+---@param float_win integer
+local function watch_for_close(float_win)
+  api.nvim_create_autocmd("WinClosed", {
+    pattern = tostring(float_win),
+    once = true,
+    callback = function ()
+      floatpos.close(M)
+    end,
+  })
+end
+
 ------------------------------------------------------------------------------
 -- Activation
 ------------------------------------------------------------------------------
@@ -348,12 +360,8 @@ function M.open(window)
     local pos, width, height = place_window(window, float_win)
     style_window(float_win, pos, display, lines, width, height)
     style_content(float_buf, lines, display.hl_suffix, width)
-      pattern = tostring(float_win),
-      once = true,
-      callback = function ()
-        floatpos.close(M)
-      end,
-    })
+    watch_for_close(float_win)
   end)
 end
+
 return M
