@@ -1,4 +1,3 @@
--- Forked from OXY2DEV (https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/diagnostics.lua)
 -- Fancy diagnostics hover for Neovim.
 
 local api = vim.api
