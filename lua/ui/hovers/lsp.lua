@@ -339,7 +339,7 @@ function M.open(window)
     lines = rewrap_align(lines, max_width)
 
     local float_buf, float_win = vim.lsp.util.open_floating_preview(lines, "markdown", {
-      max_width = floatpos.eval(M.config.max_width),
+      max_width = max_width,
       max_height = floatpos.eval(M.config.max_height),
       focus_id = "lsp-hover",
       focusable = true,
