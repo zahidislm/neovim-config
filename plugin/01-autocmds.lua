@@ -10,7 +10,12 @@ augroup("ActiveWinCursorLine", function (g)
   -- Highlight current line only on focused window
   aucmd({ "WinEnter", "BufEnter", "InsertLeave" }, {
     group = g,
-    command = "if ! &cursorline && ! &pvw | setlocal cursorline | endif",
+    callback = function ()
+      local is_floating = api.nvim_win_get_config(0).relative ~= ""
+      if not vim.wo.cursorline and not vim.wo.previewwindow and not is_floating then
+        vim.wo.cursorline = true
+      end
+    end,
   })
 
   aucmd({ "WinLeave", "BufLeave", "InsertEnter" }, {
