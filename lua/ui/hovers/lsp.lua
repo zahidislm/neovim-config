@@ -56,7 +56,7 @@ local kind_types = {
 -- A generic glyph for when nothing classifies
 local default_icon = "●"
 
--- Maps a treesitter/semantic-token capture name to one of `KIND_TARGETS`'s keys.
+-- Maps a treesitter/semantic-token capture name to one of `kind_types`'s keys.
 local ts_kind_captures = {
   { "^@lsp%.type%.class", "class" }, { "^@lsp%.type%.interface", "interface" },
   { "^@lsp%.type%.struct", "struct" }, { "^@lsp%.type%.enum", "enum" },
@@ -71,8 +71,8 @@ local ts_kind_captures = {
   { "^@lsp%.type%.enumMember", "constant" }, { "^@constant", "constant" },
 }
 
---- Classifies the symbol at `(row, col)` into one of `KIND_TARGETS`'s keys,
---- using whatever treesitter/semantic-token capture is available.
+--- Classifies the symbol at `(row, col)` into one of `kind_types`'s keys,
+--- using whatever treesitter capture is available.
 ---@param bufnr integer
 ---@param row   integer 0-indexed
 ---@param col   integer 0-indexed
@@ -119,7 +119,7 @@ local function find_signature_end(lines)
 end
 
 --- Derives `kind`'s glyph, label, and the highlight used to tint its border/title/divider.
----@param kind string A key into `KIND_TARGETS`.
+---@param kind string A key into `kind_types`.
 ---@return { icon: string, label: string, hl_suffix: string }
 local function kind_display(kind)
   local hl_suffix = kind:gsub("^%l", string.upper)
