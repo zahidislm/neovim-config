@@ -27,7 +27,7 @@ Use a terminal to manage files/directories/structure. Use a multiplexer for comp
 > [!NOTE]
 > This is a personal configuration, tuned for one person's workflow on purpose. It isn't a distribution, it doesn't try to be beginner-friendly, and large parts of it exist because I wanted to learn how a particular Neovim internal worked, not because there was no plugin that already did the job. Feel free to read, steal, or fork pieces of it, but I'd think twice before pointing `git clone` straight at `~/.config/nvim` and hoping for the best.
 
-This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp`, or `lualine.nvim`. That's not a marketing point; it's just what was left once I started replacing things with Neovim's native equivalents and never really stopped. Plugin management runs on `vim.pack`. Completion runs on `mini.completion` against native LSP, and snippets are about thirty lines of Lua. The statusline, statuscolumn, fold text, quickfix formatting, diagnostics popup, and winbar breadcrumbs are all written by hand and live under `lua/ui/`. Everything else is `mini.nvim` doing the work of what would otherwise be a dozen small plugins.
+This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp`, or `lualine.nvim`. That's not a marketing point; it's just what was left once I started replacing things with Neovim's native equivalents and never really stopped. Plugin management runs on `vim.pack`. Completion runs on `mini.completion` against native LSP, and snippets are about thirty lines of Lua. The statusline, statuscolumn, quickfix formatting, hover floats, and winbar breadcrumbs are all written by hand and live under `lua/ui/`, backed by a small set of shared helpers under `lua/utils/` (color math, floating-window placement, fold rendering, file operations). Everything else is `mini.nvim` doing the work of what would otherwise be a dozen small plugins.
 
 ---
 
@@ -35,12 +35,13 @@ This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp
 
 - [The UI](#the-ui)
   - [statuscolumn](#statuscolumnlua)
-  - [diag-hover](#diag-hoverlua)
-  - [breadcrumbs](#breadcrumbslua-lsp-symbols-falling-back-to-tree-sitter)
+  - [hovers](#hovers-collection-of-custom-float-ui)
+  - [breadcrumbs](#breadcrumbslua-symbols-winbar)
   - [foldtext](#foldtextlua-folds-that-keep-their-syntax-highlighting)
   - [quickfix](#quickfixlua-a-custom-quickfixtextfunc-handler)
   - [statusline](#statusline-an-event-driven-statusline)
   - [theming](#icons-coloring-and-the-highlight-overrides)
+- [Utilities](#utilities)
 - [Plugins](#the-plugins)
   - [vim.pack wrapper](#packadd-the-vimpack-wrapper)
   - [navigation](#picking-buffers-and-navigation)
@@ -65,21 +66,28 @@ None of this is here because the equivalent plugins are bad. `lualine.nvim`, `no
 
 Forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statuscolumn implementation, then trimmed down strictly to marks, signs, git signs, and folds.
 
-### `diag-hover.lua`
-
-A replacement for `vim.diagnostic.open_float()`.
+### `hovers`: Collection of custom float UI
+`hovers/diagnostics.lua` replaces `vim.diagnostic.open_float()`, and `hovers/lsp.lua` replaces `vim.lsp.buf.hover()` (bound to `K`). Both are thin skins over the same placement math, which lives in `lua/utils/hoverpos.lua` so it isn't duplicated across two nearly-identical floating windows.
+ 
+`hovers/diagnostics`: formats the diagnostic float for a stylized display to show different diagnostic types, also allowing to jump to each diagnostic in the line. 
 
 <details>
 <summary><b>Expand to see details.</b></summary>
 <br>
-
 <picture><img src="https://i.8upload.com/image/df5cbae0ddcdf2d0/screenshot-hover-diag.png" alt="diag-hover screenshot" /></picture>
-
-
-The interesting part isn't the rendering (which tints the background by severity using an alpha blend), it's the positioning. Rather than always opening below the cursor and occasionally clipping off-screen, it checks four quadrants relative to the cursor and picks the first one that actually fits the screen. It tracks which quadrant is currently occupied so a second float doesn't stack directly on top of the first, and draws border-corner glyphs so the box visually "points" back at the cursor.
 </details>
 
-### `breadcrumbs.lua`: LSP symbols, falling back to Tree-sitter
+`hovers/lsp`: Shows documentation for cursorword but also formats it in a custom skin.
+
+<details>
+<summary><b>Expand to see details.</b></summary>
+<br>
+<picture><img src="https://i.8upload.com/image/a7724d384c20f14c/screenshot-hover-lsp.png" alt="lsp-hover screenshot" /></picture>
+
+Classifies whatever's under the cursor into a kind (function, class, variable, and so on) via treesitter/semantic-token captures, tints the border and title badge to match, and re-wraps the returned markdown to a sane width instead of trusting whatever the language server sent.
+</details>
+
+### `breadcrumbs.lua`: Symbols winbar
 
 A winbar component to show current symbol.
 
@@ -129,7 +137,7 @@ Designed to be highly efficient in both performance and memory usage:
 
 ### Icons, coloring, and the highlight overrides
 
-`icons.lua` keeps a plain Unicode set and a Nerd Font superset, merged only if `vim.g.use_nerdfonts` is true. `highlights/coloring.lua` is a tiny color-math module used to blend foregrounds into backgrounds. `highlights/scheme/kanso.lua` feeds the `overrides` callback in `kanso.nvim` to remap highlight groups for the statusline, `namu.nvim`, and `render-markdown.nvim` onto Kanso's actual palette.
+`icons.lua` keeps a plain Unicode set and a Nerd Font superset, merged only if `vim.g.use_nerdfonts` is true. `utils/coloring.lua` is a tiny color-math module used to blend foregrounds into backgrounds, shared by the hover floats, the statusline, and the colorscheme overrides below. `highlights/scheme/kanso.lua` feeds the `overrides` callback in `kanso.nvim` to remap highlight groups for custom UI elements and plugins onto Kanso's actual palette.
 
 ---
 
@@ -276,7 +284,7 @@ On first launch, `vim.pack` will install everything declared across the `plugin/
 A few pieces here started as someone else's code, then got bent into shape for this config specifically:
 
 - `lua/ui/statuscolumn.lua`: forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statuscolumn module.
-- `lua/ui/diag-hover.lua`: forked from [OXY2DEV](https://github.com/OXY2DEV/nvim)'s diagnostics float script.
+- `lua/ui/hovers/diagnostics.lua`: forked from [OXY2DEV](https://github.com/OXY2DEV/nvim)'s diagnostics float script.
 - `utils.foldexpr()` (in `lua/utils/init.lua`): adapted from [folke](https://github.com/folke) and the [LazyVim](https://github.com/LazyVim/LazyVim) team's efforts.
 - once more to folke, where I learned most of my lua scripting from.
 - drowning-cat for their [unscope](https://github.com/nvim-mini/mini.nvim/discussions/1951) textobject.

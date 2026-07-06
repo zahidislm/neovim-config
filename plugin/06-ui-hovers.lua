@@ -1,5 +1,6 @@
 local function schedule_highlight_gen()
-  vim.defer_fn(require("ui.lsp-hover").__generate_highlights, 20)
+  vim.defer_fn(require("ui.hovers.diagnostics").__generate_highlights, 20)
+  vim.defer_fn(require("ui.hovers.lsp").__generate_highlights, 20)
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -23,7 +24,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    local hover = require("ui.lsp-hover")
+    local hover = require("ui.hovers.lsp")
     vim.keymap.set("n", hover.config.keymap, hover.open, {
       buffer = args.buf,
       desc = "LSP hover (dynamic float)",
