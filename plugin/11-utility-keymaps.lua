@@ -90,7 +90,7 @@ keymap(norm, "<Leader>fn", [[<Cmd>lua require("utils.fileops").smart_new_file()<
 
 -- Rename file
 keymap(
-  norm, "<Leader>fr", [[<Cmd>lua require("utils.fileops").rename_file()<CR>]], { desc = "Create new file" }
+  norm, "<Leader>fr", [[<Cmd>lua require("utils.fileops").rename_file()<CR>]], { desc = "Rename current file" }
 )
 
 -- Clear QF/loclist
