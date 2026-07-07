@@ -56,6 +56,12 @@ function M.get_hls(colors)
     RenderMarkdownH4Bg = { bg = blend(theme.term[3], theme.ui.bg, 0.1) },
     RenderMarkdownH5Bg = { bg = blend(theme.term[4], theme.ui.bg, 0.1) },
     RenderMarkdownH6Bg = { bg = blend(theme.term[2], theme.ui.bg, 0.1) },
+    -- Glance
+    GlancePreviewNormal = { bg = blend(theme.ui.fg, theme.ui.bg, 0.05) },
+    GlanceListNormal = { bg = blend(theme.ui.fg, theme.ui.bg, 0.1) },
+    GlanceBorderTop = { fg = blend(theme.ui.fg, theme.ui.bg, 0.4) },
+    GlanceListBorderBottom = { link = "GlanceBorderTop" },
+    GlancePreviewBorderBottom = { link = "GlanceBorderTop" },
     -- Namu
     NamuPrefix = { link = "Special" },
     NamuSourceIndicator = { link = "Ignore" },
