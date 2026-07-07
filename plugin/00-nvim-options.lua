@@ -55,6 +55,7 @@ opt.infercase = true                                -- Infer letter cases for a 
 opt.formatoptions = "rqnl1j"                        -- Don't autoformat comments
 opt.smartcase = true                                -- Don't ignore case when searching if pattern has upper case
 opt.virtualedit = "block"                           -- Allow going past the end of line in visual block mode
+opt.spelloptions:append("camel")                    -- Spell check CamelCase text
 
 -- Tabs & Indent
 opt.smartindent = true    -- Make indenting smart
