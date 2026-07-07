@@ -255,7 +255,6 @@ Pack.add({
         { "<Leader>s", group = "session" },
         { "gr", group = "LSP" },
       },
-      plugins = { spelling = { enabled = false } },
       show_help = false,
     },
   },
