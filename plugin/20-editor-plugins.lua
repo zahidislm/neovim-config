@@ -9,6 +9,20 @@ Pack.add({
       })
 
       vim.ui.select = require("artio").select
+      vim.keymap.set("n", "<Plug>(artio-smart)", function ()
+        local base_dir = vim.fn.getcwd(0)
+        require("artio.builtins").smart({
+          format_item = function (item)
+            local path = vim.fs.relpath(base_dir, item.path) or item.path
+            local dir, file = vim.fn.fnamemodify(path, ":h"), vim.fn.fnamemodify(path, ":t")
+            return string.format("%s %s", file, dir ~= "." and dir or "")
+          end,
+          hl_item = function (item)
+            local i = #vim.fn.fnamemodify(vim.fs.relpath(base_dir, item.v.path) or item.v.path, ":t")
+            return { { { 0, i }, "ArtioNormal" }, { { i + 1, #item.text }, "Comment" } }
+          end,
+        })
+      end)
     end,
     keys = {
       { "<Leader>pc", "<Plug>(artio-commands)", desc = "Pick commands" },

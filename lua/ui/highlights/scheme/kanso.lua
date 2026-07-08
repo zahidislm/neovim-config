@@ -56,6 +56,14 @@ function M.get_hls(colors)
     RenderMarkdownH4Bg = { bg = blend(theme.term[3], theme.ui.bg, 0.1) },
     RenderMarkdownH5Bg = { bg = blend(theme.term[4], theme.ui.bg, 0.1) },
     RenderMarkdownH6Bg = { bg = blend(theme.term[2], theme.ui.bg, 0.1) },
+    -- Artio
+    ArtioNormal = { fg = theme.ui.fg, bg = theme.ui.none },
+    ArtioPrompt = { link = "Title" },
+    ArtioSel = { fg = theme.ui.cursor_bg, bg = theme.ui.bg_p2 },
+    ArtioPointer = { fg = theme.ui.cursor_bg },
+    ArtioMatch = { link = "PmenuMatch" },
+    ArtioMark = { link = "DiagnosticWarn" },
+    ArtioMarkLine = { link = "Visual" },
     -- Glance
     GlancePreviewNormal = { bg = blend(theme.ui.fg, theme.ui.bg, 0.05) },
     GlanceListNormal = { bg = blend(theme.ui.fg, theme.ui.bg, 0.1) },
