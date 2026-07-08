@@ -63,6 +63,7 @@ opt.preserveindent = true -- Preserve indent structure as much as possible
 opt.expandtab = true      -- Use spaces instead of tabs
 opt.shiftround = true     -- Round indentation with `>`/`<` to shiftwidth
 opt.shiftwidth = 4        -- Number of auto-indent spaces (0 follows tabstop value)
+opt.showbreak = "  "      -- visual representation of Tab (non-spaced)
 opt.softtabstop = 4       -- Number of spaces per Tab
 
 -- Folding configuration
