@@ -130,7 +130,7 @@ augroup("DiagnosticListUpdate", function (g)
   })
 end)
 
-augroup("DisableAutoComment", function (g)
+augroup("DisableAutoComplete", function (g)
   aucmd({ "FileType" }, {
     group = g,
     callback = function (args)
@@ -152,7 +152,7 @@ augroup("DisableIndentLine", function (g)
   })
 end)
 
-augroup("DisableCompletion", function (g)
+augroup("DisableAutoComment", function (g)
   aucmd("BufWinEnter", {
     group = g,
     callback = function ()
