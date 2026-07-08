@@ -79,9 +79,8 @@ opt.foldopen:remove({ "search" })
 
 -- Scrolling
 opt.smoothscroll = true
-opt.mousescroll = "ver:16,hor:4" -- Customize mouse scroll
-opt.scrolljump = 5               -- Lines to scroll off screen
-opt.scrolloff = 8                -- Lead scroll past bottom
+opt.mousescroll = "ver:15,hor:5" -- Customize mouse scroll
+opt.scrolloff = 999              -- Centered scrolling
 
 -- System
 -- opt.clipboard = "unnamedplus" -- Clipboard configuration

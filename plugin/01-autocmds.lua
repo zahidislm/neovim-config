@@ -231,14 +231,3 @@ augroup("HighlightOnYank", function (g)
     desc = "Create directories when needed, when saving a file.",
   })
 end)
-
-augroup("SmartScrolloff", function (g)
-  aucmd("WinResized", {
-    group = g,
-    callback = function ()
-      local scrolloffPercentage = 0.2
-      vim.opt.scrolloff = math.floor(vim.o.lines * scrolloffPercentage)
-    end,
-    desc = "Updates scrolloff on startup and when window is resized.",
-  })
-end)
