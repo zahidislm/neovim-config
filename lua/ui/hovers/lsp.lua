@@ -208,7 +208,7 @@ end
 --- quadrant logic and claims its quadrant.
 ---@param source_win integer The window that requested the hover.
 ---@param float_win  integer The floating window returned by `open_floating_preview`.
----@return floatpos.result pos
+---@return hoverpos.result pos
 ---@return integer width
 ---@return integer height
 local function place_window(source_win, float_win)
@@ -225,7 +225,7 @@ end
 --- Applies position and kind-accented border/title/footer/winhl to
 --- the float in one window-config update.
 ---@param float_win integer
----@param pos       floatpos.result                                    The placement from `place_window`.
+---@param pos       hoverpos.result                                    The placement from `place_window`.
 ---@param display   { icon: string, label: string, hl_suffix: string } From `kind_display`.
 ---@param lines     string[]                                           The markdown lines the float was opened with.
 ---@param width     integer
