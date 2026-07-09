@@ -185,13 +185,6 @@ A thin layer over Neovim's native `vim.pack`.
 Eleven submodules configured in one block. A handful of pieces are hand-built on top:
 
 <details>
-<summary><b>A hand-written subword text object</b></summary>
-<br>
-
-`mini.ai`'s custom `e` text object is built from Lua frontier patterns rather than a single regex, so it correctly bounds `snake_case`, `kebab-case`, and `CamelCase` segments independently without mishandling segment boundaries. There's also a custom digit object (`d`) and an HTML tag object (`t`).
-</details>
-
-<details>
 <summary><b>Completions</b></summary>
 <br>
 
@@ -216,7 +209,7 @@ A custom operator-pending mapping that treats `mini.indentscope` as a structural
 <summary><b>Why mini.surround isn't on <code>s</code></b></summary>
 <br>
 
-Since bare `s` belongs to `nvim-jump`, `mini.surround` defaults are remapped to `ys`/`ds`/`cs`, utilizing custom padded surroundings for brackets so `ysiw(` produces `( word )` rather than `(word)`.
+Since bare `s` belongs to `nvim-jump`, `mini.surround` defaults are remapped to `gs`/`ds`/`cs`, utilizing custom padded surroundings for brackets so `gsiw(` produces `( word )` rather than `(word)`.
 </details>
 
 ### Notebooks and Markdown
