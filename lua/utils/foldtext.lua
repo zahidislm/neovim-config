@@ -1,11 +1,23 @@
 local api = vim.api
 local ts = vim.treesitter
 
+------------------------------------------------------------------------------
+-- Types
+------------------------------------------------------------------------------
+
 ---@alias FoldChunk { [1]: string, [2]: string }
 
 ---@class FoldCacheEntry
 ---@field text   string
 ---@field chunks FoldChunk[]
+
+---@class TsHighlightEvent
+---@field col  integer
+---@field type integer 1 for start, -1 for end
+---@field p    integer Priority
+---@field name string  Highlight group name
+
+-----------------------------------------------------------------------------
 
 --- Cache for parsed fold lines.
 ---@type table<integer, table<integer, FoldCacheEntry>>
@@ -35,12 +47,6 @@ local function get_icons()
   end
   return ICON_LEFT, ICON_RIGHT
 end
-
----@class TsHighlightEvent
----@field col  integer
----@field type integer 1 for start, -1 for end
----@field p    integer Priority
----@field name string  Highlight group name
 
 --- Parses a specific line in a buffer and returns Tree-sitter highlighted chunks.
 ---@param bufnr   integer
