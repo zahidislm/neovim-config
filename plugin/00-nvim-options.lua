@@ -26,7 +26,6 @@ opt.laststatus = 3       -- Global statusline
 opt.linebreak = true     -- Wrap long lines at 'breakat' (if 'wrap' is set)
 opt.list = true          -- Show some helper symbols
 opt.number = true        -- Show line numbers
-opt.ruler = false        -- Don't show cursor position in command line
 opt.signcolumn = "yes"   -- Always show sign column (otherwise it will shift text)
 opt.stl = " "            -- Use custom statusline
 opt.splitright = true    -- Vertical splits will be to the right
@@ -80,8 +79,8 @@ opt.foldopen:remove({ "search" })
 
 -- Scrolling
 opt.smoothscroll = true
-opt.mousescroll = "ver:15,hor:5" -- Customize mouse scroll
-opt.scrolloff = 999              -- Centered scrolling
+opt.scrolloff = 30      -- Centered scrolling
+opt.sidescrolloff = 8
 
 -- System
 -- opt.clipboard = "unnamedplus" -- Clipboard configuration
@@ -101,6 +100,8 @@ opt.showmode = false       -- Don't show mode in command line
 opt.splitkeep = "screen"   -- Reduce scrolling on splits
 opt.synmaxcol = 200        -- Max columns for syntax search
 opt.jumpoptions = "view"   -- make the jumplist behavior more intuitive
+opt.sessionoptions:remove("options")
+opt.viewoptions:remove("options")
 
 -- whether or not current environment supports nerd fonts
 vim.g.use_nerdfonts = true
