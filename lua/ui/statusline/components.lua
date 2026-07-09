@@ -3,6 +3,21 @@ local icons = vim.g.iconchars
 
 local M = {}
 
+------------------------------------------------------------------------------
+-- Types
+------------------------------------------------------------------------------
+
+---@class ComponentDef
+---@field default?    string
+---@field render      fun(args: table, winid: int): string
+---@field resolve_hl? fun(winid: int): string
+---@field condition?  fun(winid: int): boolean
+---@field events      string[]
+---@field hl?         string
+---@field max_width?  number
+
+------------------------------------------------------------------------------
+
 local MODES = {
   n = { alias = " N ", hl = "StatusLineModeNormal" },
   no = { alias = " N ", hl = "StatusLineModeNormal" },
@@ -49,6 +64,8 @@ local _bookmark_str = icons.statusline.label .. " "
 local _bm_cache = nil
 local _bm_loaded = false
 
+--- Checks if the bento module is available and caches the module
+---@return table | nil
 local function get_bm()
   if not _bm_loaded then
     local ok, mod = pcall(require, "bento.api")
@@ -57,15 +74,6 @@ local function get_bm()
   end
   return _bm_cache
 end
-
----@class ComponentDef
----@field default?    string
----@field render      fun(args: table, winid: int): string
----@field resolve_hl? fun(winid: int): string
----@field condition?  fun(winid: int): boolean
----@field events      string[]
----@field hl?         string
----@field max_width?  number
 
 ---@type table<string, ComponentDef>
 M.components = {

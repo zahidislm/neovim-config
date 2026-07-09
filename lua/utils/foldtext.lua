@@ -25,7 +25,8 @@ local HL_TEXT = "FoldedText"
 local HL_SEP = "FoldedSep"
 local HL_BASE = "Folded"
 
--- Fetch icons dynamically in case they are updated at runtime
+--- Fetch icons dynamically in case they are updated at runtime
+---@return string, string
 local function get_icons()
   local iconchars = vim.g.iconchars
   if iconchars and type(iconchars) == "table" and iconchars.statusline then

@@ -6,6 +6,10 @@ local config = _G["Statusline"].config
 
 local Render = {}
 
+------------------------------------------------------------------------------
+-- Types
+------------------------------------------------------------------------------
+
 ---@class WindowState
 ---@field pills        table<string, string> Formatted "%#hl#content" string per component
 ---@field final_string string                Pre-compiled statusline string
@@ -15,6 +19,8 @@ local Render = {}
 ---@field events     table<string, string>
 ---@field registry   table<string, string>
 
+-----------------------------------------------------------------------------
+
 ---@type RenderState
 local state = { components = {}, events = {}, registry = {} }
 
@@ -23,6 +29,7 @@ local _sep_right = ""
 local _has_left = false
 local _has_right = false
 
+--- Registers a component for rendering
 ---@param id         string
 ---@param registered table<string, boolean>
 local function register_component(id, registered)

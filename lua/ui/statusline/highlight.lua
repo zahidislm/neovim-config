@@ -3,6 +3,7 @@ local cache = require("ui.statusline.cache")
 
 local Highlight = {}
 
+--- Returns the color palette based on the current background mode
 ---@return table
 local function get_palette()
   if vim.o.background == "dark" then
@@ -36,6 +37,7 @@ local function get_palette()
   end
 end
 
+--- Builds the fallback highlight groups for the statusline
 ---@param p table
 ---@return table<string, table>
 local function build_highlights(p)
@@ -93,6 +95,9 @@ local function apply_separator_hl(parent_hl, statusline_bg)
   })
 end
 
+--- Returns the separator highlight name for the given parent highlight
+---@param parent_hl string
+---@return string
 function Highlight.get_separator_hl(parent_hl)
   local sep_hl_name = "StatusLineSep_" .. parent_hl
 
@@ -112,6 +117,7 @@ function Highlight.setup()
   end
 end
 
+--- Called when the colorscheme changes to update the statusline highlights
 function Highlight.on_colorscheme()
   Highlight.setup()
   vim.defer_fn(function ()

@@ -1,6 +1,10 @@
 local api = vim.api
 _G["Statusline"] = {}
 
+------------------------------------------------------------------------------
+-- Types
+------------------------------------------------------------------------------
+
 ---@class SeparatorConfig
 ---@field left  string
 ---@field right string
@@ -16,6 +20,8 @@ _G["Statusline"] = {}
 ---@class StatuslineConfig
 ---@field separators SeparatorConfig
 ---@field components ComponentConfig
+
+------------------------------------------------------------------------------
 
 ---@type StatuslineConfig
 _G.Statusline.config = {

@@ -4,6 +4,7 @@ local cache = require("ui.statusline.cache")
 local M = {}
 local icons = vim.g.iconchars
 
+--- Formats a git branch string with optional diff counts
 ---@param branch?  string
 ---@param added?   number
 ---@param changed? number
@@ -40,7 +41,7 @@ end
 
 --- Resolves a raw path returned by finddir(".git", ...) to a .git path
 ---@param raw string The relative-or-absolute path returned by finddir
----@return string     Absolute path to .git, no trailing slash
+---@return string Absolute path to .git, no trailing slash
 local function resolve_git_dir(raw)
   local path = vim.fn.fnamemodify(raw, ":p"):gsub("/$", "")
   local stat = vim.uv.fs_stat(path)
@@ -68,6 +69,7 @@ local function resolve_git_dir(raw)
   return path
 end
 
+--- Reads the current git branch from the HEAD file
 ---@param git_dir string
 ---@return string
 local function read_head(git_dir)
@@ -80,6 +82,7 @@ end
 
 local watchers = {}
 
+--- Watches the HEAD file for changes and triggers GitDaemonUpdate autocmd
 ---@param git_dir string
 local function watch_head(git_dir)
   if watchers[git_dir] then return end
@@ -94,6 +97,7 @@ local function watch_head(git_dir)
   )
 end
 
+--- Gets the diff counts for a buffer using gitsigns or mini.diff
 ---@param bufnr number
 ---@return number|nil, number|nil, number|nil
 local function get_diff_counts(bufnr)
@@ -108,6 +112,7 @@ local function get_diff_counts(bufnr)
   end
 end
 
+--- Checks if a buffer is in a git repository
 ---@param bufnr number
 ---@return boolean
 function M.is_in_git_repo(bufnr)
@@ -137,6 +142,7 @@ function M.is_in_git_repo(bufnr)
   return true
 end
 
+--- Gets the status of a buffer in a git repository
 ---@param bufnr number
 ---@return string
 function M.get_status(bufnr)
