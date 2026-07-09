@@ -13,6 +13,11 @@ M.repo = {}
 ---@type table<string, boolean>
 M.sep_hl = {}
 
+--- branch" → remote-tracking status
+--- Persists for the lifetime of the session; cleared on DirChanged.
+---@type table<string, "local" | "ahead" | "behind" | "diverged">
+M.git_remote = {}
+
 --- winid → WindowState { values, pills, final_string }.
 --- The render engine's per-window component value and pill cache.
 --- Entries are modified in-place by on_event(); cleared on WinClosed.
@@ -36,6 +41,7 @@ end
 --- Intended for DirChanged, where every repo and git-status assumption is stale.
 function M.clear_session()
   table_clear(M.repo)
+  table_clear(M.git_remote)
 end
 
 return M
