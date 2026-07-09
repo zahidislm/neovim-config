@@ -257,7 +257,7 @@ Binaries aren't installed for you. Whichever servers you actually use need to al
 > [!IMPORTANT]
 > Neovim **0.12 or newer** is required. This config leans on `vim.pack`, native `lsp/*.lua` config files, and `vim._core.ui2`, none of which exist on 0.11 or earlier.
 
-- VCS: currently `git` is needed for vim.pack. `jj` support to come soon.
+- VCS: currently `git` is needed for vim.pack. Other VCS support to come soon.
 - Whichever **per-language tooling** your `after/lsp/*.lua` files actually point at. `clangd`, `uv`/`uvx` (for `ty`/`ruff`), `R`, `julia`, `taplo`, `zls`, and so on. None of it is installed for you; there's no Mason here to do it.
 - Optionally, **Go compiler** and an `INCEPTION_AI_TOKEN` environment variable, only if you want `cursortab.nvim` to load at all.
 - A **Nerd Font**, if you'd rather keep `vim.g.use_nerdfonts = true` than fall back to the plain Unicode icon set.
