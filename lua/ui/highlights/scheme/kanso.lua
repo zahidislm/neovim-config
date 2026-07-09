@@ -1,9 +1,10 @@
+local blend = require("utils.coloring").blend
 local M = {}
 
 ---@param colors table
 function M.get_hls(colors)
   local theme = colors.theme
-  local blend = require("utils.coloring").blend
+  local StatusLineGitBg = blend(theme.ui.fg_dim, theme.ui.bg, 0.11)
 
   return {
     -- Core
@@ -19,10 +20,10 @@ function M.get_hls(colors)
     StatusLineModeVisual = { fg = theme.ui.bg, bg = theme.syn.keyword },
     StatusLineModeCommand = { fg = theme.ui.bg, bg = theme.syn.operator },
     StatuslineModePending = { fg = theme.ui.bg, bg = theme.syn.special1 },
-    StatusLineGit = { fg = theme.ui.fg_dim, bg = theme.ui.bg_p1 },
-    StatusLineGitAdd = { fg = theme.vcs.added, bg = theme.ui.bg_p1 },
-    StatusLineGitChange = { fg = theme.vcs.changed, bg = theme.ui.bg_p1 },
-    StatusLineGitDelete = { fg = theme.vcs.removed, bg = theme.ui.bg_p1 },
+    StatusLineGit = { fg = theme.ui.fg_dim, bg = StatusLineGitBg },
+    StatusLineGitAdd = { fg = theme.vcs.added, bg = StatusLineGitBg },
+    StatusLineGitChange = { fg = theme.vcs.changed, bg = StatusLineGitBg },
+    StatusLineGitDelete = { fg = theme.vcs.removed, bg = StatusLineGitBg },
     StatusLineDiagnosticError = { fg = theme.ui.bg, bg = theme.diag.error },
     StatusLineDiagnosticWarn = { fg = theme.ui.bg, bg = theme.diag.warning },
     StatusLineDiagnosticInfo = { fg = theme.ui.bg, bg = theme.diag.info },
