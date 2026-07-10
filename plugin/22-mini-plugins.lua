@@ -32,6 +32,10 @@ Pack.add({
 
       -- mini.completion
       local comp_opts = {
+        window = {
+          info = { height = 7, width = 55 },
+          signature = { height = 7, width = 55 },
+        },
         lsp_completion = {
           source_func = "omnifunc",
           auto_setup = false,
