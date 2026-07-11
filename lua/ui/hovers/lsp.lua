@@ -328,7 +328,7 @@ function M.open(window)
   local bufnr = api.nvim_win_get_buf(window)
   local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/hover" })
   if #clients == 0 then
-    return hoverpos.notify_empty("lsp", "No diagnostic under cursor")
+    return hoverpos.notify_empty("lsp", "No documentation provider available.")
   end
 
   local cursor = api.nvim_win_get_cursor(window)
