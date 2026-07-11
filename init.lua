@@ -1,5 +1,6 @@
 -- PERFORMANCE: Enable Lua bytecode caching and loader optimization
 vim.loader.enable()
+vim.g.did_install_default_menus = 1
 
 -- Disable built-in plugins
 local disabled_built_ins = {
