@@ -231,3 +231,18 @@ augroup("HighlightOnYank", function (g)
     desc = "Create directories when needed, when saving a file.",
   })
 end)
+
+augroup("YankRing", function (g)
+  aucmd({ "TextYankPost" }, {
+    group = g,
+    callback = function ()
+      if vim.v.event.operator == "y" then
+        for i = 9, 2, -1 do
+          fn.setreg(tostring(i), fn.getreginfo(tostring(i - 1)))
+        end
+        fn.setreg("1", fn.getreginfo("0"))
+      end
+    end,
+    desc = "Saves each yank into registers 2-9",
+  })
+end)
