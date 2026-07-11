@@ -327,16 +327,14 @@ function M.open(window)
 
   local bufnr = api.nvim_win_get_buf(window)
   local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/hover" })
-  if #clients == 0 then
-    return hoverpos.notify_empty("lsp", "No documentation provider available.")
-  end
-
   local cursor = api.nvim_win_get_cursor(window)
   local kind = detect_kind(bufnr, cursor[1] - 1, cursor[2])
   local params = vim.lsp.util.make_position_params(window, clients[1].offset_encoding)
 
   vim.lsp.buf_request(bufnr, "textDocument/hover", params, function (err, result)
-    if err or not result or not result.contents then return end
+    if err or not result or not result.contents then
+      return hoverpos.notify_empty("lsp", "No information provided.")
+    end
 
     local lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
     if vim.tbl_isempty(lines) then return end
