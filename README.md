@@ -214,7 +214,7 @@ Since bare `s` belongs to `nvim-jump`, `mini.surround` defaults are remapped to 
 
 ### Notebooks and Markdown
 
-- **[jupynvim](https://github.com/sheng-tse/jupynvim)**: Runs actual Jupyter kernels inside Neovim. 
+- **[vim-slime](https://github.com/jpalardy/vim-slime)/[ghostty-slime](https://github.com/rkube/ghostty-slime.nvim)**: Runs selected codeblocks to a multiplexer/terminal split running a interactive kernel. 
 - **[render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)**: Lazy-loaded the first time a markdown-adjacent filetype is opened, rendering thick block-style heading borders and a code-block UI with language pills.
 
 ---
