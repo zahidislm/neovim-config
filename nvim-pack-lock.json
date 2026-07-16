@@ -10,16 +10,20 @@
       "version": "'feat/v2'"
     },
     "codedocs.nvim": {
-      "rev": "9c9a12ad13aa11a28486a7210789055c1482d237",
+      "rev": "880d125f48d6da5bdf5fc47ca56cc4a0fc66dac0",
       "src": "https://github.com/jeangiraldoo/codedocs.nvim"
     },
     "diffview-plus.nvim": {
-      "rev": "ce6464524374eb6d013e536979dcda82d1112c9c",
+      "rev": "424b724e7699730b818466532f0ca42930313273",
       "src": "https://github.com/dlyongemallo/diffview-plus.nvim"
     },
     "garbage-day.nvim": {
-      "rev": "8c77a79311821546175fa3c655bcc87782472160",
+      "rev": "75870d4e3cd2c12fc36d8f1b7f4b0ee0c856990c",
       "src": "https://github.com/zahidislm/garbage-day.nvim"
+    },
+    "ghostty-slime.nvim": {
+      "rev": "ff64a9292675a3b8f44c0052ffa9759863f85776",
+      "src": "https://github.com/rkube/ghostty-slime.nvim"
     },
     "glance.nvim": {
       "rev": "bf86d8b79dce808e65fdb6e9269d0b4ed6d2eefc",
@@ -28,10 +32,6 @@
     "guess-indent.nvim": {
       "rev": "84a4987ff36798c2fc1169cbaff67960aed9776f",
       "src": "https://github.com/nmac427/guess-indent.nvim"
-    },
-    "jupynvim": {
-      "rev": "666717172ea4b008af0a3361dd1794cfd3b2ac44",
-      "src": "https://github.com/sheng-tse/jupynvim"
     },
     "kanso.nvim": {
       "rev": "1afbbb449aa0254823dbe1932e3cbb51886ff9fe",
@@ -42,11 +42,11 @@
       "src": "https://github.com/saecki/live-rename.nvim"
     },
     "mini.nvim": {
-      "rev": "dc8a9918c3b1bc18a5fcd04d39b6d658074c0886",
+      "rev": "9459d7f41ae77d909579dab0aea2bdd3210fac9f",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "mini.starter": {
-      "rev": "a1c26c1c4acd08beb5b0057c663acb6e5f5b7042",
+      "rev": "25de4998197d59673f1918968a8f4060195edca0",
       "src": "https://github.com/nvim-mini/mini.starter"
     },
     "namu.nvim": {
@@ -75,7 +75,7 @@
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "tree-sitter-manager.nvim": {
-      "rev": "966c28dbc68fc99c82c51a64b6ec37f420aab880",
+      "rev": "09e3a321eea8100cacd2e759c3a6c9d350295fab",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim"
     },
     "vim-smoothie": {
