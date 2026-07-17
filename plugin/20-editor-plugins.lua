@@ -100,32 +100,7 @@ Pack.add({
     sync = true,
     main = "diffview",
     init = function ()
-      local diffview_group = vim.api.nvim_create_augroup("DiffviewFilesEvents", {
-        clear = true,
-      })
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "DiffviewFiles",
-        group = diffview_group,
-        callback = function (args)
-          vim.opt_local.cursorline = true
-          vim.b[args.buf].statusline_disable = true
-          vim.b[args.buf].miniindentscope_disable = true
-          vim.cmd([[hi Cursor blend=100]])
-          vim.cmd([[set guicursor+=a:Cursor/lCursor]])
-        end,
-      })
-
-      vim.api.nvim_create_autocmd("WinLeave", {
-        group = diffview_group,
-        callback = function ()
-          local current_ft = vim.bo.filetype
-
-          if current_ft == "DiffviewFiles" then
-            vim.cmd([[hi Cursor blend=0]])
-          end
-        end,
-      })
+      require("utils").smart_cursor_hidden_buffer("DiffviewFiles")
     end,
     config = {
       show_help_hints = false,

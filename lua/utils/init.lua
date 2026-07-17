@@ -56,4 +56,37 @@ function M.empty_lists()
   end
 end
 
+--- Hides cursor on specific `FileType` buffers
+---@param ft string
+function M.smart_cursor_hidden_buffer(ft)
+  local gname = ft .. "Events"
+  local group = vim.api.nvim_create_augroup(gname, { clear = true })
+
+  vim.api.nvim_create_autocmd("BufEnter", {
+    group = group,
+    callback = function (args)
+      local current_ft = vim.bo.filetype
+
+      if current_ft == ft then
+        vim.opt_local.cursorline = true
+        vim.b[args.buf].statusline_disable = true
+        vim.b[args.buf].miniindentscope_disable = true
+        vim.cmd([[hi Cursor blend=100]])
+        vim.cmd([[set guicursor+=a:Cursor/lCursor]])
+      end
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("WinLeave", {
+    group = group,
+    callback = function ()
+      local current_ft = vim.bo.filetype
+
+      if current_ft == ft then
+        vim.cmd([[hi Cursor blend=0]])
+      end
+    end,
+  })
+end
+
 return M
