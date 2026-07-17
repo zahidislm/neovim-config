@@ -3,6 +3,7 @@ vim.g.loaded_render_markdown = true
 Pack.add({
   "MeanderingProgrammer/render-markdown.nvim",
   data = {
+    sync = true,
     config = function ()
       local opts = {
         file_types = vim.g.md_filetypes,
