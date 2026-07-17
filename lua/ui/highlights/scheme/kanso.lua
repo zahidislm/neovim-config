@@ -99,6 +99,12 @@ function M.get_hls(colors)
     NamuParent = { link = "Title" },
     NamuNested = { link = "Identifier" },
     NamuStyle = { link = "Type" },
+    -- TimeMachine
+    TimeMachineCurrent = { bg = blend(theme.syn.number, theme.ui.bg, 0.18) },
+    TimeMachineTimeline = { fg = theme.syn.number, bold = true },
+    TimeMachineKeymap = { fg = theme.diag.hint, italic = true },
+    TimeMachineSeq = { fg = theme.syn.special2, bold = true },
+    TimeMachineTag = { fg = theme.diag.warning, bold = true },
     -- Misc
     FoldedSep = { fg = theme.diag.hint },
     FoldedText = { fg = theme.ui.bg, bg = theme.diag.hint },

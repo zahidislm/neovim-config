@@ -225,6 +225,18 @@ Pack.add({
   },
 })
 
+-- Undotree
+Pack.add({
+  "y3owk1n/time-machine.nvim",
+  data = {
+    init = function ()
+      require("utils").smart_cursor_hidden_buffer("time-machine-list")
+    end,
+    config = { split_opts = { width = 40 } },
+    keys = { { [[\u]], "<Cmd>TimeMachineToggle<CR>", desc = "toggle undotree" } },
+  },
+})
+
 -- vim.pack UI
 Pack.add("cb:cryptomilk/nvim-pack-ui")
 
