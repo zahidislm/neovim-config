@@ -24,16 +24,34 @@ function M.get_hls(colors)
     StatusLineGitAdd = { fg = theme.vcs.added, bg = StatusLineGitBg },
     StatusLineGitChange = { fg = theme.vcs.changed, bg = StatusLineGitBg },
     StatusLineGitDelete = { fg = theme.vcs.removed, bg = StatusLineGitBg },
-    StatusLineDiagnosticError = { fg = theme.ui.bg, bg = theme.diag.error },
-    StatusLineDiagnosticWarn = { fg = theme.ui.bg, bg = theme.diag.warning },
-    StatusLineDiagnosticInfo = { fg = theme.ui.bg, bg = theme.diag.info },
-    StatusLineDiagnosticHint = { fg = theme.ui.bg, bg = theme.diag.hint },
+    StatusLineDiagnosticError = {
+      fg = vim.o.background == "dark" and theme.diag.error or theme.ui.fg,
+      bg = blend(theme.diag.error, theme.ui.bg, 0.15),
+    },
+    StatusLineDiagnosticWarn = {
+      fg = vim.o.background == "dark" and theme.diag.warning or theme.ui.fg,
+      bg = blend(theme.diag.warning, theme.ui.bg, 0.15),
+    },
+    StatusLineDiagnosticInfo = {
+      fg = vim.o.background == "dark" and theme.diag.info or theme.ui.fg,
+      bg = blend(theme.diag.info, theme.ui.bg, 0.15),
+    },
+    StatusLineDiagnosticHint = {
+      fg = vim.o.background == "dark" and theme.diag.hint or theme.ui.fg,
+      bg = blend(theme.diag.hint, theme.ui.bg, 0.15),
+    },
     StatusLineFile = { link = "StatusLineRuler" },
-    StatusLineFileBookmark = { fg = theme.ui.bg, bg = theme.syn.regex },
+    StatusLineFileBookmark = {
+      fg = theme.syn.regex,
+      bg = blend(theme.syn.regex, theme.ui.bg, 0.15),
+    },
     StatusLineFileModified = { fg = theme.ui.bg, bg = theme.syn.string },
     StatusLineLSP = { fg = theme.ui.bg, bg = theme.syn.fun },
     StatusLineRuler = { fg = theme.ui.fg, bg = theme.diff.change },
-    StatusLineMacro = { fg = theme.ui.bg, bg = theme.syn.special2 },
+    StatusLineMacro = {
+      fg = theme.syn.special2,
+      bg = blend(theme.syn.special2, theme.ui.bg, 0.15),
+    },
     StatusLineSession = { fg = theme.ui.bg, bg = theme.syn.special1 },
     StatusLineSearch = { fg = theme.ui.fg, bg = theme.ui.bg_search },
     -- Markdown
