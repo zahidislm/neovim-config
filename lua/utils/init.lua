@@ -62,7 +62,7 @@ function M.smart_cursor_hidden_buffer(ft)
   local gname = ft .. "Events"
   local group = vim.api.nvim_create_augroup(gname, { clear = true })
 
-  vim.api.nvim_create_autocmd("BufEnter", {
+  vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
     group = group,
     callback = function (args)
       local current_ft = vim.bo.filetype

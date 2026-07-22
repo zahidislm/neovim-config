@@ -21,6 +21,9 @@ end
 -- Custom Icon Handler
 require("ui.icons")
 
+-- Hide cursor in favour of cursorline
+require("utils").smart_cursor_hidden_buffer("qf")
+
 -- UI Elements
 vim.api.nvim_create_autocmd("BufEnter", {
   once = true,
