@@ -44,12 +44,6 @@ This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp
 - [Utilities](#utilities)
 - [Plugins](#the-plugins)
   - [vim.pack wrapper](#packadd-the-vimpack-wrapper)
-  - [navigation](#picking-buffers-and-navigation)
-  - [VCS](#git-and-diffing)
-  - [LSP extras](#lsp-extras)
-  - [Tree-sitter](#tree-sitter)
-  - [mini.nvim](#mininvim)
-  - [Notebooks and Markdown](#notebooks-and-markdown)
 - [LSP](#native-lsp)
 - [Snippets](#snippets-without-a-snippet-plugin)
 - [Colorscheme](#colorscheme)
@@ -154,68 +148,52 @@ A thin layer over Neovim's native `vim.pack`.
 
 ### Picking, buffers, and navigation
 
-- **[artio.nvim](https://github.com/comfysage/artio.nvim)**: The primary fuzzy picker, wired into `vim.ui.select` for a unified UI across the editor.
-- **[bento.nvim](https://github.com/serhez/bento.nvim)**: Buffer management with a hard cap (`max_open_buffers = 6`) and a "locked" state for pinned buffers.
-- **[namu.nvim](https://github.com/bassamsdata/namu.nvim)**: Symbol picker, themed through the Kanso overrides.
-- **[nvim-jump](https://github.com/yorickpeterse/nvim-jump)**: Easymotion-style label jumping, bound to bare `s` across normal, visual, and operator-pending modes.
-- **[nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)**: Quickfix preview window.
+- **[artio.nvim](https://github.com/comfysage/artio.nvim)**
+- **[bento.nvim](https://github.com/serhez/bento.nvim)**
+- **[namu.nvim](https://github.com/bassamsdata/namu.nvim)**
+- **[nvim-jump](https://github.com/yorickpeterse/nvim-jump)**
+- **[nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)**
+- **[which-key.nvim](https://github.com/folke/which-key.nvim)**
 
 ### Git and diffing
 
-**[diffview-plus.nvim](https://github.com/dlyongemallo/diffview-plus.nvim)**: Set to the histogram diff algorithm with a 4-way merge-tool layout. An autocmd hides the cursorline entirely while a Diffview buffer is focused to reduce visual noise.
+- **[diffview-plus.nvim](https://github.com/dlyongemallo/diffview-plus.nvim)**
+- **[time-machine.nvim](https://github.com/y3owk1n/time-machine.nvim)**
 
 ### LSP extras
 
-- **[glance.nvim](https://github.com/dnlhc/glance.nvim)**: Popup windows bound onto Neovim's default `gr*` keymap conventions.
-- **[live-rename.nvim](https://github.com/saecki/live-rename.nvim)**: Interactive in-buffer rename on `grn`/`grN`.
-- **[garbage-day.nvim](https://github.com/zahidislm/garbage-day.nvim)**: Kills LSP clients that no longer have attached buffers to save memory.
-- **[codedocs.nvim](https://github.com/jeangiraldoo/codedocs.nvim)**: AST-aware doc-comment scaffolding bound to `gca`.
-- **[vision.nvim](https://github.com/azorng/vision.nvim)**: A generic editor-context bridge for agentic tools.
+- **[glance.nvim](https://github.com/dnlhc/glance.nvim)**
+- **[live-rename.nvim](https://github.com/saecki/live-rename.nvim)**
+- **[garbage-day.nvim](https://github.com/zahidislm/garbage-day.nvim)**
+- **[codedocs.nvim](https://github.com/jeangiraldoo/codedocs.nvim)**
+- **[vision.nvim](https://github.com/azorng/vision.nvim)**
 
 > [!TIP]
 > **[cursortab.nvim](https://github.com/cursortab/cursortab.nvim)** is gated behind an environment check. It only queues if `go` is on `$PATH` *and* an `INCEPTION_AI_TOKEN` environment variable is set.
 
 ### Tree-sitter
 
-- **[tree-sitter-manager.nvim](https://github.com/romus204/tree-sitter-manager.nvim)**: Installs exactly the grammar list declared in `00-nvim-options.lua`. 
-- **[nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)**: Wires up structural motions, plus a `@code_cell.inner` motion for jumping between `# %%`-style Jupyter notebook cells.
+- **[tree-sitter-manager.nvim](https://github.com/romus204/tree-sitter-manager.nvim)**
+- **[nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)**
 
-### `mini.nvim`
-
-Eleven submodules configured in one block. A handful of pieces are hand-built on top:
-
-<details>
-<summary><b>Completions</b></summary>
-<br>
-
-`mini.completion` is wired directly to native LSP completion. `process_items()` strips noisy fields and splices in entries from the homegrown snippet registry, explicitly prioritizing snippets over standard text suggestions.
-</details>
-
-<details>
-<summary><b>An indent-scope-aware operator on <code>S</code></b></summary>
-<br>
-
-A custom operator-pending mapping that treats `mini.indentscope` as a structural region. Allows you to delete/change/yank around an indentation scope.
-</details>
-
-<details>
-<summary><b><code>:</code> replaced by mini.input</b></summary>
-<br>
-
-`mini.input` doubles as the generic `vim.ui.input()` handler *and* a full replacement for the command line, complete with Vimscript-aware syntax highlighting and auto-detected password masking.
-</details>
-
-<details>
-<summary><b>Why mini.surround isn't on <code>s</code></b></summary>
-<br>
-
-Since bare `s` belongs to `nvim-jump`, `mini.surround` defaults are remapped to `gs`/`ds`/`cs`, utilizing custom padded surroundings for brackets so `gsiw(` produces `( word )` rather than `(word)`.
-</details>
+### [`mini.nvim`](https://github.com/nvim-mini/mini.nvim)
+- **[mini.ai](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-ai.m)**
+- **[mini.completion](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-completion.md)**
+- **[mini.diff](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-diff.md)**
+- **[mini.icons](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-icons.md)**
+- **[mini.indentscope](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-indentscope.md)**
+- **[mini.input](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-input.md)**
+- **[mini.keymap](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-keymap.md)**
+- **[mini.move](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-move.md)**
+- **[mini.pairs](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-pairs.md)**
+- **[mini.sessions](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-sessions.md)**
+- **[mini.starter](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-starter.md)**
+- **[mini.surround](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-surround.md)**
 
 ### Notebooks and Markdown
 
-- **[vim-slime](https://github.com/jpalardy/vim-slime)/[ghostty-slime](https://github.com/rkube/ghostty-slime.nvim)**: Runs selected codeblocks to a multiplexer/terminal split running a interactive kernel. 
-- **[render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)**: Lazy-loaded the first time a markdown-adjacent filetype is opened, rendering thick block-style heading borders and a code-block UI with language pills.
+- **[vim-slime](https://github.com/jpalardy/vim-slime) / [ghostty-slime](https://github.com/rkube/ghostty-slime.nvim)**
+- **[render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)**
 
 ---
 
