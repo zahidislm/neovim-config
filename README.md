@@ -147,52 +147,52 @@ A thin layer over Neovim's native `vim.pack`.
 
 ### Picking, buffers, and navigation
 
-- **[artio.nvim](https://github.com/comfysage/artio.nvim)**
-- **[bento.nvim](https://github.com/serhez/bento.nvim)**
-- **[namu.nvim](https://github.com/bassamsdata/namu.nvim)**
-- **[nvim-jump](https://github.com/yorickpeterse/nvim-jump)**
-- **[nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)**
-- **[which-key.nvim](https://github.com/folke/which-key.nvim)**
+- [artio.nvim](https://github.com/comfysage/artio.nvim)
+- [bento.nvim](https://github.com/serhez/bento.nvim)
+- [namu.nvim](https://github.com/bassamsdata/namu.nvim)
+- [nvim-jump](https://github.com/yorickpeterse/nvim-jump)
+- [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)
+- [which-key.nvim](https://github.com/folke/which-key.nvim)
 
 ### Git and diffing
 
-- **[diffview-plus.nvim](https://github.com/dlyongemallo/diffview-plus.nvim)**
-- **[time-machine.nvim](https://github.com/y3owk1n/time-machine.nvim)**
+- [diffview-plus.nvim](https://github.com/dlyongemallo/diffview-plus.nvim)
+- [time-machine.nvim](https://github.com/y3owk1n/time-machine.nvim)
 
 ### LSP extras
 
-- **[glance.nvim](https://github.com/dnlhc/glance.nvim)**
-- **[live-rename.nvim](https://github.com/saecki/live-rename.nvim)**
-- **[garbage-day.nvim](https://github.com/zahidislm/garbage-day.nvim)**
-- **[codedocs.nvim](https://github.com/jeangiraldoo/codedocs.nvim)**
-- **[vision.nvim](https://github.com/azorng/vision.nvim)**
+- [glance.nvim](https://github.com/dnlhc/glance.nvim)
+- [live-rename.nvim](https://github.com/saecki/live-rename.nvim)
+- [garbage-day.nvim](https://github.com/zahidislm/garbage-day.nvim)
+- [codedocs.nvim](https://github.com/jeangiraldoo/codedocs.nvim)
+- [vision.nvim](https://github.com/azorng/vision.nvim)
 
 > [!TIP]
 > **[cursortab.nvim](https://github.com/cursortab/cursortab.nvim)** is gated behind an environment check. It only queues if `go` is on `$PATH` *and* an `INCEPTION_AI_TOKEN` environment variable is set.
 
 ### Tree-sitter
 
-- **[tree-sitter-manager.nvim](https://github.com/romus204/tree-sitter-manager.nvim)**
-- **[nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)**
+- [tree-sitter-manager.nvim](https://github.com/romus204/tree-sitter-manager.nvim)
+- [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
 
 ### [`mini.nvim`](https://github.com/nvim-mini/mini.nvim)
-- **[mini.ai](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-ai.m)**
-- **[mini.completion](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-completion.md)**
-- **[mini.diff](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-diff.md)**
-- **[mini.icons](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-icons.md)**
-- **[mini.indentscope](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-indentscope.md)**
-- **[mini.input](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-input.md)**
-- **[mini.keymap](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-keymap.md)**
-- **[mini.move](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-move.md)**
-- **[mini.pairs](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-pairs.md)**
-- **[mini.sessions](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-sessions.md)**
-- **[mini.starter](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-starter.md)**
-- **[mini.surround](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-surround.md)**
+- [mini.ai](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-ai.md)
+- [mini.completion](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-completion.md)
+- [mini.diff](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-diff.md)
+- [mini.icons](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-icons.md)
+- [mini.indentscope](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-indentscope.md)
+- [mini.input](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-input.md)
+- [mini.keymap](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-keymap.md)
+- [mini.move](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-move.md)
+- [mini.pairs](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-pairs.md)
+- [mini.sessions](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-sessions.md)
+- [mini.starter](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-starter.md)
+- [mini.surround](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-surround.md)
 
 ### Notebooks and Markdown
 
-- **[vim-slime](https://github.com/jpalardy/vim-slime) / [ghostty-slime](https://github.com/rkube/ghostty-slime.nvim)**
-- **[render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)**
+- [vim-slime](https://github.com/jpalardy/vim-slime) / [ghostty-slime](https://github.com/rkube/ghostty-slime.nvim)
+- [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)
 
 ---
 
