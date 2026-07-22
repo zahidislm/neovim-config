@@ -41,7 +41,6 @@ This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp
   - [quickfix](#quickfixlua-a-custom-quickfixtextfunc-handler)
   - [statusline](#statusline-an-event-driven-statusline)
   - [theming](#icons-coloring-and-the-highlight-overrides)
-- [Utilities](#utilities)
 - [Plugins](#the-plugins)
   - [vim.pack wrapper](#packadd-the-vimpack-wrapper)
 - [LSP](#native-lsp)
