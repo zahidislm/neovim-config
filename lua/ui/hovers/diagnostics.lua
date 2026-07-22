@@ -100,7 +100,6 @@ M.quad = nil
 
 --- Retrieves the evaluated decoration properties for a given diagnostic item.
 ---@param level integer | string The severity level key.
----@param ...   any              Arguments passed to the dynamic evaluators.
 ---@return table evaluated_decorations Map of resolved decoration properties.
 local function get_decorations(level, ...)
   local output = {}
@@ -216,10 +215,7 @@ local function setup_window(source_win, W, D, cursor_y)
     group = api.nvim_create_augroup("diagnostic-hover-autoclose", { clear = true }),
     buffer = api.nvim_win_get_buf(source_win),
     callback = function ()
-      if M.window and api.nvim_get_current_win() ~= M.window then
-        M.close()
-        return true
-      end
+      if M.window and api.nvim_get_current_win() ~= M.window then M.close() end
     end,
   })
 end
