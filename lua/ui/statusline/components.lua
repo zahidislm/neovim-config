@@ -1,8 +1,3 @@
-local api = vim.api
-local icons = vim.g.iconchars
-
-local M = {}
-
 ---@class ComponentDef
 ---@field default?    string
 ---@field render      fun(args: table, winid: int): string
@@ -12,7 +7,10 @@ local M = {}
 ---@field hl?         string
 ---@field max_width?  number
 
-------------------------------------------------------------------------------
+local api = vim.api
+local icons = vim.g.iconchars
+
+local M = {}
 
 local MODES = {
   n = { alias = " N ", hl = "StatusLineModeNormal" },
