@@ -3,9 +3,6 @@
 
 local M = {}
 
--- ---------------------------------------------------------------------------
--- Helpers
--- ---------------------------------------------------------------------------
 --- Lets LSP clients know that a file has been renamed
 ---@param from         string
 ---@param to           string
@@ -70,9 +67,6 @@ local function rename(from, to)
   return true
 end
 
--- ---------------------------------------------------------------------------
--- Utilities
--- ---------------------------------------------------------------------------
 function M.smart_new_file()
   local buf_name = vim.api.nvim_buf_get_name(0)
   local rel_dir = buf_name ~= "" and vim.fn.fnamemodify(buf_name, ":~:.:h") or ""

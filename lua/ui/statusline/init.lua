@@ -1,10 +1,3 @@
-local api = vim.api
-_G["Statusline"] = {}
-
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@class SeparatorConfig
 ---@field left  string
 ---@field right string
@@ -21,7 +14,8 @@ _G["Statusline"] = {}
 ---@field separators SeparatorConfig
 ---@field components ComponentConfig
 
-------------------------------------------------------------------------------
+local api = vim.api
+_G["Statusline"] = {}
 
 ---@type StatuslineConfig
 _G.Statusline.config = {
@@ -64,7 +58,6 @@ local function init(event_group)
   end
 
   _G.Statusline.eval = function () return render.evaluate() end
-
   vim.o.statusline = "%!v:lua.Statusline.eval()"
 end
 

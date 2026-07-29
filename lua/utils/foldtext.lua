@@ -1,10 +1,3 @@
-local api = vim.api
-local ts = vim.treesitter
-
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@alias FoldChunk { [1]: string, [2]: string }
 
 ---@class FoldCacheEntry
@@ -17,9 +10,9 @@ local ts = vim.treesitter
 ---@field p    integer Priority
 ---@field name string  Highlight group name
 
------------------------------------------------------------------------------
+local api = vim.api
+local ts = vim.treesitter
 
---- Cache for parsed fold lines.
 ---@type table<integer, table<integer, FoldCacheEntry>>
 local cache = {}
 

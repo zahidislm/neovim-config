@@ -1,15 +1,5 @@
 -- Fancy diagnostics hover for Neovim.
 
-local api = vim.api
-local hoverpos = require("utils.hoverpos")
-local icons = vim.g.iconchars
-
-local M = {}
-
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@class diaghover.config
 ---@field keymap?           string
 ---@field decoration_width? integer | fun(items: table): integer
@@ -18,9 +8,15 @@ local M = {}
 ---@field decorations?      table
 ---@field alpha?            number Background highlight blending ratio (default: 0.1)
 
-------------------------------------------------------------------------------
--- Highlight Management
-------------------------------------------------------------------------------
+local api = vim.api
+local hoverpos = require("utils.hoverpos")
+local icons = vim.g.iconchars
+
+local M = {}
+M.ns = api.nvim_create_namespace("diagnostic-hover")
+M.buffer = nil
+M.window = nil
+M.quad = nil
 
 --- Dynamically generates FancyDiagnostic groups based on current colorscheme.
 function M.__generate_highlights()
@@ -61,10 +57,6 @@ local function handle_diag_level(level, icon)
   }
 end
 
-------------------------------------------------------------------------------
--- Configuration
-------------------------------------------------------------------------------
-
 M.config = {
   keymap = "<leader><space>",
   decoration_width = 4,
@@ -89,15 +81,6 @@ M.config = {
   alpha = 0.1,
 }
 
-M.ns = api.nvim_create_namespace("diagnostic-hover")
-M.buffer = nil
-M.window = nil
-M.quad = nil
-
-------------------------------------------------------------------------------
--- Helpers
-------------------------------------------------------------------------------
-
 --- Retrieves the evaluated decoration properties for a given diagnostic item.
 ---@param level integer | string The severity level key.
 ---@return table evaluated_decorations Map of resolved decoration properties.
@@ -110,10 +93,6 @@ local function get_decorations(level, ...)
   end
   return output
 end
-
-------------------------------------------------------------------------------
--- Window Generation Lifecycle
-------------------------------------------------------------------------------
 
 --- Populates the buffer with diagnostic strings and applies highlights and icons.
 ---@param items  table[]   The list of diagnostic items from `vim.diagnostic.get`.
@@ -247,10 +226,6 @@ local function attach_keymaps(source_win, ranges)
   })
 end
 
-------------------------------------------------------------------------------
--- Activation
-------------------------------------------------------------------------------
-
 --- Closes the hover window and frees the used screen quadrant.
 function M.close()
   hoverpos.close(M)
@@ -283,10 +258,6 @@ function M.hover(window)
   setup_window(window, W, D, cursor_y)
   attach_keymaps(window, ranges)
 end
-
-------------------------------------------------------------------------------
--- Init
-------------------------------------------------------------------------------
 
 if M.config.keymap then
   api.nvim_set_keymap("n", M.config.keymap, "", {

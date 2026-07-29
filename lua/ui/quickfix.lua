@@ -2,19 +2,23 @@
 --- Provides a formatted `quickfixtextfunc`
 ---
 --- Dependencies (all optional):
----   - mini.icons : file-type icons via MiniIcons.get()
+---   - mini.icons : file-type icons
 ---
 --- nvim-bqf users: set the fzf delimiter to match the │ separator used here:
 ---   require('bqf').setup({
 ---     filter = { fzf = { extra_opts = { '--delimiter', '│' } } }
 ---   })
+---
+---@class QfItemInfo
+---@field valid    boolean True when the item has file/position data.
+---@field prefix   string  Diagnostic/Filetype icon + filename
+---@field prefix_w integer Width of prefix
+---@field row      string  Row range string (e.g. "10" or "10-12").
+---@field pos_w    integer Width of row string
+---@field text     string  Display text for the entry.
 
 ---@class QuickfixModule
 local M = {}
-
--- ---------------------------------------------------------------------------
--- Constants
--- ---------------------------------------------------------------------------
 
 -- Highlight Namespace
 local hl_ns = vim.api.nvim_create_namespace("QfIconHighlights")
@@ -38,10 +42,6 @@ local TYPE_MAP = {
   N = { sev.HINT, "DiagnosticSignHint" },
 }
 
--- ---------------------------------------------------------------------------
--- Cache
--- ---------------------------------------------------------------------------
-local path_cache = {}
 local width_cache = {}
 
 --- Get cell-width of string
@@ -54,12 +54,7 @@ local function get_width(str)
   return width_cache[str]
 end
 
--- ---------------------------------------------------------------------------
--- Diagnostic sign helpers
--- ---------------------------------------------------------------------------
-
 --- Reads sign text configured via vim.diagnostic.config().
---- Returns a table keyed by vim.diagnostic.severity integers.
 --- Falls back to plain ASCII letters when the user has not set icon text.
 ---@return table<integer, string>
 local function get_signs()
@@ -74,7 +69,7 @@ local function get_signs()
 end
 
 --- Returns the display icon for a single item's type.
----@param type_char  string Raw item.type string
+---@param type_char  string                 Raw item.type string
 ---@param signs      table<integer, string>
 ---@param is_loclist boolean
 ---@return string, string
@@ -86,13 +81,7 @@ local function get_diag_icon(type_char, signs, is_loclist)
   return (is_loclist and " " or "󱈤 "), ""
 end
 
--- ---------------------------------------------------------------------------
--- Path helpers
--- ---------------------------------------------------------------------------
-
 --- Shortens interior path segments to 1–2 characters.
---- Hidden segments (starting with ".") keep 2 chars; others keep 1.
---- The first, last, and any "raw" segments are preserved in full.
 ---@param path string
 ---@return string
 local function shorten_path(path)
@@ -133,10 +122,6 @@ local function center(text, width)
   return string.rep(" ", math.floor(diff / 2)) .. text .. string.rep(" ", math.ceil(diff / 2))
 end
 
--- ---------------------------------------------------------------------------
--- Icon helper
--- ---------------------------------------------------------------------------
-
 --- Returns a file-type icon for `full_path` using mini.icons.
 --- Returns an empty string when mini.icons is not loaded or the path is empty + highlight
 ---@return string, string
@@ -146,26 +131,7 @@ local function get_file_icon(path)
   return icon .. " ", hl
 end
 
--- ---------------------------------------------------------------------------
--- Item processing
--- ---------------------------------------------------------------------------
-
----@class QfItemInfo
----@field valid    boolean True when the item has file/position data.
----@field prefix   string  Diagnostic/Filetype icon + filename
----@field prefix_w integer Width of prefix
----@field row      string  Row range string (e.g. "10" or "10-12").
----@field pos_w    integer Width of row string
----@field text     string  Display text for the entry.
-
 --- Converts a raw quickfix/loclist item into a display-ready record.
----
---- Invalid items (item.valid ~= 1) skip all file/position resolution and
----
---- For quickfix lists (`use_buffer_text = true`) the live buffer line at
---- item.lnum is preferred over item.text when the buffer is loaded.
---- For location lists (`use_buffer_text = false`) item.text is always used.
----
 ---@param item       table
 ---@param use_buffer boolean
 ---@param signs      table<integer, string>
@@ -210,11 +176,7 @@ local function item_to_info(item, signs, use_buffer, is_loclist, line_idx, hl_qu
 end
 
 --- Formats a list of item info records into aligned display strings.
----
---- Layout for valid items:
----   <diag_icon><file_icon><right-padded path> │ <centered position> │ <text>
----
---- Invalid items render as bare text with no column structure.
+--- <diag_icon><file_icon><right-padded path> │ <centered position> │ <text>
 ---@param infos QfItemInfo[]
 ---@return string[]
 local function format_lines(infos)
@@ -293,12 +255,7 @@ local function process_items(items, start_idx, end_idx, use_buffer_text, is_locl
   return format_lines(infos)
 end
 
--- ---------------------------------------------------------------------------
--- Public API
--- ---------------------------------------------------------------------------
-
 --- Generates display lines for a location list window.
---- Always uses item.text (the diagnostic message); never the raw buffer line.
 ---@param data table
 ---@return string[]
 function M.loc_text(data)
@@ -307,7 +264,6 @@ function M.loc_text(data)
 end
 
 --- Generates display lines for a quickfix list window.
---- Uses the live buffer line when the buffer is loaded (shows source context).
 ---@param data table
 ---@return string[]
 function M.qf_text(data)

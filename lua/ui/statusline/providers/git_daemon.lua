@@ -1,8 +1,8 @@
 local api = vim.api
 local cache = require("ui.statusline.cache")
+local icons = vim.g.iconchars
 
 local M = {}
-local icons = vim.g.iconchars
 
 local branch_status_hls = {
   ["local"] = "StatusLineGitDelete",

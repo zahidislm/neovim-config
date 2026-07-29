@@ -1,4 +1,18 @@
--- Forked from folke's Snacks.statuscolumn: https://github.com/folke/snacks.nvim/blob/main/lua/snacks/statuscolumn.lua
+-- Forked from folke's Snacks.statuscolumn
+-- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/statuscolumn.lua
+
+---@class Statuscolumn.FoldInfo
+---@field start  number Line number where deepest fold starts
+---@field level  number Fold level, when zero other fields are N/A
+---@field llevel number Lowest level that starts in v:lnum
+---@field lines  number Number of lines from v:lnum to end of closed fold
+
+---@alias Statuscolumn.Component "mark" | "sign" | "fold" | "git"
+---@alias Statuscolumn.Components Statuscolumn.Component[] | fun(win: number, buf: number, lnum: number): Statuscolumn.Component[]
+---@alias Statuscolumn.Wanted table<Statuscolumn.Component, boolean>
+
+---@alias Statuscolumn.Sign.type "mark" | "sign" | "fold" | "git"
+---@alias Statuscolumn.Sign { name: string, text: string, texthl: string, priority: number, type: Statuscolumn.Sign.type }
 
 ---@class Statuscolumn
 ---@overload fun(): string
@@ -9,12 +23,6 @@ local M = setmetatable({}, {
 })
 
 M.meta = { needs_setup = true }
-
----@class Statuscolumn.FoldInfo
----@field start  number Line number where deepest fold starts
----@field level  number Fold level, when zero other fields are N/A
----@field llevel number Lowest level that starts in v:lnum
----@field lines  number Number of lines from v:lnum to end of closed fold
 
 ---@type ffi.namespace*
 local C
@@ -58,10 +66,6 @@ local function fold_info(win, lnum)
   return C.fold_info(wp, lnum) ---@type Statuscolumn.FoldInfo
 end
 
----@alias Statuscolumn.Component "mark" | "sign" | "fold" | "git"
----@alias Statuscolumn.Components Statuscolumn.Component[] | fun(win: number, buf: number, lnum: number): Statuscolumn.Component[]
----@alias Statuscolumn.Wanted table<Statuscolumn.Component, boolean>
-
 ---@class Statuscolumn.Config
 ---@field left     Statuscolumn.Components
 ---@field right    Statuscolumn.Components
@@ -79,9 +83,6 @@ local config = {
   },
   refresh = 50,              -- refresh at most every 50ms
 }
-
----@alias Statuscolumn.Sign.type "mark" | "sign" | "fold" | "git"
----@alias Statuscolumn.Sign { name: string, text: string, texthl: string, priority: number, type: Statuscolumn.Sign.type }
 
 -- Cache for signs per buffer and line
 ---@type table<number, table<number, Statuscolumn.Sign[]>>

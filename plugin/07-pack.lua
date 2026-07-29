@@ -1,7 +1,3 @@
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@class PackKeymap
 ---@field [1]     string            LHS trigger
 ---@field [2]     string | function RHS action
@@ -21,8 +17,6 @@
 ---@field _queued?      boolean                    DFS deduplication state
 ---@field _loaded?      boolean                    Execution deduplication state
 
-------------------------------------------------------------------------------
-
 local ALT_HOSTS = { gl = "https://gitlab.com/", cb = "https://codeberg.org/" }
 
 ---@type table<string, PackData>
@@ -30,10 +24,6 @@ local registry = {}
 local queue = {}
 local sync_queue = {}
 local scheduled = false
-
-------------------------------------------------------------------------------
--- Utilities
-------------------------------------------------------------------------------
 
 local function try(msg, fn, ...)
   local ok, err = pcall(fn, ...)
@@ -50,10 +40,6 @@ local function infer_main(name)
     :gsub("^nvim%-", "")
     :gsub("^lua%-", "")
 end
-
-------------------------------------------------------------------------------
--- Core Execution
-------------------------------------------------------------------------------
 
 local function setup_plugin(name)
   local data = registry[name]
@@ -96,10 +82,6 @@ local function setup_plugin(name)
 
   data._loaded = true
 end
-
-------------------------------------------------------------------------------
--- Resolution Engine
-------------------------------------------------------------------------------
 
 --- Resolve a raw spec into a native vim.pack entry and route it to the
 --- correct queue.
@@ -145,10 +127,6 @@ local function queue_spec(raw, inherit_sync)
 
   table.insert(is_sync and sync_queue or queue, native)
 end
-
-------------------------------------------------------------------------------
--- Global API & Hooks
-------------------------------------------------------------------------------
 
 --- Pass a batch of native specs to vim.pack.add with a shared load callback.
 ---@param batch table[]

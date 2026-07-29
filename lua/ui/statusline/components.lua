@@ -3,10 +3,6 @@ local icons = vim.g.iconchars
 
 local M = {}
 
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@class ComponentDef
 ---@field default?    string
 ---@field render      fun(args: table, winid: int): string

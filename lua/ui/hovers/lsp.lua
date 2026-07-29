@@ -1,24 +1,20 @@
 -- Dynamically positioned, kind-aware LSP hover float
 
-local api = vim.api
-local hoverpos = require("utils.hoverpos")
-local M = {}
-
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@class lsphover.config
----@field keymap?     string Normal-mode mapping that triggers hover (default "K").
+---@field keymap?     string                   Normal-mode mapping that triggers hover (default "K").
 ---@field max_width?  integer | fun(): integer
 ---@field max_height? integer | fun(): integer
----@field alpha?      number Accent blend ratio for the border/title badge (default 0.12).
----@field dim_alpha?  number How much of the original fg survives in dimmed docs (default 0.45).
+---@field alpha?      number                   Accent blend ratio for the border/title badge (default 0.12).
+---@field dim_alpha?  number                   How much of the original fg survives in dimmed docs (default 0.45).
 
-------------------------------------------------------------------------------
--- Configuration
-------------------------------------------------------------------------------
+local api = vim.api
+local hoverpos = require("utils.hoverpos")
 
+local M = {}
+M.ns = api.nvim_create_namespace("lsp_hover")
+M.window = nil
+M.quad = nil
+M.docs_line = nil
 M.config = {
   keymap = "K",
   max_width = function () return math.floor(vim.o.columns * 0.55) end,
@@ -26,15 +22,6 @@ M.config = {
   alpha = 0.12,
   dim_alpha = 0.55,
 }
-
-M.ns = api.nvim_create_namespace("lsp_hover")
-M.window = nil
-M.quad = nil
-M.docs_line = nil
-
-------------------------------------------------------------------------------
--- Kind classification
-------------------------------------------------------------------------------
 
 -- What each kind's accent color is sampled from
 local kind_types = {
@@ -90,10 +77,6 @@ local function detect_kind(bufnr, row, col)
   return "default"
 end
 
-------------------------------------------------------------------------------
--- Helpers
-------------------------------------------------------------------------------
-
 --- Finds where the "signature" portion of the hover content ends, so
 --- everything after it can be dimmed and visually separated.
 ---@param lines string[]
@@ -146,19 +129,11 @@ local function truncation_footer(lines, width, height)
   return nil
 end
 
-------------------------------------------------------------------------------
--- Highlight Management
-------------------------------------------------------------------------------
-
 --- Dynamically regenerates LspHover* groups based on the current colorscheme.
 function M.__generate_highlights()
   hoverpos.generate_kind_highlights("LspHover", kind_types, M.config.alpha)
   hoverpos.generate_muted_highlight("LspHoverMuted", M.config.dim_alpha)
 end
-
-------------------------------------------------------------------------------
--- Documentation Re-wrap
-------------------------------------------------------------------------------
 
 -- Line prefixes marking structural markdown we should never reformat
 local STRUCTURAL_LINE = "^%s*[#>]" -- headings, block quotes
@@ -199,10 +174,6 @@ local function rewrap_align(lines, width)
 
   return out
 end
-
-------------------------------------------------------------------------------
--- Window Generation
-------------------------------------------------------------------------------
 
 --- Positions an already-opened floating preview window with the shared
 --- quadrant logic and claims its quadrant.
@@ -305,10 +276,6 @@ local function watch_for_close(float_win)
     end,
   })
 end
-
-------------------------------------------------------------------------------
--- Activation
-------------------------------------------------------------------------------
 
 --- Requests hover information for the symbol under the cursor and opens it
 --- in a dynamically positioned, kind-accented float. Focuses the float if

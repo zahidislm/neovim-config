@@ -2,10 +2,6 @@
 
 local coloring = {}
 
-------------------------------------------------------------------------------
--- Core Color Math
-------------------------------------------------------------------------------
-
 --- Evaluates and converts a color input into a standard RGB table.
 --- Handles strings (#RRGGBB), decimals, RGB arrays, and dynamic functions.
 ---@param val plugin.color

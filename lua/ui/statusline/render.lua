@@ -1,15 +1,3 @@
-local api = vim.api
-local cache = require("ui.statusline.cache")
-local hl_mod = require("ui.statusline.highlight")
-local comp_mod = require("ui.statusline.components")
-local config = _G["Statusline"].config
-
-local Render = {}
-
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@class WindowState
 ---@field pills        table<string, string> Formatted "%#hl#content" string per component
 ---@field final_string string                Pre-compiled statusline string
@@ -19,7 +7,13 @@ local Render = {}
 ---@field events     table<string, string>
 ---@field registry   table<string, string>
 
------------------------------------------------------------------------------
+local api = vim.api
+local cache = require("ui.statusline.cache")
+local hl_mod = require("ui.statusline.highlight")
+local comp_mod = require("ui.statusline.components")
+local config = _G["Statusline"].config
+
+local Render = {}
 
 ---@type RenderState
 local state = { components = {}, events = {}, registry = {} }

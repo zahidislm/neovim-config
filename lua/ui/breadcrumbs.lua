@@ -96,10 +96,6 @@ local function get_icon(category, name)
   return icon_cache[key]
 end
 
--- ---------------------------------------------------------------------------
--- LSP helpers
--- ---------------------------------------------------------------------------
-
 ---@param range table   LSP Range
 ---@param line  integer 0-indexed
 ---@param char  integer 0-indexed
@@ -133,10 +129,6 @@ local function find_symbol_path(symbol_list, line, char, path)
   end
   return false
 end
-
--- ---------------------------------------------------------------------------
--- Tree-sitter helpers
--- ---------------------------------------------------------------------------
 
 ---@param node  TSNode
 ---@param bufnr integer
@@ -217,10 +209,6 @@ local function extract_scope_name(node, bufnr)
   return nil
 end
 
--- ---------------------------------------------------------------------------
--- Shared
--- ---------------------------------------------------------------------------
-
 ---@param crumbs string[]
 ---@param winnr  integer
 local function apply_winbar(crumbs, winnr)
@@ -233,10 +221,6 @@ local function apply_winbar(crumbs, winnr)
 
   vim.api.nvim_set_option_value("winbar", text, { win = winnr })
 end
-
--- ---------------------------------------------------------------------------
--- LSP path
--- ---------------------------------------------------------------------------
 
 ---@param err         table?
 ---@param symbols     table[]?
@@ -254,10 +238,6 @@ local function handle_lsp_symbols(err, symbols, winnr, breadcrumbs)
   end
   apply_winbar(crumbs, winnr)
 end
-
--- ---------------------------------------------------------------------------
--- Tree-sitter path
--- ---------------------------------------------------------------------------
 
 ---@param bufnr       integer
 ---@param winnr       integer
@@ -296,10 +276,6 @@ local function breadcrumbs_from_ts(bufnr, winnr, breadcrumbs)
 
   apply_winbar(crumbs, winnr)
 end
-
--- ---------------------------------------------------------------------------
--- Dispatch
--- ---------------------------------------------------------------------------
 
 local function breadcrumbs_set()
   if not _G.Breadcrumbs.config.enabled then
@@ -345,10 +321,6 @@ local function breadcrumbs_set()
   end
 end
 
--- ---------------------------------------------------------------------------
--- Debounce
--- ---------------------------------------------------------------------------
-
 ---@type uv.uv_timer_t?
 local debounce_timer = nil
 
@@ -375,10 +347,6 @@ function M.debounced_breadcrumbs_set()
   )
 end
 
--- ---------------------------------------------------------------------------
--- Toggle
--- ---------------------------------------------------------------------------
-
 function M.toggle_breadcrumbs()
   if _G.Breadcrumbs == nil then
     vim.notify("`Breadcrumbs` doesn't exist!", vim.log.levels.WARN, { title = "LSP" })
@@ -394,10 +362,6 @@ function M.toggle_breadcrumbs()
     vim.o.winbar = ""
   end
 end
-
--- ---------------------------------------------------------------------------
--- Setup
--- ---------------------------------------------------------------------------
 
 _G["Breadcrumbs"] = { config = { enabled = true } }
 

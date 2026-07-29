@@ -1,8 +1,5 @@
 local snippet_registry = {}
 
--------------------------------------------------------------------------------
--- Snippet Registration
--------------------------------------------------------------------------------
 --- Register one or more snippets for the current buffer's filetype.
 ---@param snippets table<string, string> map of trigger -> snippet body
 local function add(snippets)
@@ -17,9 +14,6 @@ local function add(snippets)
   end
 end
 
--------------------------------------------------------------------------------
--- Completion integration
--------------------------------------------------------------------------------
 --- Build LSP-completion-item-shaped entries for the current buffer's filetype.
 ---@param base string current completion base (typed prefix)
 ---@return table[] items shaped like LSP `CompletionItem`s

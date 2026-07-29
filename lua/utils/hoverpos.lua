@@ -1,12 +1,5 @@
 -- Shared dynamic positioning & sizing logic for cursor-anchored floating windows (hovers)
 
-local api = vim.api
-local M = {}
-
-------------------------------------------------------------------------------
--- Types
-------------------------------------------------------------------------------
-
 ---@alias hoverpos.quad "top_left" | "top_right" | "bottom_left" | "bottom_right" | "center"
 
 ---@class hoverpos.result
@@ -21,14 +14,10 @@ local M = {}
 ---@field window integer?
 ---@field quad   hoverpos.quad?
 
-------------------------------------------------------------------------------
--- Quadrant bookkeeping
-------------------------------------------------------------------------------
+local api = vim.api
 
--- Tracks occupied quadrants
+local M = {}
 M.used_quads = {}
-
--- Events to close float
 M.close_events = { "CursorMoved", "CursorMovedI", "InsertCharPre", "BufHidden" }
 
 ---@param quad  hoverpos.quad?
@@ -37,13 +26,9 @@ function M.set_quad(quad, state)
   if quad then M.used_quads[quad] = state end
 end
 
-------------------------------------------------------------------------------
--- Helpers
-------------------------------------------------------------------------------
-
 --- Safely evaluates a dynamic property (function or static value).
----@param val any The value or function to evaluate.
----@param ... any Arguments to pass if `val` is a function.
+---@param val any       The value or function to evaluate.
+---@param any Arguments to pass if `val` is a function.
 ---@return any evaluated_value
 function M.eval(val, ...)
   if type(val) ~= "function" then return val end
@@ -97,10 +82,6 @@ function M.wrap_text(text, width)
   if line ~= "" then table.insert(rows, line) end
   return rows
 end
-
-------------------------------------------------------------------------------
--- Positioning
-------------------------------------------------------------------------------
 
 local quadrants = {
   {
@@ -170,16 +151,12 @@ function M.compute(window, w, h)
   }
 end
 
-------------------------------------------------------------------------------
--- Highlight generation
-------------------------------------------------------------------------------
-
 --- Regenerates a themed family of highlight groups from `groups`, each
 --- mapping a semantic key (e.g. "Error", "Function") to a highlight to pull
 --- a color from.
 ---@param prefix string
 ---@param groups table<string, { target: string, fallback: string }>
----@param alpha? number Blend ratio of the accent color into `Normal`'s bg (default 0.1).
+---@param alpha? number                                              Blend ratio of the accent color into `Normal`'s bg (default 0.1).
 function M.generate_kind_highlights(prefix, groups, alpha)
   local colors = require("utils.coloring")
   local bg_hl = api.nvim_get_hl(0, { name = "Normal", link = false })
@@ -211,10 +188,6 @@ function M.generate_muted_highlight(name, ratio)
     fg = colors.blend(fg, bg, ratio or 0.45),
   })
 end
-
-------------------------------------------------------------------------------
--- Utility
-------------------------------------------------------------------------------
 
 --- Closes a float previously positioned with `M.compute` and frees its quadrant
 ---@param state hoverpos.state
