@@ -4,7 +4,7 @@
 
 ![Screenshot of neovim configuration in both light & dark mode](https://i.8upload.com/image/90e83324810d6f10/banner.png)
 
-**A from-scratch Neovim setup built on `vim.pack`, native LSP, and a hand-rolled UI layer.**
+**This configuration builds Neovim from scratch. It uses `vim.pack`, native LSP, and a UI layer written by hand.**
 
 ![Neovim](https://img.shields.io/badge/Neovim-%E2%89%A50.12-57A143?style=flat-square&logo=neovim&logoColor=white)
 ![macOS](https://img.shields.io/badge/macOS-000000?style=flat-square&logo=apple&logoColor=F0F0F0)
@@ -17,17 +17,17 @@
 
 ## Philosophy
 
-To me, `neovim` is first: a text editor, second: a code editor, third: a diff viewer.
+For me, Neovim is a text editor first, a code editor second, and a diff viewer third.
 
-Therefore, my configuration and workflow is designed around that idea.
-This configuration doesn't try to do everything nor replace what a multiplexer, terminal, or a proper IDE tries to do. But it does try to make editing text on neovim more enjoyable and convenient (at least to me).
+I designed my configuration and workflow around this idea.
+This configuration does not try to do everything. It does not replace a terminal, a multiplexer, or an IDE. It only tries to make text editing in Neovim more enjoyable and convenient, at least for me.
 
-Use a terminal to manage files/directories/structure. Use a multiplexer for complex splits. Use an IDE to debug. Use neovim to edit.
+Use a terminal to manage files and directories. Use a multiplexer for complex splits. Use an IDE to debug code. Use Neovim to edit text.
 
 > [!NOTE]
-> This is a personal configuration, tuned for one person's workflow on purpose. It isn't a distribution, it doesn't try to be beginner-friendly, and large parts of it exist because I wanted to learn how a particular Neovim internal worked, not because there was no plugin that already did the job. Feel free to read, steal, or fork pieces of it, but I'd think twice before pointing `git clone` straight at `~/.config/nvim` and hoping for the best.
+> This is a personal configuration. I tuned it for one person's workflow on purpose. It is not a distribution. It does not try to be easy for beginners. I built many parts of it to learn how a particular Neovim internal function worked, not because no plugin already did the job. Feel free to read, copy, or fork pieces of it. But think twice before you point `git clone` straight at `~/.config/nvim` and hope for the best.
 
-This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp`, or `lualine.nvim`. That's not a marketing point; it's just what was left once I started replacing things with Neovim's native equivalents and never really stopped. Plugin management runs on `vim.pack`. Completion runs on `mini.completion` against native LSP, and snippets are about thirty lines of Lua. The statusline, statuscolumn, quickfix formatting, hover floats, and winbar breadcrumbs are all written by hand and live under `lua/ui/`, backed by a small set of shared helpers under `lua/utils/` (color math, floating-window placement, fold rendering, file operations). Everything else is `mini.nvim` doing the work of what would otherwise be a dozen small plugins.
+This configuration does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp`, or `lualine.nvim`. This is not a marketing point. It is simply what remained once I started replacing these tools with Neovim's native equivalents, and never really stopped. `vim.pack` handles plugin management. `mini.completion` runs completion against native LSP, and the snippets use about thirty lines of Lua. I wrote the statusline, statuscolumn, quickfix formatting, hover floats, and winbar breadcrumbs by hand. These files live under `lua/ui/`, backed by a small set of shared helpers under `lua/utils/` (color math, floating-window placement, fold rendering, file operations). `mini.nvim` does the rest of the work, in place of a dozen small plugins.
 
 ---
 
@@ -53,16 +53,16 @@ This config does not use `lazy.nvim`, `telescope.nvim`, `mason.nvim`, `blink.cmp
 
 ## The UI
 
-None of this is here because the equivalent plugins are bad. `lualine.nvim`, `noice.nvim`, and friends are all perfectly good. I wrote my own versions mostly as an excuse to actually read the parts of `:help api` I'd otherwise have skipped. A few of them ended up being genuinely better suited to how I work, so they stuck around.
+None of this exists because the equivalent plugins are bad. `lualine.nvim`, `noice.nvim`, and similar plugins all work well. I wrote my own versions mostly as an excuse to actually read the parts of `:help api` I would otherwise have skipped. A few of them fit how I work better, so they stuck around.
 
 ### `statuscolumn.lua`
 
-Forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statuscolumn implementation, then trimmed down strictly to marks, signs, git signs, and folds.
+I forked this from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statuscolumn implementation. Then I trimmed it down strictly to marks, signs, git signs, and folds.
 
 ### `hovers`: Collection of custom float UI
-`hovers/diagnostics.lua` replaces `vim.diagnostic.open_float()`, and `hovers/lsp.lua` replaces `vim.lsp.buf.hover()` (bound to `K`). Both are thin skins over the same placement math, which lives in `lua/utils/hoverpos.lua` so it isn't duplicated across two nearly-identical floating windows.
+`hovers/diagnostics.lua` replaces `vim.diagnostic.open_float()`. `hovers/lsp.lua` replaces `vim.lsp.buf.hover()`, bound to `K`. Both are thin skins over the same placement math, which lives in `lua/utils/hoverpos.lua` so it is not duplicated across two nearly identical floating windows.
  
-`hovers/diagnostics`: formats the diagnostic float for a stylized display to show different diagnostic types, also allowing to jump to each diagnostic in the line. 
+`hovers/diagnostics`: formats the diagnostic float with a custom style, to show different diagnostic types. It also lets you jump to each diagnostic on the line. 
 
 <details>
 <summary><b>Expand to see details.</b></summary>
@@ -70,19 +70,19 @@ Forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statusco
 <picture><img src="https://i.8upload.com/image/df5cbae0ddcdf2d0/screenshot-hover-diag.png" alt="diag-hover screenshot" /></picture>
 </details>
 
-`hovers/lsp`: Shows documentation for cursorword but also formats it in a custom skin.
+`hovers/lsp`: Shows documentation for the word under the cursor, and formats it in a custom style.
 
 <details>
 <summary><b>Expand to see details.</b></summary>
 <br>
 <picture><img src="https://i.8upload.com/image/a7724d384c20f14c/screenshot-hover-lsp.png" alt="lsp-hover screenshot" /></picture>
 
-Classifies whatever's under the cursor into a kind (function, class, variable, and so on) via treesitter/semantic-token captures, tints the border and title badge to match, and re-wraps the returned markdown to a sane width instead of trusting whatever the language server sent.
+This module classifies the item under the cursor into a kind, such as a function, class, or variable, using Tree-sitter and semantic-token captures. It tints the border and title badge to match this kind. It also re-wraps the returned markdown to a sane width, instead of trusting whatever width the language server sent.
 </details>
 
 ### `breadcrumbs.lua`: Symbols winbar
 
-A winbar component to show current symbol.
+A winbar component that shows the current symbol.
 
 <details>
 <summary><b>Expand to see details.</b></summary>
@@ -90,12 +90,12 @@ A winbar component to show current symbol.
 
 <picture><img src="https://i.8upload.com/image/4861067022e098f4/screenshot-breadcrumbs.png" alt="breadcrumbs screenshot" /></picture>
 
-If an attached LSP client supports `textDocument/documentSymbol`, it walks the returned symbol tree to find the symbol path containing the cursor. If nothing's attached, it walks up the Tree-sitter parent chain instead. It matches node types across roughly ten grammars onto a shared set of icon categories, dynamically recovering names for anonymous nodes (like a JS arrow function or Lua `M.foo = function()`) by looking one level up at the enclosing declaration.
+If an attached LSP client supports `textDocument/documentSymbol`, this module walks the returned symbol tree to find the symbol path that contains the cursor. If no client is attached, it walks up the Tree-sitter parent chain instead. It matches node types across roughly ten grammars onto a shared set of icon categories. For anonymous nodes, such as a JS arrow function or a Lua `M.foo = function()`, it recovers the name by looking one level up, at the enclosing declaration.
 </details>
 
 ### `foldtext.lua`: Folds that keep their syntax highlighting
 
-A custom (and rather aesthetic) foldtext implementation.
+A custom foldtext implementation, with careful attention to appearance.
 
 <details>
 <summary><b>Expand to see details.</b></summary>
@@ -103,12 +103,12 @@ A custom (and rather aesthetic) foldtext implementation.
 
 <picture><img src="https://i.8upload.com/image/6eed6e8054d6f3a2/screenshot-foldtext.png" alt="foldtext screenshot" /></picture>
 
-Neovim's default foldtext just shows the bare first line. This runs the buffer's actual Tree-sitter `highlights` query against the fold's start and end lines, resolving overlapping capture ranges to reassemble the line as a list of `{text, highlight}` chunks. A folded function signature still shows types and keywords in their normal colors.
+Neovim's default foldtext shows only the bare first line. This module runs the buffer's actual Tree-sitter `highlights` query against the fold's start and end lines. It resolves overlapping capture ranges and reassembles the line as a list of `{text, highlight}` chunks. As a result, a folded function signature still shows types and keywords in their normal colors.
 </details>
 
 ### `quickfix.lua`: A custom `quickfixtextfunc` handler
 
-Custom styling & layout for quickfix items.
+Custom style and layout for quickfix items.
 
 <details>
 <summary><b>Expand to see details.</b></summary>
@@ -116,21 +116,21 @@ Custom styling & layout for quickfix items.
 
 <picture><img src="https://i.8upload.com/image/f3b79e67153ac072/screenshot-quickfix.png" alt="quickfix screenshot" /></picture>
 
-Each line gets a diagnostic-severity icon, a `mini.icons` filetype icon, and a path where every interior segment is abbreviated down to one or two characters. Everything lines up into three aligned columns separated by `│`, which doubles as the delimiter `nvim-bqf` expects for its fzf preview filter. It prefers showing the *live* buffer line over the stored item text so a long-running quickfix session reflects edits you've made since the list was built.
+Each line gets a diagnostic-severity icon, a `mini.icons` filetype icon, and a path. Every interior segment of the path is abbreviated down to one or two characters. The three columns line up and align, separated by `│`. This character also serves as the delimiter that `nvim-bqf` expects for its fzf preview filter. This module prefers showing the *live* buffer line over the stored item text. As a result, a long-running quickfix session still reflects the edits you have made since you built the list.
 </details>
 
 ### `statusline`: An event-driven statusline
 
-Designed to be highly efficient in both performance and memory usage:
-- Each component declares exactly which autocmd events it cares about. `render.lua` only re-evaluates the components subscribed to that specific event.
-- Every component's rendered output is diffed against a cached string before being written. If nothing changed, `redrawstatus` never fires.
-- State is cached per-window, so splits genuinely have independent statuslines, and cache is cleared on `WinClosed`.
-- The git segment doesn't poll. It uses `vim.uv.new_fs_event` to watch `.git/HEAD` directly, correctly resolving worktrees and submodules by following the `gitdir: <path>` pointer. 
-- Separator highlights are synthesized on demand by sampling each component's resolved background color rather than being declared up front.
+The design aims for high efficiency in both performance and memory use:
+- Each component declares the exact autocmd events it needs. `render.lua` re-evaluates only the components subscribed to that specific event.
+- Before writing, the module compares each component's rendered output against a cached string. If nothing changed, `redrawstatus` never fires.
+- The module caches state per window. As a result, splits genuinely have independent statuslines. The cache clears on `WinClosed`.
+- The git segment does not poll. It uses `vim.uv.new_fs_event` to watch `.git/HEAD` directly, and it correctly resolves worktrees and submodules by following the `gitdir: <path>` pointer.
+- The module builds separator highlights on demand, by sampling each component's resolved background color, instead of declaring them up front.
 
 ### Icons, coloring, and the highlight overrides
 
-`icons.lua` keeps a plain Unicode set and a Nerd Font superset, merged only if `vim.g.use_nerdfonts` is true. `utils/coloring.lua` is a tiny color-math module used to blend foregrounds into backgrounds, shared by the hover floats, the statusline, and the colorscheme overrides below. `highlights/scheme/kanso.lua` feeds the `overrides` callback in `kanso.nvim` to remap highlight groups for custom UI elements and plugins onto Kanso's actual palette.
+`icons.lua` keeps a plain Unicode set and a Nerd Font superset. It merges the two only if `vim.g.use_nerdfonts` is true. `utils/coloring.lua` is a small color-math module used to blend foregrounds into backgrounds, shared by the hover floats, the statusline, and the colorscheme overrides below. `highlights/scheme/kanso.lua` feeds the `overrides` callback in `kanso.nvim`, to remap highlight groups for custom UI elements and plugins onto Kanso's actual palette.
 
 ---
 
@@ -139,11 +139,11 @@ Designed to be highly efficient in both performance and memory usage:
 ### `Pack.add`: The `vim.pack` wrapper
 
 A thin layer over Neovim's native `vim.pack`.
-- **Deduplication:** Dependency resolution is depth-first and deduplicated.
+- **Deduplication:** Dependency resolution runs depth-first and removes duplicates.
 - **Shorthands:** `gl:user/repo` and `cb:user/repo` resolve to GitLab and Codeberg.
-- **Two queues:** Plugins batch up and flush on the next `vim.schedule` tick, while anything marked `sync = true` flushes immediately.
-- **Setup inference:** If `config` is a table, the module name is guessed from the repo name, and `require(mod).setup(config)` is called automatically.
-- **Build hooks:** Run strictly on `PackChanged`, so they only fire when something actually gets installed or updated.
+- **Two queues:** Plugins batch up and flush on the next `vim.schedule` tick. Anything marked `sync = true` flushes at once.
+- **Setup inference:** If `config` is a table, the module guesses the module name from the repo name, and calls `require(mod).setup(config)` automatically.
+- **Build hooks:** These run strictly on `PackChanged`, so they fire only when something actually gets installed or updated.
 
 ### Picking, buffers, and navigation
 
@@ -198,15 +198,15 @@ A thin layer over Neovim's native `vim.pack`.
 
 ## Native LSP
 
-There's no `mason.nvim` and no `nvim-lspconfig` server registry in this config. Every `*.lua` file under `after/lsp/` is just a `vim.lsp.Config` table, returned directly, per Neovim 0.11+'s native convention. `plugin/05-lsp.lua` scans `vim.api.nvim_get_runtime_file("lsp/*.lua")`, derives each server's name from its filename, and calls `vim.lsp.enable()` on the whole list, adding a language is "drop a file in `after/lsp/`," full stop.
+This configuration has no `mason.nvim` and no `nvim-lspconfig` server registry. Every `*.lua` file under `after/lsp/` is simply a `vim.lsp.Config` table, returned directly, following Neovim 0.11+'s native convention. `plugin/05-lsp.lua` scans `vim.api.nvim_get_runtime_file("lsp/*.lua")`, derives each server's name from its filename, and calls `vim.lsp.enable()` on the whole list. To add a language, drop a file in `after/lsp/`. That is the only step.
 
 | Server | Language(s) | Notes |
 |---|---|---|
 | `clangd` | C, C++, Obj-C, CUDA, Proto | background index, `clang-tidy`, IWYU-style header insertion |
-| `ty` + `ruff` | Python | `ty` (via `uvx`) for type checking, `ruff` for lint/format |
+| `ty` + `ruff` | Python | `ty` (via `uvx`) checks types, `ruff` handles lint and format |
 | `zls` | Zig | |
 | `r_language_server` | R, R Markdown, Quarto | |
-| `julials` | Julia | ships a custom `:LspJuliaActivateEnv` command that reimplements the Julia VS Code extension's environment scanning (`JULIA_DEPOT_PATH`, project files) entirely in Lua |
+| `julials` | Julia | ships a custom `:LspJuliaActivateEnv` command that reproduces the Julia VS Code extension's environment scanning (`JULIA_DEPOT_PATH`, project files) entirely in Lua |
 | `marksman` | Markdown | |
 | `neocmake` | CMake | |
 | `taplo` | TOML | |
@@ -214,58 +214,58 @@ There's no `mason.nvim` and no `nvim-lspconfig` server registry in this config. 
 | `emmylua_ls` | Lua | |
 | `commit-lsp` | git commit messages | |
 
-Binaries aren't installed for you. Whichever servers you actually use need to already be on `$PATH`, or fetchable through `uvx` for the Python tools. The `LspAttach` autocmd in `05-lsp.lua` rebinds `gri`/`grr`/`grt`/`grO`/`grn`/`grN`/`grf` to Glance/live-rename/native formatting rather than inventing a new keymap convention, and only binds `grf` at all if the attached client actually advertises `documentFormattingProvider`. Inlay hints turn themselves off on `InsertEnter` and back on on `InsertLeave`, so they don't visually fight with what you're actively typing.
+This configuration does not install binaries for you. Whichever servers you actually use must already be on `$PATH`, or fetchable through `uvx` for the Python tools. The `LspAttach` autocmd in `05-lsp.lua` rebinds `gri`/`grr`/`grt`/`grO`/`grn`/`grN`/`grf` to Glance, live-rename, and native formatting, rather than inventing a new keymap convention. It only binds `grf` at all if the attached client actually advertises `documentFormattingProvider`. Inlay hints turn themselves off on `InsertEnter` and back on on `InsertLeave`, so they do not visually conflict with the text you are actively typing.
 
 ---
 
 ## Snippets without a snippet plugin
 
-`plugin/08-snippet.lua` is the entire engine, and it's about thirty lines long. Each language calls `vimsnip.add()` for its filetype, and `mini.completion` splices in matching entries using Neovim's native `vim.snippet` placeholders (`$0`, `${1}`). Most snippets were converted from [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) so kudos to them.
+`plugin/08-snippet.lua` is the entire engine, and it is about thirty lines long. Each language calls `vimsnip.add()` for its filetype, and `mini.completion` splices in matching entries using Neovim's native `vim.snippet` placeholders (`$0`, `${1}`). I converted most snippets from [friendly-snippets](https://github.com/rafamadriz/friendly-snippets), so kudos to them.
 
 ---
 
 ## Colorscheme
 
-[`kanso.nvim`](https://github.com/webhooked/kanso.nvim): Loaded synchronously with `transparent`, `minimal`, and `dimInactive` enabled. The `overrides` callback maps `kanso.nvim`'s palette perfectly onto the custom statusline, `namu.nvim`, and markdown renderer.
+[`kanso.nvim`](https://github.com/webhooked/kanso.nvim): Loaded synchronously, with `transparent`, `minimal`, and `dimInactive` enabled. The `overrides` callback maps `kanso.nvim`'s palette onto the custom statusline, `namu.nvim`, and the markdown renderer.
 
 ---
 
 ## Requirements & installation
 
 > [!IMPORTANT]
-> Neovim **0.12 or newer** is required. This config leans on `vim.pack`, native `lsp/*.lua` config files, and `vim._core.ui2`, none of which exist on 0.11 or earlier.
+> This configuration requires Neovim **0.12 or newer**. It relies on `vim.pack`, native `lsp/*.lua` config files, and `vim._core.ui2`, none of which exist on 0.11 or earlier.
 
-- VCS: currently `git` is needed for vim.pack. Other VCS support to come soon.
-- Whichever **per-language tooling** your `after/lsp/*.lua` files actually point at. `clangd`, `uv`/`uvx` (for `ty`/`ruff`), `R`, `julia`, `taplo`, `zls`, and so on. None of it is installed for you; there's no Mason here to do it.
-- Optionally, **Go compiler** and an `INCEPTION_AI_TOKEN` environment variable, only if you want `cursortab.nvim` to load at all.
-- A **Nerd Font**, if you'd rather keep `vim.g.use_nerdfonts = true` than fall back to the plain Unicode icon set.
+- VCS: `git` is currently needed for `vim.pack`. Support for other VCS tools will come soon.
+- Whichever **per-language tooling** your `after/lsp/*.lua` files actually point at: `clangd`, `uv`/`uvx` (for `ty`/`ruff`), `R`, `julia`, `taplo`, `zls`, and so on. This configuration does not install any of it for you. There is no Mason here to do it.
+- Optionally, a **Go compiler** and an `INCEPTION_AI_TOKEN` environment variable, needed only if you want `cursortab.nvim` to load at all.
+- A **Nerd Font**, if you would rather keep `vim.g.use_nerdfonts = true` than fall back to the plain Unicode icon set.
 
 ```bash
 git clone https://github.com/zahidislm/neovim-config.git ~/.config/nvim
 nvim
 ```
 
-On first launch, `vim.pack` will install everything declared across the `plugin/` directory. The colorscheme and `diffview-plus.nvim` are marked `sync = true`, so they're available immediately rather than appearing a frame or two late.
+On first launch, `vim.pack` installs everything declared across the `plugin/` directory. The colorscheme and `diffview-plus.nvim` are marked `sync = true`, so they are available immediately, instead of appearing a frame or two late.
 
 ---
 
 ## Credit where it's due
 
-A few pieces here started as someone else's code, then got bent into shape for this config specifically:
+A few pieces here started as someone else's code, then got adapted to fit this configuration specifically:
 
 - `lua/ui/statuscolumn.lua`: forked from [folke/snacks.nvim](https://github.com/folke/snacks.nvim)'s statuscolumn module.
 - `lua/ui/hovers/diagnostics.lua`: forked from [OXY2DEV](https://github.com/OXY2DEV/nvim)'s diagnostics float script.
-- `utils.foldexpr()` (in `lua/utils/init.lua`): adapted from [folke](https://github.com/folke) and the [LazyVim](https://github.com/LazyVim/LazyVim) team's efforts.
-- once more to folke, where I learned most of my lua scripting from.
-- drowning-cat for their [unscope](https://github.com/nvim-mini/mini.nvim/discussions/1951) textobject.
-- MariaSolOs's (core neovim maintainer!) [dotfiles](https://github.com/MariaSolOs/dotfiles/tree/main/.config/nvim) where I got so, so, so many inspirations from especially for her LSP configs.
-- comfysage's [sylvee](https://github.com/comfysage/sylvee) project where I took inspiration for the config structure and for their inlayhint configuration.
-- nvimdev's [modeline.nvim](https://github.com/nvimdev/modeline.nvim), where I got the initial inspiration for my statusline implementation.
-- once more, OXY2DEV's [dotfiles](https://github.com/OXY2DEV/.dotfiles) where I forked so many UI components from.
-- echasnovski's [mini.nvim](https://github.com/nvim-mini/mini.nvim). His work is literally the backbone of my configuration. vim.pack included.
-- and the [neovim subreddit](https://reddit.com/r/neovim) where so many code snippets were discovered.
-- Claude Code for helping me debug and brainstorm ideas, and also generating the initial version of this README (lol)
+- `utils.foldexpr()` (in `lua/utils/init.lua`): adapted from [folke](https://github.com/folke) and the [LazyVim](https://github.com/LazyVim/LazyVim) team's work.
+- Thanks again to folke, from whose work I learned most of my Lua scripting.
+- Thanks to drowning-cat for their [unscope](https://github.com/nvim-mini/mini.nvim/discussions/1951) textobject.
+- Thanks to MariaSolOs, a core Neovim maintainer, whose [dotfiles](https://github.com/MariaSolOs/dotfiles/tree/main/.config/nvim) gave me so many ideas, especially for her LSP configs.
+- Thanks to comfysage's [sylvee](https://github.com/comfysage/sylvee) project, where I found inspiration for the configuration structure and for their inlay-hint configuration.
+- Thanks to nvimdev's [modeline.nvim](https://github.com/nvimdev/modeline.nvim), which gave me the initial inspiration for my statusline implementation.
+- Thanks again to OXY2DEV, whose [dotfiles](https://github.com/OXY2DEV/.dotfiles) I forked so many UI components from.
+- Thanks to echasnovski's [mini.nvim](https://github.com/nvim-mini/mini.nvim). His work is literally the backbone of my configuration, `vim.pack` included.
+- Thanks to the [neovim subreddit](https://reddit.com/r/neovim), where I discovered so many code snippets.
+- Thanks to Claude Code for help with debugging and brainstorming ideas, and also for generating the initial version of this README (lol).
 
-Will update this list as I go through my current codebase and figure out where I got the inspirations from!
+I will update this list as I go through my current codebase and find out where each idea came from.
 
 Licensed under [Apache 2.0](LICENSE).
